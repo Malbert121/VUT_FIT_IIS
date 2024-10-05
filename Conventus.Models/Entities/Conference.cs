@@ -14,5 +14,6 @@ public class Conference : BaseEntity
     public int Capacity { get; set; }
     public List<Presentation> Presentations { get; set; } = new List<Presentation>();
     public List<Reservation> Reservations { get; set; } = new List<Reservation>();
+    public int OrganizerId { get; set; }
     public User Organizer { get; set; }
 }

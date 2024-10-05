@@ -8,16 +8,16 @@ namespace Conventus.DAL.Repositories.Base
     {
         private readonly bool _disposeContext;
         public DbSet<T> Table { get; }
-        public ConferenceDbContext Context { get; }
+        public ConventusDbContext Context { get; }
 
-        protected BaseRepo(ConferenceDbContext context)
+        protected BaseRepo(ConventusDbContext context)
         {
             Context = context;
             Table = Context.Set<T>();
             _disposeContext = false;
         }
 
-        protected BaseRepo(DbContextOptions<ConferenceDbContext> options) : this(new ConferenceDbContext(options))
+        protected BaseRepo(DbContextOptions<ConventusDbContext> options) : this(new ConventusDbContext(options))
         {
             _disposeContext = true;
         }
