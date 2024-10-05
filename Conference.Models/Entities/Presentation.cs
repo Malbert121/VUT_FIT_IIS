@@ -1,4 +1,4 @@
-﻿namespace DAL.Models;
+﻿namespace Conference.Models.Entities;
 public class Presentation : BaseEntity
 {
     public string Title { get; set; }

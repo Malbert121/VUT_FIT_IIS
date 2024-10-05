@@ -1,4 +1,4 @@
-﻿namespace DAL.Models
+﻿namespace Conference.Models.Entities.Base
 {
     public abstract class BaseEntity
     {

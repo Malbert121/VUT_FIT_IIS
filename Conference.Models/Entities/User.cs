@@ -1,7 +1,7 @@
-﻿using DAL.Enums;
-using System.Security.Principal;
+﻿using Conference.Models.Enums;
+using Conference.Models.Entities.Base;
 
-namespace DAL.Models;
+namespace Conference.Models.Entities;
 public class User : BaseEntity
 {
     public string UserName { get; set; }

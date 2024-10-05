@@ -1,4 +1,6 @@
-﻿namespace DAL.Models;
+﻿using Conference.Models.Entities.Base;
+
+namespace Conference.Models.Entities;
 public class Reservation : BaseEntity
 {
     public User User { get; set; }
