@@ -12,7 +12,7 @@ namespace Conference.DAL.EfStructures
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<Conference> Conferences { get; set; }
+        public DbSet<Models.Entities.Conference> Conferences { get; set; }
         public DbSet<Presentation> Presentations { get; set; }
 
     }

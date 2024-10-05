@@ -1,4 +1,6 @@
-﻿namespace Conference.Models.Entities;
+﻿using Conference.Models.Entities.Base;
+
+namespace Conference.Models.Entities;
 public class Presentation : BaseEntity
 {
     public string Title { get; set; }

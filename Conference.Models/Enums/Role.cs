@@ -1,4 +1,4 @@
-﻿namespace DAL.Enums
+﻿namespace Conference.Models.Enums
 {
     public enum Role
     {
