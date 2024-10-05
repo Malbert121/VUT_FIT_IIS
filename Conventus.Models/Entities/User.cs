@@ -1,7 +1,7 @@
-﻿using Conference.Models.Enums;
-using Conference.Models.Entities.Base;
+﻿using Conventus.Models.Enums;
+using Conventus.Models.Entities.Base;
 
-namespace Conference.Models.Entities;
+namespace Conventus.Models.Entities;
 public class User : BaseEntity
 {
     public string UserName { get; set; }

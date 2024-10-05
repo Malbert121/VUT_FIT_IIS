@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Conference.Models\Conference.Models.csproj" />
+    <ProjectReference Include="..\Conventus.Models\Conventus.Models.csproj" />
   </ItemGroup>
 
 </Project>

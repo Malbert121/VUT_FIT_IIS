@@ -1,4 +1,4 @@
-﻿namespace Conference.Models.Entities.Base
+﻿namespace Conventus.Models.Entities.Base
 {
     public abstract class BaseEntity
     {

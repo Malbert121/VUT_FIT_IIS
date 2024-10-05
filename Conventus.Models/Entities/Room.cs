@@ -1,5 +1,5 @@
-﻿using Conference.Models.Entities.Base;
-namespace Conference.Models.Entities;
+﻿using Conventus.Models.Entities.Base;
+namespace Conventus.Models.Entities;
 
 public class Room : BaseEntity
 {

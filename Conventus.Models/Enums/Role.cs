@@ -1,4 +1,4 @@
-﻿namespace Conference.Models.Enums
+﻿namespace Conventus.Models.Enums
 {
     public enum Role
     {

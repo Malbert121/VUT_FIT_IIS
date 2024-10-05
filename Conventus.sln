@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conference.Models", "Conference.Models\Conference.Models.csproj", "{66575D9E-E768-4566-BD0A-D83AFBE1D7F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conventus.Models", "Conventus.Models\Conventus.Models.csproj", "{66575D9E-E768-4566-BD0A-D83AFBE1D7F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conference.DAL", "Conference.DAL\Conference.DAL.csproj", "{291D0095-E0A9-4705-94F2-203899DCC1CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conventus.DAL", "Conventus.DAL\Conventus.DAL.csproj", "{291D0095-E0A9-4705-94F2-203899DCC1CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

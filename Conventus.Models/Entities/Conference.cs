@@ -1,6 +1,6 @@
-﻿using Conference.Models.Entities.Base;
+﻿using Conventus.Models.Entities.Base;
 
-namespace Conference.Models.Entities;
+namespace Conventus.Models.Entities;
 
 public class Conference : BaseEntity
 {

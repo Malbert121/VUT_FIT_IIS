@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 
 
-namespace Conference.DAL.EfStructures
+namespace Conventus.DAL.EfStructures
 {
     public class ConferenceDbContextFactory : IDesignTimeDbContextFactory<ConferenceDbContext>
     {
