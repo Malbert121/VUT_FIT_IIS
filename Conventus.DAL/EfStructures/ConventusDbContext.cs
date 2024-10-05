@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Conventus.DAL.EfStructures
 {
-    public class ConferenceDbContext : DbContext
+    public class ConventusDbContext : DbContext
     {
-        public ConferenceDbContext(DbContextOptions<ConferenceDbContext> options)
+        public ConventusDbContext(DbContextOptions<ConventusDbContext> options)
             : base(options)
         {
         }
@@ -15,5 +15,6 @@ namespace Conventus.DAL.EfStructures
         public DbSet<Conference> Conferences { get; set; }
         public DbSet<Presentation> Presentations { get; set; }
 
+        //TODO : Fluent API
     }
 }
