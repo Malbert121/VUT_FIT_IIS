@@ -208,6 +208,35 @@ namespace Conventus.DAL.EfStructures
                     .HasForeignKey(r => r.ConferenceId)
                     .OnDelete(DeleteBehavior.Cascade); // This can remain Cascade if appropriate
             });
+            modelBuilder.Entity<User>(builder =>
+            {
+                // Set table name if different from class name
+                builder.ToTable("Users");
+
+                // Set properties
+                builder.HasKey(u => u.Id); // Assuming Id is the primary key from BaseEntity
+                builder.Property(u => u.UserName)
+                    .IsRequired()
+                    .HasMaxLength(50); // Set max length according to your requirements
+                builder.Property(u => u.Email)
+                    .IsRequired()
+                    .HasMaxLength(100); // Adjust length as necessary
+                builder.Property(u => u.PasswordHash)
+                    .IsRequired();
+
+                // Configure relationships
+                builder.HasMany(u => u.OrganizedConferences)
+                    .WithOne(c => c.Organizer) // Assuming Conference has an Organizer property of type User
+                    .HasForeignKey(c => c.OrganizerId);
+
+                builder.HasMany(u => u.Presentations)
+                    .WithOne(p => p.Speaker) // Assuming Presentation has a Speaker property of type User
+                    .HasForeignKey(p => p.SpeakerId);
+
+                builder.HasMany(u => u.Reservations)
+                    .WithOne(r => r.User) // Assuming Reservation has a User property of type User
+                    .HasForeignKey(r => r.UserId);
+            });
 
             // Additional Fluent API configurations can be added here for other entities
         }

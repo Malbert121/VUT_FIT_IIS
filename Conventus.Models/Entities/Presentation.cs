@@ -1,4 +1,5 @@
 ﻿using Conventus.Models.Entities.Base;
+using System.Text.Json.Serialization;
 
 namespace Conventus.Models.Entities;
 public class Presentation : BaseEntity
@@ -10,9 +11,10 @@ public class Presentation : BaseEntity
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public int RoomId { get; set; }
-    public Room Room { get; set; }
+    public Room? Room { get; set; }
     public int SpeakerId { get; set; }
-    public User Speaker { get; set; }
+    public User? Speaker { get; set; }
     public int ConferenceId { get; set; }
-    public Conference Conference { get; set; }
+    [JsonIgnore]
+    public Conference? Conference { get; set; }
 }

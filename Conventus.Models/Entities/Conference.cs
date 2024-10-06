@@ -1,4 +1,6 @@
 ﻿using Conventus.Models.Entities.Base;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Conventus.Models.Entities;
 
@@ -15,5 +17,6 @@ public class Conference : BaseEntity
     public List<Presentation> Presentations { get; set; } = new List<Presentation>();
     public List<Reservation> Reservations { get; set; } = new List<Reservation>();
     public int OrganizerId { get; set; }
-    public User Organizer { get; set; }
+    [ForeignKey(nameof(OrganizerId))]
+    public User? Organizer { get; set; }
 }
