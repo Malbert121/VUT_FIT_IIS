@@ -1,0 +1,35 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #e0f7fa; /* Цвет фона шапки */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo-img {
+    height: 40px; /* Высота логотипа */
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+}
+
+.nav-link, .nav-button {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #00796b; /* Цвет текста */
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+.nav-link:hover, .nav-button:hover {
+    color: #004d40; /* Темный цвет при наведении */
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}

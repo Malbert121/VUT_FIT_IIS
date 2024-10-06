@@ -14,12 +14,12 @@ namespace Conventus.DAL.Repositories
         internal ConferenceRepo(DbContextOptions<ConventusDbContext> options) : base(options)
         {
         }
-        public override IEnumerable<Conference> GetAll()
+/*        public override IEnumerable<Conference> GetAll()
         {
             return Table
         .Include(c => c.Organizer)
         .Include(c => c.Presentations)
         .Include(c => c.Reservations);
-        }
+        }*/
     }
 }

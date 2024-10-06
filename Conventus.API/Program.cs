@@ -60,7 +60,7 @@ namespace Conventus.API
 
             // Configure the HTTP request pipeline.
 
-
+            app.UseCors("AllowAll");
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
