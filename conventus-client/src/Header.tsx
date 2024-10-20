@@ -1,22 +1,19 @@
 import React from 'react';
-import './Header.css'; // Import CSS for styles
+import { Link } from 'react-router-dom'; // Импортируем Link для роутинга
 
-const Header: React.FC<{ isAuthenticated: boolean; onLogout: () => void }> = ({ isAuthenticated, onLogout }) => {
-    return (
-        <header className="header">
-            <div className="logo">
-                <img src="/path/to/logo.png" alt="Logo" className="logo-img" /> {/* Replace with the path to the logo */}
-            </div>
-            <nav className="nav">
-                <a href="/" className="nav-link">Home</a>
-                {isAuthenticated ? (
-                    <button className="nav-button" onClick={onLogout}>Logout</button>
-                ) : (
-                    <a href="/login" className="nav-link">Login</a>
-                )}
-            </nav>
-        </header>
-    );
+const Header: React.FC = () => {
+  return (
+    <header>
+      <h1>Welcome to My Website</h1>
+      <nav>
+        <ul>
+          <li><Link to="/conferences">Conferences</Link></li> {/* Используем Link вместо <a> */}
+          <li><Link to="/lectures">Lectures</Link></li> {/* Вы можете добавить компонент Lectures позже */}
+          <li><Link to="/adminpanel">AdminPanel</Link></li> {/* Добавьте AdminPanel позже */}
+        </ul>
+      </nav>
+    </header>
+  );
 };
 
 export default Header;

@@ -1,0 +1,37 @@
+.main-page {
+    background-color: #f9fafb; /* Light gray background */
+}
+
+.logo {
+    width: 180px; /* Adjust the logo size as needed */
+    height: auto;
+}
+
+h1 {
+    color: #2d3748; /* Dark text color */
+}
+
+p {
+    color: #4a5568; /* Medium gray text color */
+}
+
+/* Add styles for the call-to-action button */
+.cta-button {
+    padding: 10px 20px;
+    background-color: #4299e1; /* Blue background */
+    color: white; /* White text */
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+}
+
+.cta-button:hover {
+    background-color: #3182ce; /* Darker blue on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.cta-button:active {
+    transform: translateY(0); /* Reset position on click */
+}

@@ -1,24 +1,18 @@
-import React, { useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Conferences from './Conferences';
-import Header from './Header'; // Импортируйте компонент Header
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import Navbar from './Components/Navbar/Navbar';
 
-function App() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false); // Состояние авторизации
-
-    const handleLogout = () => {
-        setIsAuthenticated(false);
-        // Логика выхода из аккаунта (например, удаление токена)
-    };
-
-    return (
-        <div className="App">
-            <Header isAuthenticated={isAuthenticated} onLogout={handleLogout} />
-            <h1>Conventus</h1>
-            <Conferences /> {/* Вставляем компонент со списком конференций */}
-        </div>
-    );
-}
+const App: React.FC = () => {
+  return (
+    <div>
+      <Navbar />
+      {}
+      <Outlet />
+      <footer>
+                <p>© 2024 Conventus. All rights reserved. FUCK ME DADDY @MALASHCHUK VLADYSLAV</p>
+            </footer>
+    </div>
+  );
+};
 
 export default App;
