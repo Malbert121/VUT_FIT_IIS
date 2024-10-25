@@ -59,6 +59,11 @@ namespace Conventus.DAL.Migrations
                     b.Property<int>("OrganizerId")
                         .HasColumnType("int");
 
+                    b.Property<string>("PhotoUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -174,12 +179,17 @@ namespace Conventus.DAL.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
+                    b.Property<int>("ConferenceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ConferenceId");
 
                     b.ToTable("Rooms");
                 });
@@ -236,7 +246,7 @@ namespace Conventus.DAL.Migrations
                     b.HasOne("Conventus.Models.Entities.Room", "Room")
                         .WithMany("Presentations")
                         .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Conventus.Models.Entities.User", "Speaker")
@@ -271,11 +281,24 @@ namespace Conventus.DAL.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Conventus.Models.Entities.Room", b =>
+                {
+                    b.HasOne("Conventus.Models.Entities.Conference", "Conference")
+                        .WithMany("Rooms")
+                        .HasForeignKey("ConferenceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Conference");
+                });
+
             modelBuilder.Entity("Conventus.Models.Entities.Conference", b =>
                 {
                     b.Navigation("Presentations");
 
                     b.Navigation("Reservations");
+
+                    b.Navigation("Rooms");
                 });
 
             modelBuilder.Entity("Conventus.Models.Entities.Room", b =>

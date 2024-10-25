@@ -57,8 +57,10 @@ namespace Conventus.DAL.Initialization
                 EndDate = new DateTime(2024, 5, 22),
                 Price = 299.99m,
                 Capacity = 200,
+                PhotoUrl = "path/to/location",
                 Presentations = new List<Presentation>(),
                 Reservations = new List<Reservation>(),
+                Rooms = new List<Room>(),
                 OrganizerId = 1,
             },
             new Conference
@@ -72,8 +74,10 @@ namespace Conventus.DAL.Initialization
                 EndDate = new DateTime(2024, 6, 17),
                 Price = 199.99m,
                 Capacity = 150,
+                PhotoUrl = "path/to/location",
                 Presentations = new List<Presentation>(),
                 Reservations = new List<Reservation>(),
+                Rooms = new List<Room>(),
                 OrganizerId = 2,
             },
             new Conference
@@ -87,8 +91,10 @@ namespace Conventus.DAL.Initialization
                 EndDate = new DateTime(2024, 7, 12),
                 Price = 249.99m,
                 Capacity = 300,
+                PhotoUrl = "path/to/location",
                 Presentations = new List<Presentation>(),
                 Reservations = new List<Reservation>(),
+                Rooms = new List<Room>(),
                 OrganizerId = 3,
             }
         };
@@ -101,21 +107,24 @@ namespace Conventus.DAL.Initialization
                 Id = 1,
                 Name = "Room A",
                 Capacity = 50,
-                Presentations = new List<Presentation>()
+                Presentations = new List<Presentation>(),
+                ConferenceId = 1
             },
             new Room
             {
                 Id = 2,
                 Name = "Room B",
                 Capacity = 100,
-                Presentations = new List<Presentation>()
+                Presentations = new List<Presentation>(),
+                ConferenceId = 2
             },
             new Room
             {
                 Id = 3,
                 Name = "Room C",
                 Capacity = 75,
-                Presentations = new List<Presentation>()
+                Presentations = new List<Presentation>(),
+                ConferenceId = 3
             }
         };
 

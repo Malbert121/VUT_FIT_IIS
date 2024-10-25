@@ -57,6 +57,9 @@ namespace Conventus.DAL.EfStructures
                 builder.Property(c => c.Capacity)
                     .IsRequired();
 
+                builder.Property(c => c.PhotoUrl)
+                    .HasMaxLength(500);
+
                 builder.HasMany(c => c.Presentations)
                      .WithOne()
                      .HasForeignKey(p => p.ConferenceId)
@@ -66,6 +69,11 @@ namespace Conventus.DAL.EfStructures
                       .WithOne()
                       .HasForeignKey(r => r.ConferenceId)
                       .OnDelete(DeleteBehavior.Cascade);
+                
+                builder.HasMany(c => c.Rooms)
+                    .WithOne()
+                    .HasForeignKey(r => r.ConferenceId)
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 builder.HasOne(c => c.Organizer)
                       .WithMany()
@@ -102,7 +110,7 @@ namespace Conventus.DAL.EfStructures
                 builder.HasOne(p => p.Room)
                     .WithMany(r => r.Presentations) // Assuming Room has a collection of Presentations
                     .HasForeignKey(p => p.RoomId)
-                    .OnDelete(DeleteBehavior.Cascade); // Adjust behavior as needed
+                    .OnDelete(DeleteBehavior.Restrict);
 
                 builder.HasOne(p => p.Speaker)
                     .WithMany(u => u.Presentations) // Assuming User has a collection of Presentations
@@ -169,6 +177,11 @@ namespace Conventus.DAL.EfStructures
                 builder.HasMany(r => r.Presentations)
                     .WithOne(p => p.Room) // Assuming Presentation has a Room navigation property
                     .HasForeignKey(p => p.RoomId) // Assuming RoomId is a property in Presentation
+                    .OnDelete(DeleteBehavior.Restrict);  // Maybe Restrict (but check logic with conferences CASCADE)
+
+                builder.HasOne(r => r.Conference)
+                    .WithMany(c => c.Rooms) // Assuming Conference has a collection of Rooms
+                    .HasForeignKey(r => r.ConferenceId)
                     .OnDelete(DeleteBehavior.Cascade); // Adjust behavior as needed
             });
             // Configuration for Reservation entity
