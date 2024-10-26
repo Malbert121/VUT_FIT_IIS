@@ -25,6 +25,7 @@ export interface Conference {
     Capacity: number; 
     Presentations?: Presentation[]; // Array of presentations
     Reservations?: Reservation[]; // Array of reservations
+    Rooms?: Room[];
     OrganizerId: number; 
     Organizer: User; // Organizer details
 }
@@ -58,5 +59,6 @@ export interface Reservation {
 export interface Room {
     Id: number; 
     Name?: string | null; 
-    Capacity: number; 
+    Capacity: number;
+    ConferenceId: number;
 }
