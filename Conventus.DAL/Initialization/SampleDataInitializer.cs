@@ -33,9 +33,9 @@ namespace Conventus.DAL.Initialization
         {
             try
             {
-                ProcessInsert(context, context.Rooms, SampleData.Rooms);
                 ProcessInsert(context, context.Users, SampleData.Users);
                 ProcessInsert(context, context.Conferences, SampleData.Conferences);
+                ProcessInsert(context, context.Rooms, SampleData.Rooms);
                 ProcessInsert(context, context.Presentations, SampleData.Presentations);
                 ProcessInsert(context, context.Reservations, SampleData.Reservations);
                 
