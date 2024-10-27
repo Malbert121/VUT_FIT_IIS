@@ -1,4 +1,5 @@
 import React from 'react';
+import SideBar from '../../Components/SideBar/SideBar';
 
 // Sample ticket data type
 interface Ticket {

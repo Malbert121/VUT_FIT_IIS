@@ -5,7 +5,13 @@ import LecturesPage from "../Pages/LecturesPage/LecturesPage";
 import AccountPage from "../Pages/AccountPage/AccountPage";
 import Tickets from "../Pages/TicketsPage/TicketsPage";
 import MainPage from "../Pages/MainPage/MainPage";
+import AdminPanelPage from "../Pages/AdminPanelPage/AdminPanelPage";
+import PageContainer from "../Components/PageContainer/PageContainer";
 
+export const pathConferences = "/Conventus/conferences";
+export const pathLectures = "/Conventus/lectures";
+export const pathTickets = "/Conventus/tickets";
+export const pathAdmin = "/Conventus/admin";
 
 export const router = createBrowserRouter([
     {
@@ -14,22 +20,26 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "",
-                element: <MainPage />
+                element: <PageContainer WrapperPage={MainPage} sideBarFalg={false}/>
             },{
                 path: "conferences",
-                element: <ConferencesPage />
+                element: <PageContainer WrapperPage={ConferencesPage} sideBarFalg={true}/>
             },
             {
                 path: "lectures",
-                element: <LecturesPage></LecturesPage>
+                element: <PageContainer WrapperPage={LecturesPage} sideBarFalg={true}/>
             },
             {
                 path: "tickets",
-                element: <Tickets></Tickets>
+                element: <PageContainer WrapperPage={Tickets} sideBarFalg={true}/>
             },
             {
                 path: "account/:userId",
-                element: <AccountPage/>,
+                element: <PageContainer WrapperPage={AccountPage} sideBarFalg={false}/>,
+            },
+            {
+                path: "admin",
+                element: <PageContainer WrapperPage={AdminPanelPage} sideBarFalg={false}/>,
             }
             ]
             }

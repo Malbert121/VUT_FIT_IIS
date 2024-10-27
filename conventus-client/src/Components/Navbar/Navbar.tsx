@@ -1,9 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from './conventus-favicon-color1.png';
-
 interface Props {}
-
+// TODO: add checking of Admin header display only for user with admins right
 const Navbar: React.FC<Props> = () => {
   return (
     <nav className="relative container mx-auto p-6">
@@ -21,6 +20,9 @@ const Navbar: React.FC<Props> = () => {
             </Link>
             <Link to="./lectures" className="text-black hover:text-darkBlue">
               Lectures
+            </Link>
+            <Link to="./admin" className="text-black hover:text-darkBlue">
+              Admin
             </Link>
           </div>
         </div>
