@@ -30,7 +30,16 @@ export const getAllConferences = async (): Promise<Conference[]> => {
         return []; // Return an empty array in case of an error
     }
 };
-
+// Function to fetch a specific conference by ID
+export const getConference = async (id: number): Promise<Conference | null> => {
+    try {
+        const response = await axios.get<Conference>(`https://localhost:7156/api/Conferences/${id}`);
+        return response.data; // Return the conference object
+    } catch (error) {
+        console.error("Error fetching conference:", error);
+        return null; // Return null in case of an error
+    }
+};
 
 export const getAllPresentations = async (): Promise<Presentation[]> => {
     try {

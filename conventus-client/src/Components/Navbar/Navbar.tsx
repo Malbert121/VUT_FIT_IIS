@@ -9,7 +9,7 @@ const Navbar: React.FC<Props> = () => {
     <nav className="relative container mx-auto p-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-20">
-          <Link to="/Conventus">
+          <Link to="/">
             <img src={logo} alt="Logo" />
           </Link>
           <div className="hidden font-bold lg:flex space-x-6"> {/* Added space-x-6 for horizontal spacing */}

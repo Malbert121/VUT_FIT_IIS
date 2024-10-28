@@ -1,0 +1,86 @@
+.conference-detail {
+    max-width: 800px; /* Limit width for readability */
+    margin: 20px auto; /* Center the content */
+    padding: 20px; /* Add some padding */
+    border: 1px solid #ddd; /* Border around the detail section */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    background-color: #f9f9f9; /* Light background */
+}
+
+.conference-title {
+    text-align: center; /* Center the title */
+    font-size: 2em; /* Larger font size */
+    margin-bottom: 10px; /* Space below title */
+}
+
+.description-container {
+    background-color: #fff; /* White background for the description */
+    border-radius: 8px; /* Rounded corners */
+    padding: 15px; /* Padding inside the description */
+    margin-bottom: 20px; /* Space below description */
+}
+
+.conference-description {
+    margin: 0; /* Remove default margin */
+}
+
+.info-container {
+    text-align: right; /* Align information to the right */
+}
+
+.add-to-cart-button {
+    margin-top: 10px; /* Space above button */
+    padding: 10px 20px; /* Padding for the button */
+    background-color: #007bff; /* Button color */
+    color: white; /* Text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners for the button */
+    cursor: pointer; /* Pointer on hover */
+}
+
+.add-to-cart-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+.organizer-info {
+    margin: 20px 0; /* Space around organizer info */
+    background-color: #e9ecef; /* Light grey background */
+    padding: 15px; /* Padding for organizer info */
+    border-radius: 8px; /* Rounded corners */
+}
+
+.presentations-title {
+    text-align: center; /* Center the presentations title */
+    font-size: 1.5em; /* Medium size for the presentations title */
+    margin: 20px 0; /* Margin above and below */
+}
+
+ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove padding */
+}
+
+.presentation-list {
+    margin-top: 10px; /* Space between main content and presentation list */
+}
+
+.presentation-item {
+    margin-bottom: 15px; /* Space between presentation items */
+    padding: 10px; /* Padding for each item */
+    border: 1px solid #ccc; /* Border around each presentation */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #fff; /* White background for presentations */
+}
+
+.presentation-image {
+    max-width: 100%; /* Responsive image */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 5px; /* Rounded corners for images */
+}
+
+.loading, .error {
+    text-align: center; /* Centered text for loading/error messages */
+    font-size: 1.2em; /* Slightly larger font for visibility */
+    color: #888; /* Grey color for loading/error messages */
+}
