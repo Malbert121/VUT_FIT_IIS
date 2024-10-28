@@ -23,6 +23,7 @@ export interface Conference {
     EndDate: string; // ISO 8601 date-time
     Price: number; 
     Capacity: number; 
+    Occupancy: number;
     Presentations?: Presentation[]; // Array of presentations
     Reservations?: Reservation[]; // Array of reservations
     Rooms?: Room[];

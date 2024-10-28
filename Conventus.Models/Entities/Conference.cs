@@ -14,6 +14,7 @@ public class Conference : BaseEntity
     public DateTime EndDate { get; set; }
     public decimal Price { get; set; }
     public int Capacity { get; set; }
+    public int Occupancy { get; set; }
     public string PhotoUrl { get; set; }
     public List<Presentation> Presentations { get; set; } = new List<Presentation>();
     public List<Reservation> Reservations { get; set; } = new List<Reservation>();

@@ -57,6 +57,9 @@ namespace Conventus.DAL.EfStructures
                 builder.Property(c => c.Capacity)
                     .IsRequired();
 
+                builder.Property(c => c.Occupancy)
+                    .IsRequired();
+
                 builder.Property(c => c.PhotoUrl)
                     .HasMaxLength(500);
 

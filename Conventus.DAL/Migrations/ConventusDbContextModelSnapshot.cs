@@ -56,6 +56,9 @@ namespace Conventus.DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("Occupancy")
+                        .HasColumnType("int");
+
                     b.Property<int>("OrganizerId")
                         .HasColumnType("int");
 
