@@ -5,7 +5,6 @@ import Navbar from './Components/Navbar/Navbar';
 const App: React.FC = () => {
   return (
     <div>
-      <Navbar />
       {}
       <Outlet />
       <footer>

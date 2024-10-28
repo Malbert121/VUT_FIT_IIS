@@ -1,16 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from './conventus-favicon-color1.png';
-interface Props {}
+//import logo from './conventus-favicon-color1.png';
+import MenuButton from '../MenuButton/MenuButton';
+interface Props {
+  updateSideBar: ()=> void;
+}
+
 // TODO: add checking of Admin header display only for user with admins right
-const Navbar: React.FC<Props> = () => {
+const Navbar: React.FC<Props> = ({updateSideBar}) => {
   return (
     <nav className="relative container mx-auto p-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-20">
-          <Link to="/Conventus">
-            <img src={logo} alt="Logo" />
-          </Link>
+          <MenuButton action={updateSideBar}/>
           <div className="hidden font-bold lg:flex space-x-6"> {/* Added space-x-6 for horizontal spacing */}
             <Link to="./conferences" className="text-black hover:text-darkBlue">
               Conferences
@@ -41,3 +43,6 @@ const Navbar: React.FC<Props> = () => {
 };
 
 export default Navbar;
+/*<Link to="/Conventus">
+            <img src={logo} alt="Logo" />
+          </Link>*/

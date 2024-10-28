@@ -20,26 +20,26 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "",
-                element: <PageContainer WrapperPage={MainPage} sideBarFalg={false}/>
+                element: <PageContainer WrapperPage={MainPage} sideBarFlag={false}/>
             },{
                 path: "conferences",
-                element: <PageContainer WrapperPage={ConferencesPage} sideBarFalg={true}/>
+                element: <PageContainer WrapperPage={ConferencesPage} sideBarFlag={true}/>
             },
             {
                 path: "lectures",
-                element: <PageContainer WrapperPage={LecturesPage} sideBarFalg={true}/>
+                element: <PageContainer WrapperPage={LecturesPage} sideBarFlag={true}/>
             },
             {
                 path: "tickets",
-                element: <PageContainer WrapperPage={Tickets} sideBarFalg={true}/>
+                element: <PageContainer WrapperPage={Tickets} sideBarFlag={true}/>
             },
             {
                 path: "account/:userId",
-                element: <PageContainer WrapperPage={AccountPage} sideBarFalg={false}/>,
+                element: <PageContainer WrapperPage={AccountPage} sideBarFlag={false}/>,
             },
             {
                 path: "admin",
-                element: <PageContainer WrapperPage={AdminPanelPage} sideBarFalg={false}/>,
+                element: <PageContainer WrapperPage={AdminPanelPage} sideBarFlag={false}/>,
             }
             ]
             }
