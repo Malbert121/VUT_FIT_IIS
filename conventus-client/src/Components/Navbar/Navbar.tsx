@@ -14,16 +14,16 @@ const Navbar: React.FC<Props> = ({updateSideBar}) => {
         <div className="flex items-center space-x-20">
           <MenuButton action={updateSideBar}/>
           <div className="hidden font-bold lg:flex space-x-6"> {/* Added space-x-6 for horizontal spacing */}
-            <Link to="./conferences" className="text-black hover:text-darkBlue">
+            <Link to="../conferences" className="text-black hover:text-darkBlue">
               Conferences
             </Link>
-            <Link to="./tickets" className="text-black hover:text-darkBlue">
+            <Link to="../tickets" className="text-black hover:text-darkBlue">
               Tickets
             </Link>
-            <Link to="./lectures" className="text-black hover:text-darkBlue">
+            <Link to="../lectures" className="text-black hover:text-darkBlue">
               Lectures
             </Link>
-            <Link to="./admin" className="text-black hover:text-darkBlue">
+            <Link to="../admin" className="text-black hover:text-darkBlue">
               Admin
             </Link>
           </div>
