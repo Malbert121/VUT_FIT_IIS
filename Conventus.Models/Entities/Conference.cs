@@ -14,8 +14,12 @@ public class Conference : BaseEntity
     public DateTime EndDate { get; set; }
     public decimal Price { get; set; }
     public int Capacity { get; set; }
+    public int Occupancy { get; set; }
+    public string PhotoUrl { get; set; }
     public List<Presentation> Presentations { get; set; } = new List<Presentation>();
     public List<Reservation> Reservations { get; set; } = new List<Reservation>();
+    [JsonIgnore]
+    public List<Room> Rooms { get; set; } = new List<Room>();
     public int OrganizerId { get; set; }
     [ForeignKey(nameof(OrganizerId))]
     public User? Organizer { get; set; }

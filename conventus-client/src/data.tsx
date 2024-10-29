@@ -23,8 +23,10 @@ export interface Conference {
     EndDate: string; // ISO 8601 date-time
     Price: number; 
     Capacity: number; 
+    Occupancy: number;
     Presentations?: Presentation[]; // Array of presentations
     Reservations?: Reservation[]; // Array of reservations
+    Rooms?: Room[];
     OrganizerId: number; 
     Organizer: User; // Organizer details
 }
@@ -58,5 +60,6 @@ export interface Reservation {
 export interface Room {
     Id: number; 
     Name?: string | null; 
-    Capacity: number; 
+    Capacity: number;
+    ConferenceId: number;
 }
