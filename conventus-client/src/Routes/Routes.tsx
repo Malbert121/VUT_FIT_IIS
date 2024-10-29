@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import ConferencesPage from "../Pages/ConferencesPage/ConferencesPage";
+import ConferenceDetailPage from "../Pages/ConferenceDetailPage/ConferenceDetailPage"; // Import your detail page
 import LecturesPage from "../Pages/LecturesPage/LecturesPage";
 import AccountPage from "../Pages/AccountPage/AccountPage";
 import Tickets from "../Pages/TicketsPage/TicketsPage";
@@ -15,7 +16,7 @@ export const pathAdmin = "/Conventus/admin";
 
 export const router = createBrowserRouter([
     {
-        path: "/Conventus",
+        path: "/",
         element: <App />,
         children: [
             {
@@ -25,6 +26,15 @@ export const router = createBrowserRouter([
                 path: "conferences",
                 element: <PageContainer WrapperPage={ConferencesPage} sideBarFlag={true}/>
             },
+            {
+                path: "conferences",
+                element: <ConferencesPage />
+
+            }, {
+                path: "conferences/:id", // Define the parameterized route for conference details
+                element: <ConferenceDetailPage /> // Add your ConferenceDetailPage component here
+            },
+
             {
                 path: "lectures",
                 element: <PageContainer WrapperPage={LecturesPage} sideBarFlag={true}/>
@@ -44,5 +54,5 @@ export const router = createBrowserRouter([
             ]
             }
         ]
-    
-)
+    }
+]);
