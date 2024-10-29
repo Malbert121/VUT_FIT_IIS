@@ -16,7 +16,7 @@ const sampleTickets: Ticket[] = [
   { id: 3, name: 'Student Ticket', price: 30, available: false },
 ];
 
-const Tickets: React.FC = () => {
+const TicketsPage: React.FC = () => {
   const handlePurchase = (ticket: Ticket) => {
     if (ticket.available) {
       // Implement your purchase logic here (e.g., API call)
@@ -55,4 +55,4 @@ const Tickets: React.FC = () => {
   );
 };
 
-export default Tickets;
+export default TicketsPage;

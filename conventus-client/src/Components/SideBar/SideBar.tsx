@@ -3,7 +3,11 @@ import {Link} from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 import './SideBar.css'
 import MenuButton from '../MenuButton/MenuButton';
+import { pathAccount, pathConferences, pathAdmin, pathTickets, pathLectures, pathOwnerTickets, pathUnpaidTickets } from '../../Routes/Routes';
+
+
 type Props = {};
+
 const SideBar2:React.FC<Props> = () =>
 {
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -24,54 +28,54 @@ const SideBar2:React.FC<Props> = () =>
           <div className="relative top-10 md:flex-col md:min-w-full flex flex-col list-none">
             {isOpen && (
               <>
-                {location.pathname.startsWith('/conferences') && (
+                {location.pathname.startsWith(pathConferences) && (
                   <>
                     <Link
-                      to="/Conventus/conferences"
+                      to={pathConferences}
                       className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
                     >
                       <h6 className="ml-3">All Conferences</h6>
                     </Link>
                     <Link
-                      to="/Conventus/conferences"
+                      to={pathConferences}
                       className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
                     >
                       <h6 className="ml-3">My Conferences</h6>
                     </Link>
                   </>
                 )}
-                {location.pathname.startsWith('/lectures') && (
+                {location.pathname.startsWith(pathLectures) && (
                   <>
                     <Link
-                      to="/Conventus/lectures"
+                      to={pathLectures}
                       className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
                     >
                       <h6 className="ml-3">All Lectures</h6>
                     </Link>
                     <Link
-                      to="/Conventus/lectures"
+                      to={pathLectures}
                       className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
                     >
                       <h6 className="ml-3">My Lectures</h6>
                     </Link>
                   </>
                 )}
-                {location.pathname.startsWith('/tickets') && (
+                {location.pathname.startsWith(pathTickets) && (
                   <>
                     <Link
-                      to="/Conventus/tickets"
+                      to={pathTickets}
                       className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
                     >
                       <h6 className="ml-3">Unpaid Tickets</h6>
                     </Link>
                     <Link
-                      to="/Conventus/tickets"
+                      to={pathUnpaidTickets}
                       className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
                     >
                       <h6 className="ml-3">Actual Tickets</h6>
                     </Link>
                     <Link
-                      to="/Conventus/tickets"
+                      to={pathOwnerTickets}
                       className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
                     >
                       <h6 className="ml-3">Guest Tickets</h6>
