@@ -9,10 +9,11 @@ import MainPage from "../Pages/MainPage/MainPage";
 import AdminPanelPage from "../Pages/AdminPanelPage/AdminPanelPage";
 import PageContainer from "../Components/PageContainer/PageContainer";
 
-export const pathConferences = "/Conventus/conferences";
-export const pathLectures = "/Conventus/lectures";
-export const pathTickets = "/Conventus/tickets";
-export const pathAdmin = "/Conventus/admin";
+export const pathConferences = "/conferences";
+export const pathLectures = "/lectures";
+export const pathTickets = "/tickets";
+export const pathAdmin = "/admin";
+export const pathAccount = "/account";
 
 export const router = createBrowserRouter([
     {
@@ -22,37 +23,32 @@ export const router = createBrowserRouter([
             {
                 path: "",
                 element: <PageContainer WrapperPage={MainPage} sideBarFlag={false}/>
-            },{
-                path: "conferences",
+            },
+            {
+                path: pathConferences,
                 element: <PageContainer WrapperPage={ConferencesPage} sideBarFlag={true}/>
             },
             {
-                path: "conferences",
-                element: <ConferencesPage />
-
-            }, {
-                path: "conferences/:id", // Define the parameterized route for conference details
-                element: <ConferenceDetailPage /> // Add your ConferenceDetailPage component here
+                path: `${pathConferences}/:id`, // Define the parameterized route for conference details
+                element: <PageContainer WrapperPage={ConferenceDetailPage} sideBarFlag={true}/> // Add your ConferenceDetailPage component here
             },
-
             {
-                path: "lectures",
+                path: pathLectures,
                 element: <PageContainer WrapperPage={LecturesPage} sideBarFlag={true}/>
             },
             {
-                path: "tickets",
+                path: pathTickets,
                 element: <PageContainer WrapperPage={Tickets} sideBarFlag={true}/>
             },
             {
-                path: "account/:userId",
+                path: `${pathAccount}/:userId`,
                 element: <PageContainer WrapperPage={AccountPage} sideBarFlag={false}/>,
             },
             {
-                path: "admin",
+                path: pathAdmin,
                 element: <PageContainer WrapperPage={AdminPanelPage} sideBarFlag={false}/>,
             }
             ]
             }
         ]
-    }
-]);
+);

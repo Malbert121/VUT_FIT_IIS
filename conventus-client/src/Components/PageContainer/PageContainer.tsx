@@ -1,6 +1,6 @@
 import React, {useState}  from 'react';
-import SideBar from '../SideBar/SideBar';
 import Navbar from '../Navbar/Navbar';
+import SideBar from '../SideBar/SideBar';
 interface DefaultPage
 {
     sideBarFlag: boolean;
@@ -12,12 +12,14 @@ const PageContainer: React.FC<DefaultPage> = ({sideBarFlag, WrapperPage}) => {
         setIsOpen(!isOpen);
     };
     return(
-        <div>
-        <Navbar updateSideBar={toggleSideBar}/>
-        <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden">
-            {sideBarFlag && isOpen? <SideBar/> : <></>}
-            <WrapperPage/>
-        </div>
+        <div className="flex"> 
+            {sideBarFlag?<SideBar/>:null}   
+            <div className='flex flex-col w-full'>
+                <Navbar updateSideBar={toggleSideBar}/>
+                    <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden">
+                        <WrapperPage/>
+                    </div>
+            </div>
         </div>
     );
 };

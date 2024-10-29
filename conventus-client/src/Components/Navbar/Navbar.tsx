@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-//import logo from './conventus-favicon-color1.png';
-import MenuButton from '../MenuButton/MenuButton';
+import logo from './conventus-favicon-color1.png';
 interface Props {
   updateSideBar: ()=> void;
 }
@@ -12,7 +11,9 @@ const Navbar: React.FC<Props> = ({updateSideBar}) => {
     <nav className="relative container mx-auto p-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-20">
-          <MenuButton action={updateSideBar}/>
+        <Link to="/">
+            <img src={logo} alt="Logo" />
+          </Link>
           <div className="hidden font-bold lg:flex space-x-6"> {/* Added space-x-6 for horizontal spacing */}
             <Link to="../conferences" className="text-black hover:text-darkBlue">
               Conferences
@@ -29,7 +30,7 @@ const Navbar: React.FC<Props> = ({updateSideBar}) => {
           </div>
         </div>
         <div className="hidden lg:flex items-center space-x-6 text-back">
-          <Link to="./account/1"> {/* Wrapped the Account button in a Link */}
+          <Link to="../account/1"> {/* Wrapped the Account button in a Link */}
             <a
               className="px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70"
             >
