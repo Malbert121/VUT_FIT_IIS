@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 import './SideBar.css'
 import MenuButton from '../MenuButton/MenuButton';
-import { pathAccount, pathConferences, pathAdmin, pathTickets, pathLectures, pathOwnerTickets, pathUnpaidTickets } from '../../Routes/Routes';
+import { pathAccount, pathConferences, pathAdmin, pathReservations, pathLectures, pathOwnerReservations, pathUnpaidReservations } from '../../Routes/Routes';
 
 
 type Props = {};
@@ -60,25 +60,25 @@ const SideBar2:React.FC<Props> = () =>
                     </Link>
                   </>
                 )}
-                {location.pathname.startsWith(pathTickets) && (
+                {location.pathname.startsWith(pathReservations) && (
                   <>
                     <Link
-                      to={pathTickets}
+                      to={pathUnpaidReservations}
                       className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
                     >
-                      <h6 className="ml-3">Unpaid Tickets</h6>
+                      <h6 className="ml-3">Unpaid Reservations</h6>
                     </Link>
                     <Link
-                      to={pathUnpaidTickets}
+                      to={pathReservations}
                       className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
                     >
-                      <h6 className="ml-3">Actual Tickets</h6>
+                      <h6 className="ml-3">Actual Reservations</h6>
                     </Link>
                     <Link
-                      to={pathOwnerTickets}
+                      to={pathOwnerReservations}
                       className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
                     >
-                      <h6 className="ml-3">Guest Tickets</h6>
+                      <h6 className="ml-3">Owners Reservations</h6>
                     </Link>
                   </>
                 )}

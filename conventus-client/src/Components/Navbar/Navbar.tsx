@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from './conventus-favicon-color1.png';
+
+import { pathConferences, pathAccount, pathLectures, pathAdmin, pathReservations } from '../../Routes/Routes';
+
 interface Props {
   updateSideBar: ()=> void;
 }
@@ -15,22 +18,22 @@ const Navbar: React.FC<Props> = ({updateSideBar}) => {
             <img src={logo} alt="Logo" />
           </Link>
           <div className="hidden font-bold lg:flex space-x-6"> {/* Added space-x-6 for horizontal spacing */}
-            <Link to="../conferences" className="text-black hover:text-darkBlue">
+            <Link to={`../${pathConferences}`} className="text-black hover:text-darkBlue">
               Conferences
             </Link>
-            <Link to="../tickets" className="text-black hover:text-darkBlue">
-              Tickets
+            <Link to={`../${pathReservations}`} className="text-black hover:text-darkBlue">
+              Reservations
             </Link>
-            <Link to="../lectures" className="text-black hover:text-darkBlue">
+            <Link to={`../${pathLectures}`} className="text-black hover:text-darkBlue">
               Lectures
             </Link>
-            <Link to="../admin" className="text-black hover:text-darkBlue">
+            <Link to={`../${[pathAdmin]}`} className="text-black hover:text-darkBlue">
               Admin
             </Link>
           </div>
         </div>
         <div className="hidden lg:flex items-center space-x-6 text-back">
-          <Link to="../account/1"> {/* Wrapped the Account button in a Link */}
+          <Link to={`../${[pathAccount]}/1`}> {/* Wrapped the Account button in a Link */}
             <a
               className="px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70"
             >
