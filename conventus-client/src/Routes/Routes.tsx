@@ -10,6 +10,7 @@ import AdminPanelPage from "../Pages/AdminPanelPage/AdminPanelPage";
 import PageContainer from "../Components/PageContainer/PageContainer";
 import OwnerReservationsPage from "../Pages/OwnerReservationsPage/OwnerReservationsPage";
 import UnpaidReservationsPage from "../Pages/UnpaidReservationsPage/UnpaidReservationsPage";
+import ReservationDetailPage from "../Pages/ReservationDetailPage/ReservationDetailPage";
 
 export const pathConferences = "/conferences";
 export const pathLectures = "/lectures";
@@ -51,6 +52,10 @@ export const router = createBrowserRouter([
             {
                 path: pathOwnerReservations,  // TODO: add usersId
                 element: <PageContainer WrapperPage={OwnerReservationsPage} sideBarFlag={true}/>,
+            },
+            {
+                path: `${pathReservations}/:reservationId`,  // TODO: add usersId
+                element: <PageContainer WrapperPage={ReservationDetailPage} sideBarFlag={true}/>,
             },
             {
                 path: `${pathAccount}/:userId`,
