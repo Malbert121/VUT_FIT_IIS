@@ -20,7 +20,7 @@ namespace Conventus.API
             var connectionString = configuration.GetConnectionString("Conventus");
             builder.Services.AddDbContextPool<ConventusDbContext>(
                 options => options.UseSqlServer(connectionString,
-                sqlOptions => sqlOptions.EnableRetryOnFailure()));
+                sqlOptions => sqlOptions.EnableRetryOnFailure()).UseLazyLoadingProxies());
 
             builder.Services.AddScoped<IUserRepo, UserRepo>();
             builder.Services.AddScoped<IConferenceRepo, ConferenceRepo>();

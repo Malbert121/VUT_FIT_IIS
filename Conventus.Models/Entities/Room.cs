@@ -7,8 +7,8 @@ public class Room : BaseEntity
     public string Name { get; set; }
     public int Capacity { get; set; }
     [JsonIgnore]
-    public List<Presentation> Presentations { get; set; } = new List<Presentation>();
+    public virtual List<Presentation> Presentations { get; set; } = new List<Presentation>();
     public int ConferenceId { get; set; }
     [JsonIgnore]
-    public Conference? Conference { get; set; }
+    public virtual Conference? Conference { get; set; }
 }

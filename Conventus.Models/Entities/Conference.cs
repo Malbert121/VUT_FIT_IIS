@@ -16,11 +16,13 @@ public class Conference : BaseEntity
     public int Capacity { get; set; }
     public int Occupancy { get; set; }
     public string PhotoUrl { get; set; }
-    public List<Presentation> Presentations { get; set; } = new List<Presentation>();
-    public List<Reservation> Reservations { get; set; } = new List<Reservation>();
     [JsonIgnore]
-    public List<Room> Rooms { get; set; } = new List<Room>();
+    public virtual List<Presentation> Presentations { get; set; } = new List<Presentation>();
+    [JsonIgnore]
+    public virtual List<Reservation> Reservations { get; set; } = new List<Reservation>();
+    [JsonIgnore]
+    public virtual List<Room> Rooms { get; set; } = new List<Room>();
     public int OrganizerId { get; set; }
     [ForeignKey(nameof(OrganizerId))]
-    public User? Organizer { get; set; }
+    public virtual User? Organizer { get; set; }
 }
