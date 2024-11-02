@@ -195,7 +195,7 @@ namespace Conventus.DAL.Initialization
                 IsConfirmed = true,
                 IsPaid = true,
                 NumberOfTickets = 2,
-                Ammount = 0.0,
+                Ammount = 100.0,
                 ReservationDate = DateTime.Now,
             },
             new Reservation
@@ -206,7 +206,7 @@ namespace Conventus.DAL.Initialization
                 IsConfirmed = false,
                 IsPaid = false,
                 NumberOfTickets = 1,
-                Ammount = 0.0,
+                Ammount = 200.0,
                 ReservationDate = DateTime.Now.AddDays(-1), // 1 day ago
             },
             new Reservation
@@ -217,7 +217,7 @@ namespace Conventus.DAL.Initialization
                 IsConfirmed = true,
                 IsPaid = false,
                 NumberOfTickets = 3,
-                Ammount = 0.0,
+                Ammount = 300.0,
                 ReservationDate = DateTime.Now.AddDays(-2), // 2 days ago,
             }
         };

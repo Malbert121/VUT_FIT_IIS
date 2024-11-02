@@ -50,10 +50,12 @@ export interface Reservation {
     Id: number; 
     UserId: number; 
     User: User; // User details
-    ConferenceId: number; 
+    ConferenceId: number;
+    Conference: Conference;  // Conference datails
     IsConfirmed: boolean; 
     IsPaid: boolean; 
-    NumberOfTickets: number; 
+    NumberOfTickets: number;
+    Ammount: number;
     ReservationDate: string; // ISO 8601 date-time
 }
 

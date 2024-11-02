@@ -16,9 +16,9 @@ const PageContainer: React.FC<DefaultPage> = ({sideBarFlag, WrapperPage}) => {
             {sideBarFlag?<SideBar/>:null}   
             <div className='flex flex-col w-full'>
                 <Navbar updateSideBar={toggleSideBar}/>
-                    <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden">
-                        <WrapperPage/>
-                    </div>
+                <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden">
+                    <WrapperPage/>
+                </div>
             </div>
         </div>
     );

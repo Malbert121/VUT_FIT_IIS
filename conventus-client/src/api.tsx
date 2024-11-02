@@ -52,12 +52,13 @@ export const getAllPresentations = async (): Promise<Presentation[]> => {
 };
 
 // Fetch all reservations
-export const getAllReservations = async () => {
+export const getAllReservations = async ():Promise<Reservation[]> => {
     try {
         const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations`);
         return response.data; // Assuming the API returns an array of reservations
     } catch (error) {
         handleAxiosError(error);
+        return [];
     }
 };
 
