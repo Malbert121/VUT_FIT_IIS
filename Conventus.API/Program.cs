@@ -2,10 +2,7 @@ using Conventus.DAL.EfStructures;
 using Conventus.DAL.Initialization;
 using Conventus.DAL.Repositories;
 using Conventus.DAL.Repositories.Interfaces;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 
 namespace Conventus.API
@@ -20,64 +17,7 @@ namespace Conventus.API
             // Read configuration from appsettings.json
             var configuration = builder.Configuration;
             // Add DbContext and Repositories
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
-            builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.Events = new JwtBearerEvents
-                {
-                    OnMessageReceived = context =>
-                    {
-                        // Проверяем, есть ли токен в куки с именем "AuthToken"
-                        if (context.Request.Cookies.ContainsKey("AuthToken"))
-                        {
-                            context.Token = context.Request.Cookies["AuthToken"];
-                            Console.WriteLine("Token from AuthToken cookie: " + context.Token);
-                        }
-                        else
-                        {
-                            Console.WriteLine("No AuthToken cookie found in request.");
-                        }
-                        return Task.CompletedTask;
-                    },
-                    OnAuthenticationFailed = context =>
-                    {
-                        Console.WriteLine("Authentication failed: " + context.Exception.Message);
-                        return Task.CompletedTask;
-                    },
-            
-                    OnChallenge = context =>
-                    {
-                        // Если нет токена или он недействителен, перенаправляем на страницу входа
-                        context.HandleResponse();
-                        context.Response.Redirect("/Login");
-                        return Task.CompletedTask;
-                    }
-                };
-            
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                    ValidAudience = builder.Configuration["Jwt:Audience"], // Убедитесь, что Audience настроен
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
-                };
-            
-            
-            })
-            .AddCookie(options =>
-            {
-                //options.LoginPath = "/Login"; // Укажите путь к странице входа
-                //options.AccessDeniedPath = "/Login"; // Опционально для доступа без прав
-            });
+            var connectionString = configuration.GetConnectionString("Conventus");
             builder.Services.AddDbContextPool<ConventusDbContext>(
                 options => options.UseSqlServer(connectionString,
                 sqlOptions => sqlOptions.EnableRetryOnFailure()));
@@ -123,13 +63,10 @@ namespace Conventus.API
             app.UseCors("AllowAll");
             app.UseHttpsRedirection();
 
-            app.UseRouting();
-            app.UseAuthentication();
             app.UseAuthorization();
 
 
             app.MapControllers();
-            app.MapFallbackToFile("/index.html");
 
             app.Run();
         }

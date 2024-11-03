@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conventus.Models", "Convent
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conventus.DAL", "Conventus.DAL\Conventus.DAL.csproj", "{291D0095-E0A9-4705-94F2-203899DCC1CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conventus.API", "Conventus.API\Conventus.API.csproj", "{C05395E0-5969-4392-952C-F5C3F436BA4F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conventus.API", "Conventus.API\Conventus.API.csproj", "{C05395E0-5969-4392-952C-F5C3F436BA4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
