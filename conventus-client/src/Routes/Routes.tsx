@@ -10,6 +10,7 @@ import AdminPanelPage from "../Pages/AdminPanelPage/AdminPanelPage";
 import PageContainer from "../Components/PageContainer/PageContainer";
 import OwnerTicketsPage from "../Pages/OwnerTicketsPage/OwnerTicketsPage";
 import UnpaidUsersTicketsPage from "../Pages/UnpaidUsersTicketsPage/UnpaidTicketsPage";
+import LectureDetailPage from "../Pages/LectureDetailPage/LectureDetailPage";
 
 export const pathConferences = "/conferences";
 export const pathLectures = "/lectures";
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
             {
                 path: pathLectures,
                 element: <PageContainer WrapperPage={LecturesPage} sideBarFlag={true}/>
+            },
+            {
+                path: `${pathLectures}/:id`, // Define the parameterized route for lecture details.
+                element: <PageContainer WrapperPage={LectureDetailPage} sideBarFlag={false}/> // Add your LectureDetailPage component here - TODO: side bar flag.
             },
             {
                 path: pathTickets,  // TODO: add usersId

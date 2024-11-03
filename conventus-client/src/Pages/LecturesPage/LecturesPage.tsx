@@ -1,36 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { getAllPresentations } from '../../api'; // Adjust the import based on your structure
-import { Presentation } from '../../data'; // Adjust based on your structure
-import './LecturesPage.css'; // Create a new CSS file for styles
+import { getAllPresentations } from '../../api';
+import { Presentation } from '../../data';
+import { Link } from 'react-router-dom';
+import './LecturesPage.css';
 
 import SearchBar from '../../Components/SearchBar/SearchBar'; // Import the SearchBar component
 
 const LecturesPage: React.FC = () => {
-  const [lectures, setLectures] = useState<Presentation[]>([]);
+  const [presentations, setPresentations] = useState<Presentation[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchLectures = async () => {
+    const fetchPresentations = async () => {
       try {
         const data = await getAllPresentations();
-        setLectures(data);
+        setPresentations(data);
       } catch (error) {
-        setError('Failed to fetch lectures.');
-        console.error("Error fetching lectures:", error);
+        setError('Failed to fetch presentations.');
+        console.error("Error fetching presentations:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchLectures();
+    fetchPresentations();
   }, []);
 
   // Empty function to test UI display - TODO
   const handleSearch = () => {};
 
   if (loading) {
-    return <div className="loading">Loading lectures...</div>;
+    return <div className="loading">Loading presentations...</div>;
   }
 
   if (error) {
@@ -47,14 +48,16 @@ const LecturesPage: React.FC = () => {
         <SearchBar onSearch={handleSearch} />
       </div>
 
-      <div className="lecture-list">
-        {lectures.map((lecture) => (
-          <div key={lecture.Id} className="lecture-card">
-            <h2 className="lecture-title">{lecture.Title || 'Untitled'}</h2>
-            <p className="lecture-description">{lecture.Description || 'No description available.'}</p>
-            <p className="lecture-dates">
-              <strong>Start Time:</strong> {lecture.StartTime} <br />
-              <strong>End Time:</strong> {lecture.EndTime}
+      <div className="presentation-list">
+        {presentations.map((presentation) => (
+          <div key={presentation.Id} className="presentation-card">
+            <Link to={`./${presentation.Id}`}>
+              <h2 className="presentation-title">{presentation.Title || 'Untitled'}</h2>
+            </Link>
+            <p className="presentation-description">{presentation.Description || 'No description available.'}</p>
+            <p className="presentation-dates">
+              <strong>Start Time:</strong> {presentation.StartTime} <br />
+              <strong>End Time:</strong> {presentation.EndTime}
             </p>
           </div>
         ))}

@@ -21,13 +21,13 @@
     margin-bottom: 20px; /* Add margin below */
 }
 
-.lecture-list {
+.presentation-list {
     display: grid; /* Use grid layout for lectures */
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive columns */
     gap: 20px; /* Space between cards */
 }
 
-.lecture-card {
+.presentation-card {
     background-color: white; /* White background for cards */
     border-radius: 8px; /* Rounded corners */
     padding: 15px; /* Padding inside cards */
@@ -35,23 +35,23 @@
     transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition for hover effects */
 }
 
-.lecture-card:hover {
+.presentation-card:hover {
     transform: translateY(-5px); /* Lift effect on hover */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
 }
 
-.lecture-title {
+.presentation-title {
     font-size: 1.5rem; /* Font size for lecture title */
     font-weight: bold; /* Bold font */
     color: #2c5282; /* Darker blue color */
 }
 
-.lecture-description {
+.presentation-description {
     color: #4a5568; /* Medium gray text color */
     margin: 10px 0; /* Add margin for spacing */
 }
 
-.lecture-dates {
+.presentation-dates {
     color: #4a5568; /* Medium gray text color */
     margin: 5px 0; /* Add margin for spacing */
 }
