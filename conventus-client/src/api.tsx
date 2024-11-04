@@ -62,6 +62,20 @@ export const getAllReservations = async ():Promise<Reservation[]> => {
     }
 };
 
+export const getReservation = async (id:Number): Promise<Reservation | null> => {
+    try
+    {
+        console.log(`id = ${id}`)
+        const response = await axios.get<Reservation>(`https://localhost:7156/api/Reservations/${id}`);
+        return response.data;
+    }
+    catch (error)
+    {
+        console.error("Error fetching presentation:", error);
+        return null;
+    }
+}
+
 // Fetch all rooms
 export const getAllRooms = async () => {
     try {

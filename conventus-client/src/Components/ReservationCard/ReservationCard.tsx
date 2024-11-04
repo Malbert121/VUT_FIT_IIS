@@ -1,15 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Reservation } from "../../data";
-import { pathConferences } from "../../Routes/Routes";
 
 interface Props {
     reservation: Reservation,
     onSelect: ()=>void,
-    isSelected: boolean
+    isSelected: boolean,
+    pathToDetails: string
 };
 
-const ReservationCard: React.FC<Props> = ({reservation, onSelect, isSelected}) =>{
+const ReservationCard: React.FC<Props> = ({reservation, onSelect, isSelected, pathToDetails}) =>{
     const [statusText, statusColor] = !reservation.IsPaid 
     ? ['Unpaid', 'red'] 
     : reservation.IsConfirmed 
@@ -21,7 +21,7 @@ const ReservationCard: React.FC<Props> = ({reservation, onSelect, isSelected}) =
         
     <div className={`border rounded-lg shadow-lg p-4 w-full max-w-md bg-${color}`}>
         <div className="flex flex-row items-center justify-between">
-            <Link to={`../${pathConferences}/${reservation.Id}`} className="text-black hover:text-blue-600">
+            <Link to={`../${pathToDetails}/${reservation.Id}`} className="text-black hover:text-blue-600">
                 <h2 className="flex text-2xl font-semibold">{`${reservation.Conference.Name}`}</h2>
             </Link>
             <button

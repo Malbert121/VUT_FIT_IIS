@@ -4,21 +4,22 @@ import ConferencesPage from "../Pages/ConferencesPage/ConferencesPage";
 import ConferenceDetailPage from "../Pages/ConferenceDetailPage/ConferenceDetailPage"; // Import your detail page
 import LecturesPage from "../Pages/LecturesPage/LecturesPage";
 import AccountPage from "../Pages/AccountPage/AccountPage";
-import ReservationsPage from "../Pages/ReservationsPage/ReservationsPage";
+import ReservationsPage from "../Pages/AvailableReservationPage/AvailableReservationPage";
 import MainPage from "../Pages/MainPage/MainPage";
 import AdminPanelPage from "../Pages/AdminPanelPage/AdminPanelPage";
 import PageContainer from "../Components/PageContainer/PageContainer";
-import OwnerReservationsPage from "../Pages/OwnerReservationsPage/OwnerReservationsPage";
 import UnpaidReservationsPage from "../Pages/UnpaidReservationsPage/UnpaidReservationsPage";
 import ReservationDetailPage from "../Pages/ReservationDetailPage/ReservationDetailPage";
+import GuestReservationsPage from "../Pages/GuestReservationsPage/GuestReservationsPage";
 
 export const pathConferences = "/conferences";
 export const pathLectures = "/lectures";
-export const pathReservations = "/reservations";
+//export const pathReservations = "/reservations";
 export const pathAdmin = "/admin";
 export const pathAccount = "/account";
-export const pathUnpaidReservations = `${pathReservations}/unpaids`
-export const pathOwnerReservations = `${pathReservations}/owner`
+export const pathAvailableReservations = "/available"
+export const pathUnpaidReservations = "/unpaidsReservations"
+export const pathGuestReservations = "/guestReservations"
 
 export const router = createBrowserRouter([
     {
@@ -42,7 +43,7 @@ export const router = createBrowserRouter([
                 element: <PageContainer WrapperPage={LecturesPage} sideBarFlag={true}/>
             },
             {
-                path: pathReservations,  // TODO: add usersId
+                path: pathAvailableReservations,  // TODO: add usersId
                 element: <PageContainer WrapperPage={ReservationsPage} sideBarFlag={true}/>
             },
             {
@@ -50,11 +51,19 @@ export const router = createBrowserRouter([
                 element: <PageContainer WrapperPage={UnpaidReservationsPage} sideBarFlag={true}/>,
             },
             {
-                path: pathOwnerReservations,  // TODO: add usersId
-                element: <PageContainer WrapperPage={OwnerReservationsPage} sideBarFlag={true}/>,
+                path: pathGuestReservations,  // TODO: add usersId
+                element: <PageContainer WrapperPage={GuestReservationsPage} sideBarFlag={true}/>,
             },
             {
-                path: `${pathReservations}/:reservationId`,  // TODO: add usersId
+                path: `${pathAvailableReservations}/:reservationId`,  // TODO: add usersId
+                element: <PageContainer WrapperPage={ReservationDetailPage} sideBarFlag={true}/>,
+            },
+            {
+                path: `${pathGuestReservations}/:reservationId`,  // TODO: add usersId
+                element: <PageContainer WrapperPage={ReservationDetailPage} sideBarFlag={true}/>,
+            },
+            {
+                path: `${pathUnpaidReservations}/:reservationId`,  // TODO: add usersId
                 element: <PageContainer WrapperPage={ReservationDetailPage} sideBarFlag={true}/>,
             },
             {

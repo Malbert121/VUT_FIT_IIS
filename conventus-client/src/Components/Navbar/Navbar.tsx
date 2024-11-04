@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from './conventus-favicon-color1.png';
 
-import { pathConferences, pathAccount, pathLectures, pathAdmin, pathReservations } from '../../Routes/Routes';
+import { pathConferences, pathAccount, pathLectures, pathAdmin, pathAvailableReservations } from '../../Routes/Routes';
 
 interface Props {
   updateSideBar: ()=> void;
@@ -21,7 +21,7 @@ const Navbar: React.FC<Props> = ({updateSideBar}) => {
             <Link to={`../${pathConferences}`} className="text-black hover:text-darkBlue">
               Conferences
             </Link>
-            <Link to={`../${pathReservations}`} className="text-black hover:text-darkBlue">
+            <Link to={`../${pathAvailableReservations}`} className="text-black hover:text-darkBlue">
               Reservations
             </Link>
             <Link to={`../${pathLectures}`} className="text-black hover:text-darkBlue">

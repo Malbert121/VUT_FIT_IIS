@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react';
 import ReservationCard from '../../Components/ReservationCard/ReservationCard';
 import { Reservation } from '../../data';
 import { getAllReservations } from '../../api';
+import { pathAvailableReservations } from '../../Routes/Routes';
 
-const OwnerReservationsPage: React.FC = () => {
+const AvailableReservationPage: React.FC = () => {
   const [reservations, setReservation] = useState<Reservation[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -55,24 +56,22 @@ const OwnerReservationsPage: React.FC = () => {
     
     <div className="flex flex-row items-center justify-between mb-4">
       <div className="flex flex-row space-x-2">
-        <button className="bg-green-500 text-white w-32 py-2 px-4 rounded hover:bg-green-600 transition-colors duration-150">
-            Confirm
-        </button>
         <button className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
-            Unconfirm
+          Cancel
         </button>
       </div>
-  </div>
+    </div>
     
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     {reservations.map((reservation) => (
       <ReservationCard 
         reservation={reservation}
         onSelect={() => handleSelectReservation(reservation.Id, reservation.Ammount)}
-        isSelected={selectedReservations.includes(reservation.Id)}/>
+        isSelected={selectedReservations.includes(reservation.Id)}
+        pathToDetails={`${pathAvailableReservations}`}/>
     ))}
   </div>
 </div>
   );
 };
-export default OwnerReservationsPage;
+export default AvailableReservationPage;

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import ReservationCard from '../../Components/ReservationCard/ReservationCard';
 import { Reservation } from '../../data';
 import { getAllReservations } from '../../api';
+import { pathUnpaidReservations } from '../../Routes/Routes';
 
 const UnpaidReservationsPage: React.FC = () => {
   const [reservations, setReservation] = useState<Reservation[]>([]);
@@ -54,7 +55,7 @@ const UnpaidReservationsPage: React.FC = () => {
 
   return (
     <div className="container mx-auto p-6">
-    <h1 className="flex text-2xl justify-center font-bold mb-10">Available Reservations</h1>
+    <h1 className="flex text-2xl justify-center font-bold mb-10">Unpaid Reservations</h1>
     <div className="flex flex-row items-center justify-between mb-4">
     <strong className="text-xl font-semibold mr-4">Total amount: {totalAmount} $</strong>
     <div className="flex flex-row space-x-2">
@@ -72,7 +73,8 @@ const UnpaidReservationsPage: React.FC = () => {
       <ReservationCard 
         reservation={reservation}
         onSelect={() => handleSelectReservation(reservation.Id, reservation.Ammount)}
-        isSelected={selectedReservations.includes(reservation.Id)}/>
+        isSelected={selectedReservations.includes(reservation.Id)}
+        pathToDetails={`${pathUnpaidReservations}`}/>
     ))}
   </div>
 </div>
