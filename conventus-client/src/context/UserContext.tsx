@@ -1,26 +1,18 @@
-// context/UserContext.tsx
-import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
-import { jwtDecode } from "jwt-decode";
 
+import React, { createContext, useState, useEffect, useContext,ReactNode } from 'react';
+import jwt_decode, { jwtDecode } from 'jwt-decode';
+
+// Интерфейс для пользователя
 interface User {
+    id: string;
     username: string;
     email: string;
-    userId: string;
+    role: string;
+    emailts: number;
 }
 
-interface UserContextType {
-    user: User | null;
-    login: (token: string) => void;
-    logout: () => void;
-}
+const UserContext = createContext<User | null>(null);
 
-const UserContext = createContext<UserContextType | undefined>(undefined);
-
-export const useUserContext = () => {
-    const context = useContext(UserContext);
-    if (!context) throw new Error("useUserContext must be used within a UserProvider");
-    return context;
-};
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
@@ -28,26 +20,32 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            const decodedUser = jwtDecode<User>(token);
-            console.log(decodedUser)
-            setUser(decodedUser);
+            try {
+                const decodedToken: any = jwtDecode(token);
+                const userFromToken = {
+                    id: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"],
+                    username: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+                    email: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"],
+                    role: decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
+                    emailts: decodedToken["exp"], 
+                };
+                console.log(decodedToken)
+                console.log(userFromToken)
+                setUser(userFromToken); 
+            } catch (error) {
+                console.error("Ошибка при декодировании токена:", error);
+            }
         }
     }, []);
 
-    const login = (token: string) => {
-        localStorage.setItem('token', token);
-        const decodedUser = jwtDecode<User>(token);
-        setUser(decodedUser);
-    };
-
-    const logout = () => {
-        localStorage.removeItem('token');
-        setUser(null);
-    };
-
     return (
-        <UserContext.Provider value={{ user, login, logout }}>
+        <UserContext.Provider value={user}>
             {children}
         </UserContext.Provider>
     );
+};
+
+
+export const useUser = () => {
+    return useContext(UserContext);
 };

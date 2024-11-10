@@ -30,7 +30,7 @@ public class AuthController : ControllerBase
         if (_context.Users.Any(u => u.Email == request.Email))
             return BadRequest(new { message = "Username is already taken" });
 
-        var user = new User { Email = request.Email, UserName = request.Username, PasswordHash = request.Password.GetHashCode().ToString() };
+        var user = new User { Email = request.Email, UserName = request.Username, PasswordHash = request.Password.GetHashCode().ToString(),Role = Models.Enums.Role.User };
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
@@ -55,6 +55,7 @@ public class AuthController : ControllerBase
         {
             new Claim(ClaimTypes.Name, user.UserName),
             new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Role, user.Role.ToString()),
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
         };
 
