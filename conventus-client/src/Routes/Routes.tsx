@@ -14,12 +14,12 @@ import GuestReservationsPage from "../Pages/GuestReservationsPage/GuestReservati
 
 export const pathConferences = "/conferences";
 export const pathLectures = "/lectures";
-//export const pathReservations = "/reservations";
+export const pathReservations = "/reservations";
 export const pathAdmin = "/admin";
 export const pathAccount = "/account";
-export const pathAvailableReservations = "/available"
-export const pathUnpaidReservations = "/unpaidsReservations"
-export const pathGuestReservations = "/guestReservations"
+export const pathAvailableReservations = pathReservations
+export const pathUnpaidReservations = `${pathReservations}/unpaids_reservations`
+export const pathGuestReservations = `${pathReservations}/guest_reservations`
 
 export const router = createBrowserRouter([
     {

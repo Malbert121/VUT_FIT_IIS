@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import ReservationCard from '../../Components/ReservationCard/ReservationCard';
 import { Reservation } from '../../data';
-import { getAllReservations } from '../../api';
+import { getUnpaidReservations } from '../../api';
 import { pathUnpaidReservations } from '../../Routes/Routes';
 
 const UnpaidReservationsPage: React.FC = () => {
@@ -15,7 +15,7 @@ const UnpaidReservationsPage: React.FC = () => {
   useEffect(()=>{
     const fetchAllReservations = async () =>{
       try{
-        const data = await getAllReservations();
+        const data = await getUnpaidReservations();
         console.log("Resrevations data: ", data);
         setReservation(data);
       }

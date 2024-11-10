@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Reservation } from '../../data';
-import { pathConferences, pathAvailableReservations, pathUnpaidReservations, pathGuestReservations } from '../../Routes/Routes';
+import { pathConferences, pathUnpaidReservations, pathGuestReservations } from '../../Routes/Routes';
 
 
 interface Props{
@@ -32,7 +32,37 @@ const ReservationDetailCard: React.FC<Props> = ({reservation}) =>
                 <p className='mb-5 mt-5'><strong>Tickets: </strong>{reservation.NumberOfTickets}</p>
             </div> 
             <div className="flex flex-row space-x-2">
-                {location.pathname.startsWith(`${pathAvailableReservations}`) && (
+
+                {location.pathname.startsWith(pathGuestReservations) ? (
+                    <>
+                        <button className="bg-green-500 text-white w-32 py-2 px-4 rounded hover:bg-green-600 transition-colors duration-150">
+                            Confirm
+                        </button>
+                        <button className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
+                            Unconfirm
+                        </button>
+                    </>
+                ) : location.pathname.startsWith(pathUnpaidReservations) ? (
+                    <>
+                        <button className="bg-green-500 text-white w-32 py-2 px-4 rounded hover:bg-green-600 transition-colors duration-150">
+                            Paid
+                        </button>
+                        <button className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
+                            Cancel
+                        </button>
+                    </>
+                ) : (
+                    <button className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
+                        Cancel
+                    </button>
+                )}
+
+            </div>
+        </div>
+    );
+}
+export default ReservationDetailCard;
+/*{location.pathname.startsWith(`${pathAvailableReservations}`) && (
                     <>
                         <button className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
                             Cancele
@@ -58,9 +88,4 @@ const ReservationDetailCard: React.FC<Props> = ({reservation}) =>
                             Unconfirm
                         </button>
                     </>)
-                }
-            </div>
-        </div>
-    );
-}
-export default ReservationDetailCard;
+                }*/

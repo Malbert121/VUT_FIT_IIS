@@ -62,6 +62,38 @@ export const getAllReservations = async ():Promise<Reservation[]> => {
     }
 };
 
+export const getAvailabelReservations = async ():Promise<Reservation[]> => {
+    try {
+        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations/available`);
+        return response.data; // Assuming the API returns an array of reservations
+    } catch (error) {
+        handleAxiosError(error);
+        return [];
+    }
+};
+
+
+export const getUnpaidReservations = async ():Promise<Reservation[]> => {
+    try {
+        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations/unpaid`);
+        return response.data; // Assuming the API returns an array of reservations
+    } catch (error) {
+        handleAxiosError(error);
+        return [];
+    }
+};
+
+
+export const getGuestReservations = async ():Promise<Reservation[]> => {
+    try {
+        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations/guest`);
+        return response.data; // Assuming the API returns an array of reservations
+    } catch (error) {
+        handleAxiosError(error);
+        return [];
+    }
+};
+
 export const getReservation = async (id:Number): Promise<Reservation | null> => {
     try
     {

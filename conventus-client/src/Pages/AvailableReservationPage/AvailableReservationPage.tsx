@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import ReservationCard from '../../Components/ReservationCard/ReservationCard';
 import { Reservation } from '../../data';
-import { getAllReservations } from '../../api';
+import { getAvailabelReservations } from '../../api';
 import { pathAvailableReservations } from '../../Routes/Routes';
 
 const AvailableReservationPage: React.FC = () => {
@@ -14,7 +14,7 @@ const AvailableReservationPage: React.FC = () => {
   useEffect(()=>{
     const fetchAllReservations = async () =>{
       try{
-        const data = await getAllReservations();
+        const data = await getAvailabelReservations();
         console.log("Resrevations data: ", data);
         setReservation(data);
       }

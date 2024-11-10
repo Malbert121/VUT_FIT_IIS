@@ -14,5 +14,11 @@ namespace Conventus.DAL.Repositories
         internal ReservationRepo(DbContextOptions<ConventusDbContext> options) : base(options)
         {
         }
+        public virtual IEnumerable<Reservation> GetGuestReservations()
+            => Table;
+        public virtual IEnumerable<Reservation> GetReservationsByPaid(bool flag)
+            => Table.Where(r => r.IsPaid==flag);
+        public IEnumerable<Reservation> GetReservationsByСonfirm(bool flag)
+            => Table.Where(r=>r.IsConfirmed==flag);
     }
 }
