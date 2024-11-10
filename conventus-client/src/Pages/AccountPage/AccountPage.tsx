@@ -1,92 +1,68 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getUser } from '../../api'; // Adjust the import based on your structure
-import { User } from '../../data';
+import { useNavigate } from 'react-router-dom';
+import jwt_decode, { jwtDecode } from 'jwt-decode';
+import { User } from '../../data'; // Assuming you have this User type
 
 const AccountPage: React.FC = () => {
-    const { userId } = useParams<{ userId: string }>(); // Get userId from the route
-    const [user, setUser] = useState<User>(); // Use User interface from api
-    const [loading, setLoading] = useState<boolean>(true); // Loading state
-    const [error, setError] = useState<string | null>(null); // Error state
+    const navigate = useNavigate();
+    const [user, setUser] = useState<User | null>(null);  // User state
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchUserData = async () => {
-            if (!userId) {
-                setError('No userId provided');
-                setLoading(false);
-                return;
-            }
+        const token = localStorage.getItem('token');
 
-            console.log("Fetching user data for userId:", userId);
+        if (!token) {
+            navigate('/login'); // If no token, redirect to login
+            return;
+        }
 
-            try {
-              const data = await getUser(userId);
-              console.log("API response:", data);
-          
-              if (data) {
-                  if (data) {
-                      setUser(data); // Set user data
-                      console.log("User data set:", data);
-                  } else {
-                      console.warn("No user data found in response.");
-                  }
-              } else {
-                  console.warn("No data returned from API.");
-              }
-          } catch (error) {
-              console.error("Error fetching user data:", error);
-          
-          
-            } finally {
-                setLoading(false);
-            }
-        };
+        try {
+            // Decode the JWT token
+            const decodedToken: any = jwtDecode(token); // You can cast it to any because the token structure can vary
+            
+            // Extract the necessary claims
+            const userName = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+            const email = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"];
+            const userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+            const role = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role"]; // Example for role
+            // Set the decoded user data into the state
+            setUser({
+                Id: userId || '',
+                UserName: userName || '',
+                Email: email || '',
+                Role : role || 0,
+            });
 
-        fetchUserData();
-    }, [userId]);
+        } catch (error) {
+            setError('Invalid or expired token.');
+            setLoading(false);
+            return;
+        }
 
-    const handleLogout = () => {
-        // Implement your logout logic here (e.g., clearing tokens, redirecting, etc.)
-        console.log('User logged out');
-        // Example: clear token and redirect
-        // localStorage.removeItem('token');
-        // window.location.href = '/login';
-    };
+        setLoading(false);
+    }, [navigate]);
 
-    if (loading) {
-        return <div>Loading user data...</div>; // Optional loading state
-    }
+    if (loading) return <div>Loading...</div>;
 
-    if (error) {
-        return <div>Error: {error}</div>; // Display error message
-    }
+    if (error) return <div>{error}</div>;
 
-    if (!user) {
-        return <div>User not found.</div>; // Handle user not found
-    }
+    if (!user) return <div>User not found</div>;
 
     return (
         <div className="container mx-auto p-6">
             <h1 className="text-2xl font-bold mb-4">Account Settings</h1>
             <div className="bg-white p-4 rounded shadow-md">
                 <h2 className="text-xl font-semibold mb-2">User Information</h2>
-                <p>
-                    <strong>Name:</strong> {user.UserName || 'N/A'}
-                </p>
-                <p>
-                    <strong>Email:</strong> {user.Email || 'N/A'}
-                </p>
-                {/* Avoid showing PasswordHash for security reasons */}
-                {/* {user.PasswordHash && (
-                    <p>
-                        <strong>Password Hash:</strong> {user.PasswordHash}
-                    </p>
-                )} */}
+                <p><strong>Name:</strong> {user.UserName}</p>
+                <p><strong>Email:</strong> {user.Email}</p>
             </div>
             <div className="mt-6">
-                <h2 className="text-xl font-semibold mb-2">Account Actions</h2>
                 <button
-                    onClick={handleLogout}
+                    onClick={() => {
+                        localStorage.removeItem('token');
+                        navigate('/login');
+                    }}
                     className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                 >
                     Logout

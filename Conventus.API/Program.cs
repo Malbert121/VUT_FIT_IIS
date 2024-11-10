@@ -2,7 +2,10 @@ using Conventus.DAL.EfStructures;
 using Conventus.DAL.Initialization;
 using Conventus.DAL.Repositories;
 using Conventus.DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 
 namespace Conventus.API
@@ -27,7 +30,20 @@ namespace Conventus.API
             builder.Services.AddScoped<IRoomRepo, RoomRepo>();
             builder.Services.AddScoped<IReservationRepo, ReservationRepo>();
             builder.Services.AddScoped<IPresentationRepo, PresentationRepo>();
-
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+       .AddJwtBearer(options =>
+       {
+           options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+           {
+               ValidateIssuer = true,
+               ValidateAudience = true,
+               ValidateLifetime = true,
+               ValidateIssuerSigningKey = true,
+               ValidIssuer = configuration["Jwt:Issuer"],
+               ValidAudience = configuration["Jwt:Audience"],
+               IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+           };
+       });
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());

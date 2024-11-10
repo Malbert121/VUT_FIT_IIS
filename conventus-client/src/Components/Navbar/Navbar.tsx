@@ -30,7 +30,7 @@ const Navbar: React.FC<Props> = ({updateSideBar}) => {
           </div>
         </div>
         <div className="hidden lg:flex items-center space-x-6 text-back">
-          <Link to="../account/1"> {/* Wrapped the Account button in a Link */}
+          <Link to="../account/"> {/* Wrapped the Account button in a Link */}
             <a
               className="px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70"
             >

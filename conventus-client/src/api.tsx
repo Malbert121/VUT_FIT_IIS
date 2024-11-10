@@ -1,15 +1,25 @@
 import axios from 'axios';
 import { User, Conference, Presentation, Reservation, Room } from './data'; // Adjust the import path
 
-// Fetch a single user by ID
-export const getUser = async (userId: string) => {
+
+// Function to fetch user data with token in headers
+export const getUser = async (userId: number): Promise<User> => {
+    const token = localStorage.getItem('token');
+    
+    if (!token) throw new Error('No token found');
+
     try {
-        const response = await axios.get<User>(`https://localhost:7156/api/Users/${userId}`);
+        const response = await axios.get<User>(`https://localhost:7156/api/User/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error) {
-        handleAxiosError(error);
+        throw new Error('Failed to fetch user data');
     }
 };
+
 
 // Fetch all users
 export const getAllUsers = async () => {
