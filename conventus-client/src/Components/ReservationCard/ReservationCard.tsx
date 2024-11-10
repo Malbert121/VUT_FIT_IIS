@@ -31,8 +31,11 @@ const ReservationCard: React.FC<Props> = ({reservation, onSelect, isSelected, pa
             </button>
         </div>
         <strong className={`flex text-lg mt-3 mb-3`} style={{ color: statusColor }}>{statusText}</strong>
-        <p className="text-md mt-2">Amount: {reservation.Ammount} $</p>
-        <p className="text-md mt-2 mb-3">Tickets: {reservation.NumberOfTickets}</p>
+        <p className='mt-2'><strong>Location: </strong> {reservation.Conference.Location}</p>
+        <p className='mt-2'><strong>Start Date :</strong> {reservation.Conference.StartDate}</p>
+        <p className='mt-2'><strong>End Date: </strong> {reservation.Conference.EndDate}</p>
+        <p className='mb-5 mt-5'><strong>Ammount: </strong>{reservation.Ammount} $</p>
+        <p className='mb-5 mt-5'><strong>Tickets: </strong>{reservation.NumberOfTickets}</p>
     </div>
     );
 };

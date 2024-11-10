@@ -62,30 +62,3 @@ const ReservationDetailCard: React.FC<Props> = ({reservation}) =>
     );
 }
 export default ReservationDetailCard;
-/*{location.pathname.startsWith(`${pathAvailableReservations}`) && (
-                    <>
-                        <button className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
-                            Cancele
-                        </button>
-                    </>)
-                }
-                {location.pathname.startsWith(pathUnpaidReservations) && (
-                    <>
-                        <button className="bg-green-500 text-white w-32 py-2 px-4 rounded hover:bg-green-600 transition-colors duration-150">
-                            Paid
-                        </button>
-                        <button className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
-                            Cancele
-                        </button>
-                    </>)
-                }
-                {location.pathname.startsWith(pathGuestReservations) && (
-                    <>
-                        <button className="bg-green-500 text-white w-32 py-2 px-4 rounded hover:bg-green-600 transition-colors duration-150">
-                            Confirm
-                        </button>
-                        <button className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
-                            Unconfirm
-                        </button>
-                    </>)
-                }*/
