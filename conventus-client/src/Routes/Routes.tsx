@@ -23,6 +23,8 @@ export const pathLogin = "/login";
 export const pathRegistration = "/registration";
 export const pathUnpaidTickets = `${pathTickets}/unpaids`
 export const pathOwnerTickets = `${pathTickets}/owner`
+export const pathAdminConferenceDetail = `${pathAdmin}/Conferences`
+
 
 export const router = createBrowserRouter([
     {
@@ -66,8 +68,12 @@ export const router = createBrowserRouter([
                 ),
             },
             {
-                path: pathAdmin,
+                path: `${pathAdmin}/:showShow`,
                 element: <PageContainer WrapperPage={AdminPanelPage} sideBarFlag={true} />,
+            },
+            {
+                path: `${pathAdminConferenceDetail}/:id`,
+                element: <PageContainer WrapperPage={ConferenceDetailPage} sideBarFlag={true} />,
             },
             {
                 path: pathLogin,

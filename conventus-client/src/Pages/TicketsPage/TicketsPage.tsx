@@ -2,7 +2,7 @@ import React from 'react';
 import SideBar from '../../Components/SideBar/SideBar';
 
 // Sample ticket data type
-interface Ticket {
+export interface Ticket {
   id: number;
   name: string;
   price: number;
@@ -10,10 +10,13 @@ interface Ticket {
 }
 
 // Sample data (replace this with actual data fetching logic)
-const sampleTickets: Ticket[] = [
+export var sampleTickets: Ticket[] = [
   { id: 1, name: 'VIP Ticket', price: 100, available: true },
   { id: 2, name: 'Regular Ticket', price: 50, available: true },
-  { id: 3, name: 'Student Ticket', price: 30, available: false },
+    { id: 3, name: 'Student Ticket', price: 30, available: false },
+    { id: 4, name: 'VIP Ticket', price: 100, available: true },
+    { id: 5, name: 'Regular Ticket', price: 50, available: true },
+    { id: 6, name: 'Student Ticket', price: 30, available: false },
 ];
 
 const TicketsPage: React.FC = () => {

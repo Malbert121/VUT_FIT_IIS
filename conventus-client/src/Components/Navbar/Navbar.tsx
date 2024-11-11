@@ -30,7 +30,7 @@ const Navbar: React.FC<Props> = ({ updateSideBar }) => {
               Lectures
             </Link>
             {user && user.role === 'Admin' && (
-              <Link to="../admin" className="text-black hover:text-darkBlue">
+              <Link to="../admin/none" className="text-black hover:text-darkBlue">
                 Admin
               </Link>
             )}

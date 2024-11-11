@@ -22,12 +22,13 @@ export const getUser = async (userId: number): Promise<User> => {
 
 
 // Fetch all users
-export const getAllUsers = async () => {
+export const getAllUsers = async (): Promise<User[]> => {
     try {
         const response = await axios.get<User[]>(`https://localhost:7156/api/Users`);
         return response.data; // Assuming the API returns an array of users
     } catch (error) {
-        handleAxiosError(error);
+        console.error("Error fetching users:", error);
+        return []; // Return an empty array in case of an error
     }
 };
 
@@ -77,7 +78,8 @@ export const getAllRooms = async () => {
         const response = await axios.get<Room[]>(`https://localhost:7156/api/Rooms`);
         return response.data; // Assuming the API returns an array of rooms
     } catch (error) {
-        handleAxiosError(error);
+        console.error("Error fetching rooms:", error);
+        return []; // Return an empty array in case of an error
     }
 };
 
@@ -89,5 +91,23 @@ const handleAxiosError = (error: unknown) => {
     } else {
         console.log("Unexpected error:", error);
         throw new Error("Unexpected Error");
+    }
+};
+
+export const deleteEntity = async(id: number, model: string) => {
+    try {
+        await axios.delete(`https://localhost:7156/api/${model}/${id}`);
+    } catch (error) {
+        console.error("Error fetching rooms:", error);
+    }
+};
+
+export const getDetailEdit = async (id: number, model: string) => {
+    try {
+        const response = await axios.get(`https://localhost:7156/api/${model}/${id}`);
+        return response.data; // Assuming the API returns an array of rooms
+    } catch (error) {
+        console.error("Error fetching rooms:", error);
+        return null; // Return an empty array in case of an error
     }
 };

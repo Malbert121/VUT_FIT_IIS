@@ -84,7 +84,36 @@ const SideBar2:React.FC<Props> = () =>
                 )}
                 {location.pathname.startsWith(pathAdmin) && (
                   <>
-                    <h1>Hello admin</h1>
+                    <Link
+                      to={`${pathAdmin}/Conferences`}
+                      className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
+                    >
+                      <h6 className="ml-3">Conferences</h6>
+                    </Link>
+                    <Link
+                      to={`${pathAdmin}/Tickets`}
+                      className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
+                    >
+                      <h6 className="ml-3">Tickets</h6>
+                    </Link>
+                    <Link
+                      to={`${pathAdmin}/Presentations`}
+                      className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
+                    >
+                      <h6 className="ml-3">Lectures</h6>
+                    </Link>
+                    <Link
+                      to={`${pathAdmin}/Users`}
+                      className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
+                    >
+                      <h6 className="ml-3">Users</h6>
+                   </Link>
+                     <Link
+                      to={`${pathAdmin}/Rooms`}
+                      className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
+                    >
+                      <h6 className="ml-3">Rooms</h6>
+                    </Link>
                   </>
                 )}
               </>
