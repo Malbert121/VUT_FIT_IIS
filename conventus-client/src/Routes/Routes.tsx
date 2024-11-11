@@ -67,7 +67,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: pathAdmin,
-                element: <PageContainer WrapperPage={AdminPanelPage} sideBarFlag={false} />,
+                element: <PageContainer WrapperPage={AdminPanelPage} sideBarFlag={true} />,
             },
             {
                 path: pathLogin,

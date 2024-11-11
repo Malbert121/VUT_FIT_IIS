@@ -82,6 +82,11 @@ const SideBar2:React.FC<Props> = () =>
                     </Link>
                   </>
                 )}
+                {location.pathname.startsWith(pathAdmin) && (
+                  <>
+                    <h1>Hello admin</h1>
+                  </>
+                )}
               </>
             )}
           </div>
