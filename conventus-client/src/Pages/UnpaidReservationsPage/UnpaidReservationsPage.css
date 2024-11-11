@@ -1,0 +1,25 @@
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: px;
+    max-width: 1000px;
+    margin: 30px auto 40px;
+    padding: 15px 10px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #edf2f7;
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.filters input[type="text"],
+.filters select,
+.filters input[type="date"] {
+    padding: 10px;
+    border: 1px solid #a0aec0;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    width: 180px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}

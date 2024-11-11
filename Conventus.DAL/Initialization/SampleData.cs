@@ -190,33 +190,92 @@ namespace Conventus.DAL.Initialization
             new Reservation
             {
                 Id = 1,
+                UserId = 1, // Linking to the second user
+                ConferenceId = 1, // Linking to the first conference
+                IsConfirmed = true,
+                IsPaid = true,
+                NumberOfTickets = 2,
+                Ammount = 100.0,
+                ReservationDate = DateTime.Now,
+            },
+            new Reservation
+            {
+                Id = 2,
+                UserId = 1, // Linking to the second user
+                ConferenceId = 2, // Linking to the first conference
+                IsConfirmed = false,
+                IsPaid = true,
+                NumberOfTickets = 2,
+                Ammount = 100.0,
+                ReservationDate = DateTime.Now,
+            },
+            new Reservation
+            {
+                Id = 3,
+                UserId = 1, // Linking to the second user
+                ConferenceId = 1, // Linking to the first conference
+                IsConfirmed = false,
+                IsPaid = false,
+                NumberOfTickets = 2,
+                Ammount = 100.0,
+                ReservationDate = DateTime.Now,
+            },
+            new Reservation
+            {
+                Id = 4,
+                UserId = 1, // Linking to the second user
+                ConferenceId = 2, // Linking to the first conference
+                IsConfirmed = false,
+                IsPaid = false,
+                NumberOfTickets = 2,
+                Ammount = 100.0,
+                ReservationDate = DateTime.Now,
+            },
+            // RESERVATIONS FOR USER 2
+            new Reservation
+            {
+                Id = 5,
                 UserId = 2, // Linking to the second user
                 ConferenceId = 1, // Linking to the first conference
                 IsConfirmed = true,
                 IsPaid = true,
                 NumberOfTickets = 2,
-                ReservationDate = DateTime.Now
+                Ammount = 100.0,
+                ReservationDate = DateTime.Now,
             },
             new Reservation
             {
-                Id = 2,
-                UserId = 3, // Linking to the third user
-                ConferenceId = 2, // Linking to the second conference
+                Id = 6,
+                UserId = 2, // Linking to the second user
+                ConferenceId = 3, // Linking to the first conference
+                IsConfirmed = false,
+                IsPaid = true,
+                NumberOfTickets = 2,
+                Ammount = 100.0,
+                ReservationDate = DateTime.Now,
+            },
+            new Reservation
+            {
+                Id = 7,
+                UserId = 2, // Linking to the second user
+                ConferenceId = 3, // Linking to the first conference
                 IsConfirmed = false,
                 IsPaid = false,
-                NumberOfTickets = 1,
-                ReservationDate = DateTime.Now.AddDays(-1) // 1 day ago
+                NumberOfTickets = 2,
+                Ammount = 100.0,
+                ReservationDate = DateTime.Now,
             },
             new Reservation
             {
-                Id = 3,
-                UserId = 1, // Linking to the first user
-                ConferenceId = 3, // Linking to the third conference
-                IsConfirmed = true,
+                Id = 8,
+                UserId = 2, // Linking to the second user
+                ConferenceId = 3, // Linking to the first conference
+                IsConfirmed = false,
                 IsPaid = false,
-                NumberOfTickets = 3,
-                ReservationDate = DateTime.Now.AddDays(-2) // 2 days ago
-            }
+                NumberOfTickets = 2,
+                Ammount = 100.0,
+                ReservationDate = DateTime.Now,
+            },
         };
     }
 }

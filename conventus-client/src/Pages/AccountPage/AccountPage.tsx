@@ -1,68 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getUser } from '../../api'; // Adjust the import based on your structure
-import { User } from '../../data';
+import React from 'react';
+import { useUser } from '../../context/UserContext'; // Import the hook to get user data
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirecting
 
 const AccountPage: React.FC = () => {
-    const { userId } = useParams<{ userId: string }>(); // Get userId from the route
-    const [user, setUser] = useState<User>(); // Use User interface from api
-    const [loading, setLoading] = useState<boolean>(true); // Loading state
-    const [error, setError] = useState<string | null>(null); // Error state
-
-    useEffect(() => {
-        const fetchUserData = async () => {
-            if (!userId) {
-                setError('No userId provided');
-                setLoading(false);
-                return;
-            }
-
-            console.log("Fetching user data for userId:", userId);
-
-            try {
-              const data = await getUser(userId);
-              console.log("API response:", data);
-          
-              if (data) {
-                  if (data) {
-                      setUser(data); // Set user data
-                      console.log("User data set:", data);
-                  } else {
-                      console.warn("No user data found in response.");
-                  }
-              } else {
-                  console.warn("No data returned from API.");
-              }
-          } catch (error) {
-              console.error("Error fetching user data:", error);
-          
-          
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchUserData();
-    }, [userId]);
-
+    const user = useUser(); // Get the user data
+    const navigate = useNavigate(); // Hook to navigate between pages
+    console.log(user)
     const handleLogout = () => {
-        // Implement your logout logic here (e.g., clearing tokens, redirecting, etc.)
-        console.log('User logged out');
-        // Example: clear token and redirect
-        // localStorage.removeItem('token');
-        // window.location.href = '/login';
+        // Logic to log out the user (e.g., clearing the token)
+        localStorage.removeItem('token');
+        navigate('/login'); // Redirect to login page
     };
 
-    if (loading) {
-        return <div>Loading user data...</div>; // Optional loading state
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>; // Display error message
-    }
-
     if (!user) {
-        return <div>User not found.</div>; // Handle user not found
+        return <div>User not found or not authorized.</div>;
     }
 
     return (
@@ -70,21 +21,21 @@ const AccountPage: React.FC = () => {
             <h1 className="text-2xl font-bold mb-4">Account Settings</h1>
             <div className="bg-white p-4 rounded shadow-md">
                 <h2 className="text-xl font-semibold mb-2">User Information</h2>
-                <p>
-                    <strong>Name:</strong> {user.UserName || 'N/A'}
-                </p>
-                <p>
-                    <strong>Email:</strong> {user.Email || 'N/A'}
-                </p>
-                {/* Avoid showing PasswordHash for security reasons */}
-                {/* {user.PasswordHash && (
-                    <p>
-                        <strong>Password Hash:</strong> {user.PasswordHash}
-                    </p>
-                )} */}
+                <p><strong>Username:</strong> {user.username}</p>
+                <p><strong>Email:</strong> {user.email}</p>
+                <p><strong>Role:</strong> {user.role === 'Admin' ? 'Admin' : 'User'}</p>
             </div>
+
+            {/* Conditional rendering based on user role */}
+            {user.role === 'Admin' && (
+                <div className="mt-6 bg-white p-4 rounded shadow-md">
+                    <h3 className="text-lg font-semibold mb-2">Admin Options</h3>
+                    <p>As an admin, you can manage users, view reports, and more.</p>
+                    {/* You can add admin-specific functionality here */}
+                </div>
+            )}
+
             <div className="mt-6">
-                <h2 className="text-xl font-semibold mb-2">Account Actions</h2>
                 <button
                     onClick={handleLogout}
                     className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
