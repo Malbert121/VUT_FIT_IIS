@@ -62,19 +62,75 @@
     color: #cbd5e0; /* Light gray color */
 }
 
-/* Container styling for the search bar */
-.search-bar-container {
-    max-width: 800px; /* Match the max-width of .LecturesPage */
-    margin: 20px auto; /* Center align and add space below */
-    padding: 10px; /* Add padding for spacing */
-    display: flex; /* Flex to make layout adjustments easy */
-    justify-content: center; /* Center items within the container */
-    gap: 10px;
-    box-sizing: border-box; /* Include padding within width calculations */
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    max-width: 1000px;
+    margin: 30px auto 40px;
+    padding: 15px 20px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #edf2f7;
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Optional adjustments to prevent the search bar from exceeding width */
-.search-bar-container input,
-.search-bar-container button {
-    max-width: 150px; /* Optional: Adjust max-width for each field */
+.filters input[type="text"],
+.filters select,
+.filters input[type="date"] {
+    padding: 10px;
+    border: 1px solid #a0aec0;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    width: 180px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.filters input[type="text"]::placeholder {
+    color: #718096;
+}
+
+.filters select,
+.filters input[type="text"]:focus,
+.filters input[type="date"]:focus {
+    border-color: #3182ce;
+    box-shadow: 0 0 5px rgba(49, 130, 206, 0.3);
+}
+
+/* Responsive Design for Filters */
+@media (max-width: 768px) {
+    .filters {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+/* Adjustments for Smaller Screen Sizes */
+@media (max-width: 480px) {
+    .filters input[type="text"],
+    .filters select,
+    .filters input[type="date"] {
+        width: 100%;
+    }
+
+    .title {
+        font-size: 2.2rem;
+    }
+
+    .description {
+        font-size: 1.1rem;
+    }
+}
+.additional-filters {
+    margin-top: 10px; /* Adds space above the additional filters */
+}
+
+.filters {
+    margin-bottom: 20px; /* Space below the filters */
+}
+
+.toggle-filters {
+    margin-top: 10px; /* Space above the toggle button */
 }
