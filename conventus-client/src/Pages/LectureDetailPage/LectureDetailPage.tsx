@@ -51,13 +51,11 @@ const LectureDetailPage = () => {
         {/* TODO: add photos and pictures. */}
         <p><strong>Start Time:</strong> {presentation.StartTime}</p>
         <p><strong>End Time:</strong> {presentation.EndTime}</p>
-        {/* TODO: channge from ID to room name. */}
-        <p><strong>Room ID:</strong> {presentation.RoomId}</p>
+        <p><strong>Room:</strong> {presentation.Room.Name}</p>
       </div>
       <div className="speaker-info">
         <h3>Speaker Information</h3>
-        {/* TODO: channge from ID to speaker's name and email. */}
-        <p><strong>Speaker ID:</strong> {presentation.SpeakerId}</p>
+        <p><strong>Speaker:</strong> {presentation.Speaker.UserName}</p>
       </div>
     </div>
   );
