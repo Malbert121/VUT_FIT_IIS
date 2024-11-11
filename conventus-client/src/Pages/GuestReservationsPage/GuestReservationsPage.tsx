@@ -1,8 +1,8 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import ReservationCard from '../../Components/ReservationCard/ReservationCard';
-import { Reservation } from '../../data';
-import { getGuestReservations } from '../../api';
+import { Reservation, ApiMsg } from '../../data';
+import { getGuestReservations, putResirvationsToConfirm } from '../../api';
 import { pathGuestReservations } from '../../Routes/Routes';
 import './GuestReservationsPage.css'
 
@@ -22,21 +22,22 @@ const GuestReservationsPage: React.FC = () => {
   const reservationStatusList: string[] = ['Confirmed', 'Unconfirmed', 'Unpaid']
   const groupList: string[] = ['Single', 'Group']
 
+  const fetchAllReservations = async () =>{
+    try{
+      const data = await getGuestReservations();
+      console.log("Resrevations data: ", data);
+      setReservation(data);
+    }
+    catch(error){
+      setError('Failed to catch reservations.');
+      console.error(error);
+    }
+    finally{
+      setLoading(false);
+    }
+  };
+
   useEffect(()=>{
-    const fetchAllReservations = async () =>{
-      try{
-        const data = await getGuestReservations();
-        console.log("Resrevations data: ", data);
-        setReservation(data);
-      }
-      catch(error){
-        setError('Failed to catch reservations.');
-        console.error(error);
-      }
-      finally{
-        setLoading(false);
-      }
-    };
     fetchAllReservations();
   }, []);
 
@@ -93,7 +94,31 @@ const GuestReservationsPage: React.FC = () => {
             return [...prevSelected, reservationId];
         }
     });
-};
+  };
+  
+  const handleReservationsToPayment = async (flag:boolean)=>{
+    if(selectedReservations.length === 0)
+    {
+      return;
+    }
+    try
+    {
+      const response: ApiMsg = await putResirvationsToConfirm(selectedReservations, flag);
+      if(response.success)
+      {
+        setSelectedReservations([]);
+        fetchAllReservations();
+      }
+      else
+      {
+        console.log(response.msg);
+      }
+    }
+    catch(error)
+    {
+      console.error(error);
+    }
+  }
 
   if(loading)
   {
@@ -107,7 +132,7 @@ const GuestReservationsPage: React.FC = () => {
 
   return (
     <div className="container mx-auto p-6">
-    <h1 className="flex text-2xl justify-center font-bold mb-10">Guest Reservations</h1>
+    <h1 className="flex text-5xl justify-center font-bold mb-10">Guest Reservations</h1>
     
     <div className='filters'>
       <input
@@ -150,14 +175,22 @@ const GuestReservationsPage: React.FC = () => {
 
     <div className="flex flex-row items-center justify-between mb-4">
       <div className="flex flex-row space-x-2">
-        <button className="bg-green-500 text-white w-32 py-2 px-4 rounded hover:bg-green-600 transition-colors duration-150">
-            Confirm
+        <button 
+          onClick={() => { handleReservationsToPayment(true); }}
+          className="bg-green-500 text-white w-32 py-2 px-4 rounded hover:bg-green-600 transition-colors duration-150">
+          Confirm
         </button>
-        <button className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
-            Unconfirm
+        <button
+          onClick={() => { handleReservationsToPayment(false); }}
+          className="bg-yellow-500 text-white w-32 py-2 px-4 rounded hover:bg-yellow-600 transition-colors duration-150">
+          Unconfirm
         </button>
       </div>
-  </div>
+      <button
+        className="bg-red-500 text-white w-32 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
+        Delete
+      </button>
+    </div>
     
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     {reservationsFiltered.map((reservation) => (

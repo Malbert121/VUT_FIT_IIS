@@ -27,7 +27,7 @@ namespace Conventus.API.Controllers
         [HttpGet("available")]
         public ActionResult<IEnumerable<Reservation>> GetAvailableReservations()
         {
-            return Ok(((IReservationRepo)MainRepo).GetReservationsByPaid(true));
+            return Ok(((IReservationRepo)MainRepo).GetByPaid(true));
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Conventus.API.Controllers
         [HttpGet("unpaid")]
         public ActionResult<IEnumerable<Reservation>> GetUnpaidReservations()
         {
-            return Ok(((IReservationRepo)MainRepo).GetReservationsByPaid(false));
+            return Ok(((IReservationRepo)MainRepo).GetByPaid(false));
         }
 
         /// <summary>
@@ -57,7 +57,73 @@ namespace Conventus.API.Controllers
         [HttpGet("guest")]
         public ActionResult<IEnumerable<Reservation>> GetGuestReservations()
         {
-            return Ok(((IReservationRepo)MainRepo).GetGuestReservations());
+            return Ok(((IReservationRepo)MainRepo).GetByPaid(true));
         }
+
+        /// <summary>
+        /// Update status of reservation to paid
+        /// </summary>
+        /// <returns>Info string</returns>
+        /// <response code="200">Returns info string
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(200, "Successfully updated the reservations")]
+        [SwaggerResponse(400, "The request body was invalid or empty")]
+        [SwaggerResponse(404, "No reservations found to update")]
+        [SwaggerResponse(500, "Internal server error")]
+        [HttpPut("to_pay")]
+        public ActionResult<string> PutReservationsToPaid([FromBody]List<int> reservationsIds)
+        {
+            if(reservationsIds == null || !reservationsIds.Any())
+            {
+                return BadRequest("Reservations should not be empty");
+            }
+            bool ret = ((IReservationRepo)MainRepo).UpdatePay(reservationsIds, true);
+            if (ret)
+            {
+                return Ok("Ok");
+            }
+            else
+            {
+                return NotFound("Not found reservations");
+            }
+        }
+
+        /// <summary>
+        /// Update status of reservation with confirm
+        /// </summary>
+        /// <returns>All guest reservations</returns>
+        /// <response code="200">Returns info string
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(200, "Successfully updated the reservations")]
+        [SwaggerResponse(400, "The request body was invalid or empty")]
+        [SwaggerResponse(404, "No reservations found to update")]
+        [SwaggerResponse(500, "Internal server error")]
+        [HttpPut("to_confirm")]
+        public ActionResult<string> PutReservationsToPaid([FromBody] List<int> reservationsIds, [FromQuery] bool flag)
+        {
+            if (reservationsIds == null || !reservationsIds.Any())
+            {
+                return BadRequest("Reservations should not be empty");
+            }
+            bool ret = ((IReservationRepo)MainRepo).UpdateConfirm(reservationsIds, flag);
+            if (ret)
+            {
+                return Ok("Ok");
+            }
+            else
+            {
+                return NotFound("Not found reservations");
+            }
+        }
+
+
     }
 }

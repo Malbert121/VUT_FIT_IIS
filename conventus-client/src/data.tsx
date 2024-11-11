@@ -1,8 +1,15 @@
 // User.ts
+
 export enum Role {
     Admin = 0,
     User = 1,
     Guest = 2
+}
+
+
+export interface ApiMsg{
+    success: boolean;
+    msg: string | null;
 }
 
 export interface User {

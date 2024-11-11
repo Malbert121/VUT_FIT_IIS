@@ -1,8 +1,8 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import ReservationCard from '../../Components/ReservationCard/ReservationCard';
-import { Reservation } from '../../data';
-import { getUnpaidReservations } from '../../api';
+import { Reservation, ApiMsg } from '../../data';
+import { getUnpaidReservations, putResirvationsToPay } from '../../api';
 import { pathUnpaidReservations } from '../../Routes/Routes';
 import "./UnpaidReservationsPage.css"
 
@@ -13,7 +13,7 @@ const UnpaidReservationsPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [selectedReservations, setSelectedReservations] = useState<number[]>([]);
-
+  
   // filtering
   const [conferenceNameFilter, setConferenceNameFiler] = useState<string>('');
   const [dateFilter, setDateFilter] = useState<{ from: string; to: string }>({ from: '', to: '' });
@@ -21,21 +21,21 @@ const UnpaidReservationsPage: React.FC = () => {
 
   const groupList: string[] = ['Single', 'Group']
 
+  const fetchAllReservations = async () =>{
+    try{
+      const data = await getUnpaidReservations();
+      setReservation(data);
+    }
+    catch(error){
+      setError('Failed to catch reservations.');
+      console.error(error);
+    }
+    finally{
+      setLoading(false);
+    }
+  };
+
   useEffect(()=>{
-    const fetchAllReservations = async () =>{
-      try{
-        const data = await getUnpaidReservations();
-        console.log("Resrevations data: ", data);
-        setReservation(data);
-      }
-      catch(error){
-        setError('Failed to catch reservations.');
-        console.error(error);
-      }
-      finally{
-        setLoading(false);
-      }
-    };
     fetchAllReservations();
   }, []);
 
@@ -81,7 +81,32 @@ const UnpaidReservationsPage: React.FC = () => {
             return [...prevSelected, reservationId];
         }
     });
-};
+  };
+
+  const handleReservationsToPayment = async ()=>{
+    if(selectedReservations.length === 0)
+    {
+      return;
+    }
+    try
+    {
+      const response: ApiMsg = await putResirvationsToPay(selectedReservations);
+      if(response.success)
+      {
+        setSelectedReservations([]);
+        setTotalAmount(0);
+        fetchAllReservations();
+      }
+      else
+      {
+        console.log(response.msg);
+      }
+    }
+    catch(error)
+    {
+      console.error(error);
+    }
+  }
 
   if(loading)
   {
@@ -95,7 +120,7 @@ const UnpaidReservationsPage: React.FC = () => {
 
   return (
     <div className="container mx-auto p-6">
-    <h1 className="flex text-2xl justify-center font-bold mb-10">Unpaid Reservations</h1>
+    <h1 className="flex text-5xl justify-center font-bold mb-10">Unpaid Reservations</h1>
     <div className='filters'>
       <input
         type="text"
@@ -130,11 +155,13 @@ const UnpaidReservationsPage: React.FC = () => {
     <div className="flex flex-row items-center justify-between mb-4">
     <strong className="text-xl font-semibold mr-4">Total amount: {totalAmount} $</strong>
     <div className="flex flex-row space-x-2">
-        <button className="bg-green-500 text-white w-32 py-2 px-4 rounded hover:bg-green-600 transition-colors duration-150">
+        <button 
+        onClick={handleReservationsToPayment}
+        className="bg-green-500 text-white w-32 py-2 px-4 rounded hover:bg-green-600 transition-colors duration-150">
             Pay
         </button>
         <button className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
-            Cancel
+            Delete
         </button>
     </div>
 </div>
