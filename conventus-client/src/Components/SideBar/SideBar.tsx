@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {Link, useLocation} from "react-router-dom";
 import './SideBar.css'
 import MenuButton from '../MenuButton/MenuButton';
-import { pathConferences, pathLectures, pathGuestReservations, pathUnpaidReservations, pathAvailableReservations } from '../../Routes/Routes';
+import { pathConferences, pathLectures, pathGuestReservations, pathUnpaidReservations, pathAvailableReservations, pathAdmin } from '../../Routes/Routes';
 
 
 type Props = {};
@@ -96,10 +96,10 @@ const SideBar2:React.FC<Props> = () =>
                       <h6 className="ml-3">Conferences</h6>
                     </Link>
                     <Link
-                      to={`${pathAdmin}/Tickets`}
+                      to={`${pathAdmin}/Reservations`}
                       className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
                     >
-                      <h6 className="ml-3">Tickets</h6>
+                      <h6 className="ml-3">Reservations</h6>
                     </Link>
                     <Link
                       to={`${pathAdmin}/Presentations`}

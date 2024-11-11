@@ -31,23 +31,16 @@ const Navbar: React.FC<Props> = ({ updateSideBar }) => {
             <Link to={`../${pathLectures}`} className="text-black hover:text-darkBlue">
               Lectures
             </Link>
-            <Link to={`../${[pathAdmin]}`} className="text-black hover:text-darkBlue">
+            <Link to={`../${pathAdmin}/none`} className="text-black hover:text-darkBlue">
               Admin
             </Link>
           </div>
         </div>
 
         <div className="hidden lg:flex items-center space-x-6 text-back">
-          <Link to={`../${[pathAccount]}/1`}> {/* Wrapped the Account button in a Link */}
-            <a
-              className="px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70"
-            >
-              Account
-            </a>
-          </Link>
-          {user ? (
-            // Show Account button if user is logged in
-            <Link to="../account/">
+                  {user ? (
+                      // Show Account button if user is logged in
+              <Link to={`${pathAccount}/`}>
               <a className="px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70">
                 Account
               </a>

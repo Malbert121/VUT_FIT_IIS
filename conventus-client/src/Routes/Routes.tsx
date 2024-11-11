@@ -8,8 +8,6 @@ import ReservationsPage from "../Pages/AvailableReservationPage/AvailableReserva
 import MainPage from "../Pages/MainPage/MainPage";
 import AdminPanelPage from "../Pages/AdminPanelPage/AdminPanelPage";
 import PageContainer from "../Components/PageContainer/PageContainer";
-import OwnerTicketsPage from "../Pages/OwnerTicketsPage/OwnerTicketsPage";
-import UnpaidUsersTicketsPage from "../Pages/UnpaidUsersTicketsPage/UnpaidTicketsPage";
 import LoginPage from "../Pages/LoginPage/LoginPage"
 import RegistrationPage from "../Pages/RegistrationPage/RegistrationPage";
 import ProtectedRoute from "../Components/ProtectedRoute/ProtectedRoute";
@@ -27,9 +25,8 @@ export const pathUnpaidReservations = `${pathReservations}/unpaids_reservations`
 export const pathGuestReservations = `${pathReservations}/guest_reservations`
 export const pathLogin = "/login";
 export const pathRegistration = "/registration";
-export const pathUnpaidTickets = `${pathTickets}/unpaids`
-export const pathOwnerTickets = `${pathTickets}/owner`
 export const pathAdminConferenceDetail = `${pathAdmin}/Conferences`
+export const pathAdminReservationDetail = `${pathAdmin}/Reservations`
 
 
 export const router = createBrowserRouter([
@@ -72,12 +69,6 @@ export const router = createBrowserRouter([
             {
                 path: `${pathGuestReservations}/:reservationId`,  // TODO: add usersId
                 element: <PageContainer WrapperPage={ReservationDetailPage} sideBarFlag={true}/>,
-                path: pathUnpaidTickets,  // TODO: add usersId
-                element: <PageContainer WrapperPage={UnpaidUsersTicketsPage} sideBarFlag={true} />,
-            },
-            {
-                path: pathOwnerTickets,  // TODO: add usersId
-                element: <PageContainer WrapperPage={OwnerTicketsPage} sideBarFlag={true} />,
             },
             {
                 path: pathAccount,
@@ -90,12 +81,14 @@ export const router = createBrowserRouter([
             {
                 path: `${pathAdmin}/:showShow`,
                 element: <PageContainer WrapperPage={AdminPanelPage} sideBarFlag={true} />,
-                path: `${pathUnpaidReservations}/:reservationId`,  // TODO: add usersId
-                element: <PageContainer WrapperPage={ReservationDetailPage} sideBarFlag={true}/>,
             },
             {
                 path: `${pathAdminConferenceDetail}/:id`,
                 element: <PageContainer WrapperPage={ConferenceDetailPage} sideBarFlag={true} />,
+            },
+            {
+                path: `${pathAdminReservationDetail}/:reservationId`,
+                element: <PageContainer WrapperPage={ReservationDetailPage} sideBarFlag={true} />,
             },
             {
                 path: pathLogin,
