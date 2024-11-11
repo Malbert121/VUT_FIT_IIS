@@ -14,6 +14,7 @@ import UnpaidReservationsPage from "../Pages/UnpaidReservationsPage/UnpaidReserv
 import ReservationDetailPage from "../Pages/ReservationDetailPage/ReservationDetailPage";
 import GuestReservationsPage from "../Pages/GuestReservationsPage/GuestReservationsPage";
 import AvailableReservationPage from "../Pages/AvailableReservationPage/AvailableReservationPage";
+import LectureDetailPage from "../Pages/LectureDetailPage/LectureDetailPage";
 
 export const pathConferences = "/conferences";
 export const pathLectures = "/lectures";
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
             {
                 path: pathLectures,
                 element: <PageContainer WrapperPage={LecturesPage} sideBarFlag={true} />
+            },
+            {
+                path: `${pathLectures}/:id`, // Define the parameterized route for lecture details.
+                element: <PageContainer WrapperPage={LectureDetailPage} sideBarFlag={false}/> // Add your LectureDetailPage component here - TODO: side bar flag.
             },
             {
                 path: pathAvailableReservations,  // TODO: add usersId
