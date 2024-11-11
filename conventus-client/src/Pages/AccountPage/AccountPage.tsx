@@ -10,6 +10,7 @@ const AccountPage: React.FC = () => {
         // Logic to log out the user (e.g., clearing the token)
         localStorage.removeItem('token');
         navigate('/login'); // Redirect to login page
+        window.location.reload();
     };
 
     if (!user) {

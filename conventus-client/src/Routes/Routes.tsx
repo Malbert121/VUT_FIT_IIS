@@ -74,9 +74,9 @@ export const router = createBrowserRouter([
             {
                 path: pathAccount,
                 element: (
-                    <ProtectedRoute>
+                   
                         <PageContainer WrapperPage={AccountPage} sideBarFlag={false} />
-                    </ProtectedRoute>
+                   
                 ),
             },
             {
@@ -85,7 +85,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: pathLogin,
-                element: <PageContainer WrapperPage={LoginPage} sideBarFlag={false} />,
+                element: (
+                    <ProtectedRoute>
+                        <PageContainer WrapperPage={LoginPage} sideBarFlag={false} />
+                    </ProtectedRoute>
+                ),
             }, {
                 path: pathRegistration,
                 element: (

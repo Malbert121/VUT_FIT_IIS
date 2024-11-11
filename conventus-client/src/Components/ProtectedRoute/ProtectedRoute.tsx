@@ -9,9 +9,9 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     const user = useUser();
 
-    if (!user) {
+    if (user) {
         console.log(user)
-        return <Navigate to="/login" />;
+        return <Navigate to="/" />;
     }
 
     return children;
