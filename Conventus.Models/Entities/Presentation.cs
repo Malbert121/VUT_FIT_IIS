@@ -11,10 +11,10 @@ public class Presentation : BaseEntity
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public int RoomId { get; set; }
-    public Room? Room { get; set; }
+    public virtual Room? Room { get; set; }
     public int SpeakerId { get; set; }
-    public User? Speaker { get; set; }
+    public virtual User? Speaker { get; set; }
     public int ConferenceId { get; set; }
     [JsonIgnore]
-    public Conference? Conference { get; set; }
+    public virtual Conference? Conference { get; set; }
 }

@@ -1,0 +1,7 @@
+.conference-price {
+    font-size: 1rem;
+    color: #2b6cb0;
+    margin-top: 10px;
+    margin-bottom: 10px; /* Adds space between price and button */
+    font-weight: bold;
+}

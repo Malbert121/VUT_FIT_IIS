@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from './conventus-favicon-color1.png';
+
+import { pathConferences, pathAccount, pathLectures, pathAdmin, pathAvailableReservations } from '../../Routes/Routes';
+
 import { useUser } from '../../context/UserContext'; // Assuming you have a user context
 
 interface Props {
@@ -18,26 +21,30 @@ const Navbar: React.FC<Props> = ({ updateSideBar }) => {
           <Link to="/">
             <img src={logo} alt="Logo" />
           </Link>
-          <div className="hidden font-bold lg:flex space-x-6">
-            {/* Added space-x-6 for horizontal spacing */}
-            <Link to="../conferences" className="text-black hover:text-darkBlue">
+          <div className="hidden font-bold lg:flex space-x-6"> {/* Added space-x-6 for horizontal spacing */}
+            <Link to={`../${pathConferences}`} className="text-black hover:text-darkBlue">
               Conferences
             </Link>
-            <Link to="../tickets" className="text-black hover:text-darkBlue">
-              Tickets
+            <Link to={`../${pathAvailableReservations}`} className="text-black hover:text-darkBlue">
+              Reservations
             </Link>
-            <Link to="../lectures" className="text-black hover:text-darkBlue">
+            <Link to={`../${pathLectures}`} className="text-black hover:text-darkBlue">
               Lectures
             </Link>
-            {user && user.role === 'Admin' && (
-              <Link to="../admin/none" className="text-black hover:text-darkBlue">
-                Admin
-              </Link>
-            )}
+            <Link to={`../${[pathAdmin]}`} className="text-black hover:text-darkBlue">
+              Admin
+            </Link>
           </div>
         </div>
 
         <div className="hidden lg:flex items-center space-x-6 text-back">
+          <Link to={`../${[pathAccount]}/1`}> {/* Wrapped the Account button in a Link */}
+            <a
+              className="px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70"
+            >
+              Account
+            </a>
+          </Link>
           {user ? (
             // Show Account button if user is logged in
             <Link to="../account/">
