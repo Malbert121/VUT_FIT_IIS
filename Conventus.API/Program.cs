@@ -78,12 +78,8 @@ namespace Conventus.API
 
             app.UseCors("AllowAll");
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
-
             app.Run();
         }
     }
