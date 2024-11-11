@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { User, Conference, Presentation, Reservation, Room, ApiMsg } from './data'; // Adjust the import path
+import { User, Conference, Presentation, Reservation, Room, ApiMsg } from './data'; 
 
 
 // Function to fetch user data with token in headers

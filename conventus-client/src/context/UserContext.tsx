@@ -1,8 +1,6 @@
-
 import React, { createContext, useState, useEffect, useContext,ReactNode } from 'react';
-import jwt_decode, { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
-// Интерфейс для пользователя
 interface User {
     id: string;
     username: string;
@@ -33,7 +31,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 console.log(userFromToken)
                 setUser(userFromToken); 
             } catch (error) {
-                console.error("Ошибка при декодировании токена:", error);
+                console.error("Decoding Error", error);
             }
         }
     }, []);

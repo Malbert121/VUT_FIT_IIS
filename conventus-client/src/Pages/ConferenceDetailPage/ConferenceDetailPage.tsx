@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getConference } from '../../api'; // Adjust the import based on your structure
-import { Conference } from '../../data'; // Adjust based on your structure
-import './ConferenceDetailPage.css'; // Ensure you have this CSS file
+import { getConference } from '../../api';
+import { Conference } from '../../data';
+import './ConferenceDetailPage.css';
 
 const ConferenceDetailPage = () => {
-  const { id } = useParams<{ id: string }>(); // Get the ID from the URL
+  const { id } = useParams<{ id: string }>();
   const [conference, setConference] = useState<Conference | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { getAllPresentations } from '../../api'; // Adjust the import based on your structure
-import { Presentation } from '../../data'; // Adjust based on your structure
-import './LecturesPage.css'; // Create a new CSS file for styles
+import { getAllPresentations } from '../../api'; 
+import { Presentation } from '../../data'; 
+import './LecturesPage.css'; 
 
 const LecturesPage: React.FC = () => {
   const [lectures, setLectures] = useState<Presentation[]>([]);

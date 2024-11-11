@@ -40,8 +40,8 @@ export const router = createBrowserRouter([
                 element: <PageContainer WrapperPage={ConferencesPage} sideBarFlag={true} />
             },
             {
-                path: `${pathConferences}/:id`, // Define the parameterized route for conference details
-                element: <PageContainer WrapperPage={ConferenceDetailPage} sideBarFlag={true} /> // Add your ConferenceDetailPage component here
+                path: `${pathConferences}/:id`,
+                element: <PageContainer WrapperPage={ConferenceDetailPage} sideBarFlag={true} /> 
             },
             {
                 path: pathLectures,

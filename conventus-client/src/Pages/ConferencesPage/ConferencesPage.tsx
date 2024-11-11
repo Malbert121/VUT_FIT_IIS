@@ -17,7 +17,7 @@ function ConferencesPage() {
   const [ticketQuantity, setTicketQuantity] = useState<{ [key: number]: number }>({});
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [dateRange, setDateRange] = useState<{ from: string; to: string }>({ from: '', to: '' });
-  const [showAdditionalFilters, setShowAdditionalFilters] = useState<boolean>(false); // State for showing additional filters
+  const [showAdditionalFilters, setShowAdditionalFilters] = useState<boolean>(false);
 
   const uniqueGenres = Array.from(new Set(conferences.map(conference => conference.Genre).filter(Boolean)));
   const uniqueLocations = Array.from(new Set(conferences.map(conference => conference.Location).filter(Boolean)));

@@ -1,6 +1,6 @@
 import React from 'react';
-import { useUser } from '../../context/UserContext'; // Import the hook to get user data
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirecting
+import { useUser } from '../../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 const AccountPage: React.FC = () => {
     const user = useUser(); // Get the user data
@@ -31,7 +31,7 @@ const AccountPage: React.FC = () => {
                 <div className="mt-6 bg-white p-4 rounded shadow-md">
                     <h3 className="text-lg font-semibold mb-2">Admin Options</h3>
                     <p>As an admin, you can manage users, view reports, and more.</p>
-                    {/* You can add admin-specific functionality here */}
+                    {}
                 </div>
             )}
 
