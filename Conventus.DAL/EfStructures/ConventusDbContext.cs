@@ -72,7 +72,7 @@ namespace Conventus.DAL.EfStructures
                       .WithOne()
                       .HasForeignKey(r => r.ConferenceId)
                       .OnDelete(DeleteBehavior.Cascade);
-                
+
                 builder.HasMany(c => c.Rooms)
                     .WithOne()
                     .HasForeignKey(r => r.ConferenceId)
@@ -147,6 +147,9 @@ namespace Conventus.DAL.EfStructures
                 builder.Property(r => r.NumberOfTickets)
                     .IsRequired()
                     .HasDefaultValue(1); // Default value can be adjusted
+
+                builder.Property(r => r.Ammount)
+                    .IsRequired();
 
                 builder.Property(r => r.ReservationDate)
                     .IsRequired();

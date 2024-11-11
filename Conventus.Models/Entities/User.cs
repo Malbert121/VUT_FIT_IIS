@@ -10,9 +10,9 @@ public class User : BaseEntity
     public string PasswordHash { get; set; }
     public Role Role { get; set; }
     [JsonIgnore]
-    public List<Conference> OrganizedConferences { get; set; } = new List<Conference>();
+    public virtual List<Conference> OrganizedConferences { get; set; } = new List<Conference>();
     [JsonIgnore]
-    public List<Presentation> Presentations { get; set; } = new List<Presentation>();
+    public virtual List<Presentation> Presentations { get; set; } = new List<Presentation>();
     [JsonIgnore]
-    public List<Reservation> Reservations { get; set; } = new List<Reservation>();
+    public virtual List<Reservation> Reservations { get; set; } = new List<Reservation>();
 }

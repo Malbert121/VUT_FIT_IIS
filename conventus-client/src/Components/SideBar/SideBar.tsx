@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import {Link} from "react-router-dom";
-import { useLocation } from 'react-router-dom';
+import {Link, useLocation} from "react-router-dom";
 import './SideBar.css'
 import MenuButton from '../MenuButton/MenuButton';
-import { pathAccount, pathConferences, pathAdmin, pathTickets, pathLectures, pathOwnerTickets, pathUnpaidTickets } from '../../Routes/Routes';
+import { pathConferences, pathLectures, pathGuestReservations, pathUnpaidReservations, pathAvailableReservations } from '../../Routes/Routes';
 
 
 type Props = {};
@@ -15,6 +14,7 @@ const SideBar2:React.FC<Props> = () =>
         setIsOpen(!isOpen);
     };
     const location = useLocation();
+
     return (
         <nav
       className={`block py-4 px-6 top-0 bottom-0 left-0 relative flex-row flex-nowrap md:z-10 z-9999 transition-all duration-300 ease-in-out transform ${
@@ -60,25 +60,30 @@ const SideBar2:React.FC<Props> = () =>
                     </Link>
                   </>
                 )}
-                {location.pathname.startsWith(pathTickets) && (
+                {(location.pathname.startsWith(pathAvailableReservations) 
+                  ||location.pathname.startsWith(pathUnpaidReservations) 
+                  || location.pathname.startsWith(pathGuestReservations) ) 
+                  && (
                   <>
                     <Link
-                      to={pathTickets}
+                      to={pathAvailableReservations}
                       className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
                     >
-                      <h6 className="ml-3">Unpaid Tickets</h6>
+                      <h6 className="ml-3">Available Reservations</h6>
                     </Link>
+                    
                     <Link
-                      to={pathUnpaidTickets}
+                      to={pathUnpaidReservations}
                       className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
                     >
-                      <h6 className="ml-3">Actual Tickets</h6>
+                      <h6 className="ml-3">Unpaid Reservations</h6>
                     </Link>
+
                     <Link
-                      to={pathOwnerTickets}
+                      to={pathGuestReservations}
                       className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
                     >
-                      <h6 className="ml-3">Guest Tickets</h6>
+                      <h6 className="ml-3">Guest Reservations</h6>
                     </Link>
                   </>
                 )}

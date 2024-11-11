@@ -1,8 +1,15 @@
 // User.ts
+
 export enum Role {
     Admin = 0,
     User = 1,
     Guest = 2
+}
+
+
+export interface ApiMsg{
+    success: boolean;
+    msg: string | null;
 }
 
 export interface User {
@@ -66,10 +73,12 @@ export interface Reservation {
     Id: number; 
     UserId: number; 
     User: User; // User details
-    ConferenceId: number; 
+    ConferenceId: number;
+    Conference: Conference;  // Conference datails
     IsConfirmed: boolean; 
     IsPaid: boolean; 
-    NumberOfTickets: number; 
+    NumberOfTickets: number;
+    Ammount: number;
     ReservationDate: string; // ISO 8601 date-time
 }
 
