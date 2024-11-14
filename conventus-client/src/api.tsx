@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { User, Conference, Presentation, Reservation, Room, ApiMsg } from './data'; 
+import { User, Conference, Presentation, Reservation, Room} from './data'; 
 
 
 // Function to fetch user data with token in headers
@@ -74,7 +74,7 @@ export const getPresentation = async (id: number): Promise<Presentation | null> 
 // Fetch all reservations
 export const getAllReservations = async ():Promise<Reservation[]> => {
     try {
-        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations`);
+        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations}`);
         return response.data; // Assuming the API returns an array of reservations
     } catch (error) {
         handleAxiosError(error);
@@ -82,9 +82,9 @@ export const getAllReservations = async ():Promise<Reservation[]> => {
     }
 };
 
-export const getAvailabelReservations = async ():Promise<Reservation[]> => {
+export const getAvailabelReservations = async (user_id:number):Promise<Reservation[]> => {
     try {
-        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations/available`);
+        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations/available?user_id=${user_id}`);
         return response.data; // Assuming the API returns an array of reservations
     } catch (error) {
         handleAxiosError(error);
@@ -93,9 +93,9 @@ export const getAvailabelReservations = async ():Promise<Reservation[]> => {
 };
 
 
-export const getUnpaidReservations = async ():Promise<Reservation[]> => {
+export const getUnpaidReservations = async (user_id:number):Promise<Reservation[]> => {
     try {
-        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations/unpaid`);
+        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations/unpaid?user_id=${user_id}`);
         return response.data; // Assuming the API returns an array of reservations
     } catch (error) {
         handleAxiosError(error);
@@ -104,9 +104,9 @@ export const getUnpaidReservations = async ():Promise<Reservation[]> => {
 };
 
 
-export const getGuestReservations = async ():Promise<Reservation[]> => {
+export const getGuestReservations = async (user_id:number):Promise<Reservation[]> => {
     try {
-        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations/guest`);
+        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations/guest?user_id=${user_id}`);
         return response.data; // Assuming the API returns an array of reservations
     } catch (error) {
         handleAxiosError(error);
@@ -114,11 +114,11 @@ export const getGuestReservations = async ():Promise<Reservation[]> => {
     }
 };
 
-export const getReservation = async (id:Number): Promise<Reservation | null> => {
+export const getReservation = async (id:Number, user_id:number): Promise<Reservation | null> => {
     try
     {
-        console.log(`id = ${id}`)
-        const response = await axios.get<Reservation>(`https://localhost:7156/api/Reservations/${id}`);
+        console.log(`req to get reservation by id = ${id}`)
+        const response = await axios.get<Reservation>(`https://localhost:7156/api/Reservations/${id}?user_id=${user_id}`);
         return response.data;
     }
     catch (error)
@@ -129,73 +129,55 @@ export const getReservation = async (id:Number): Promise<Reservation | null> => 
 }
 
 
-export const putResirvationsToPay = async(reservationsIds:number[]):Promise<ApiMsg>=>{
+export const putResirvationsToPay = async(reservationsIds:number[], user_id:number)=>{
     try
     {
-        console.log(`reservations ids ${reservationsIds}`);
-        const response = await axios.put<{message:string}>(`https://localhost:7156/api/Reservations/to_pay`, reservationsIds);
-        return {success:true, msg: response.data.message};
+        console.log(`reservations ids to pay ${reservationsIds}`);
+        await axios.put<{message:string}>(`https://localhost:7156/api/Reservations/to_pay?user_id=${user_id}`, reservationsIds);
     }
     catch(error)
     {
-        let errMsg: string|null = null;
-        if (axios.isAxiosError(error)) 
-        {
-            
-            console.error('Error response:', error.response);
-            if (error.response?.status === 400) 
-            {
-                errMsg = 'The request body was invalid or empty';
-            }
-            else if (error.response?.status === 404) {
-                errMsg = 'No reservations found to update';
-            } 
-            else if (error.response?.status === 500) {
-                errMsg = 'Internal server error';
-            }
-        } 
-        else {
-            console.error('Unexpected error:', error);
-            errMsg='Unexpected error'
-        }
-
-        return {success:false, msg:errMsg};
+        handleAxiosError(error);
     }
 }
 
-
-export const putResirvationsToConfirm = async(reservationsIds:number[], flag:boolean):Promise<ApiMsg>=>{
+export const putResirvationsToConfirm = async(reservationsIds:number[], flag:boolean)=>{
     try
     {
-        console.log(`reservations ids ${reservationsIds}`);
-        const response = await axios.put<{message:string}>(`https://localhost:7156/api/Reservations/to_confirm?flag=${flag}`, reservationsIds);
-        return {success:true, msg: response.data.message};
+        console.log(`reservations ids to confirm ${reservationsIds}`);
+        await axios.put<{message:string}>(`https://localhost:7156/api/Reservations/to_confirm?flag=${flag}`, reservationsIds);
     }
     catch(error)
     {
-        let errMsg: string|null = null;
-        if (axios.isAxiosError(error)) 
-        {
-            
-            console.error('Error response:', error.response);
-            if (error.response?.status === 400) 
-            {
-                errMsg = 'The request body was invalid or empty';
-            }
-            else if (error.response?.status === 404) {
-                errMsg = 'No reservations found to update';
-            } 
-            else if (error.response?.status === 500) {
-                errMsg = 'Internal server error';
-            }
-        } 
-        else {
-            console.error('Unexpected error:', error);
-            errMsg='Unexpected error'
-        }
-
-        return {success:false, msg:errMsg};
+        handleAxiosError(error);
     }
+}
+
+export const postReservations = async (reservation:Reservation, user_id:number) => {
+    try
+    {
+        console.log(`user id ${user_id}`);
+        console.log(`reservations ids to create reservation ${reservation}`);
+        await axios.post<{message:string}>(`https://localhost:7156/api/Reservations/create?user_id=${user_id}`, reservation);
+    }
+    catch(error)
+    {
+        handleAxiosError(error);
+    }
+}
+
+export const deleteReservations = async (reservationsIds:number[], user_id:number) => {
+    try
+    {
+        console.log(`reservations ids to delete ${reservationsIds}`);
+        await axios.delete<{ message: string }>(`https://localhost:7156/api/Reservations/delete?user_id=${user_id}`, {
+            data: reservationsIds
+        });
+    }
+    catch(error)
+    {
+        handleAxiosError(error);
+    }   
 }
 
 // Fetch all rooms

@@ -14,6 +14,7 @@
         T? FindIgnoreQueryFilters(int id);
         IEnumerable<T> GetAll();
         IEnumerable<T> GetAllIgnoreQueryFilters();
+        IEnumerable<T> GetRange(List<int> ids);
         void ExecuteQuery(string sql, object[] sqlParametersObjects);
         int SaveChanges();
     }

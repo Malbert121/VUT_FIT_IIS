@@ -1,18 +1,23 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import ReservationCard from '../../Components/ReservationCard/ReservationCard';
-import { Reservation, ApiMsg } from '../../data';
-import { getUnpaidReservations, putResirvationsToPay } from '../../api';
+import { Reservation} from '../../data';
+import { getUnpaidReservations, putResirvationsToPay, deleteReservations } from '../../api';
 import { pathUnpaidReservations } from '../../Routes/Routes';
+import { useUser } from '../../context/UserContext';
+import Toast from '../../Components/Toast/Toast';
 import "./UnpaidReservationsPage.css"
 
 const UnpaidReservationsPage: React.FC = () => {
+  const user = useUser();
   const [reservations, setReservation] = useState<Reservation[]>([]);
   const [reservationsFiltered, setReservationsFiltered] = useState<Reservation[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [selectedReservations, setSelectedReservations] = useState<number[]>([]);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('info');
   
   // filtering
   const [conferenceNameFilter, setConferenceNameFiler] = useState<string>('');
@@ -21,9 +26,15 @@ const UnpaidReservationsPage: React.FC = () => {
 
   const groupList: string[] = ['Single', 'Group']
 
-  const fetchAllReservations = async () =>{
+  const closeToast = () => setToastMessage(null);
+
+  const fetchAllReservations = useCallback(async () =>{
+    if(!user)
+    {
+      return;
+    }
     try{
-      const data = await getUnpaidReservations();
+      const data = await getUnpaidReservations(Number(user.id));
       setReservation(data);
     }
     catch(error){
@@ -33,11 +44,11 @@ const UnpaidReservationsPage: React.FC = () => {
     finally{
       setLoading(false);
     }
-  };
+  }, [user]);
 
   useEffect(()=>{
     fetchAllReservations();
-  }, []);
+  }, [fetchAllReservations]);
 
 
   useEffect(()=>{
@@ -45,22 +56,22 @@ const UnpaidReservationsPage: React.FC = () => {
     if(conferenceNameFilter)
     {
       filtered = filtered.filter(reservation=>
-        reservation.Conference.Name.toLowerCase().includes(conferenceNameFilter.toLowerCase())
+        reservation.Conference?.Name.toLowerCase().includes(conferenceNameFilter.toLowerCase())
       );
     }
 
     if(dateFilter.from)
     {
-      filtered = filtered.filter(reservation => new Date(reservation.Conference.StartDate) >= new Date(dateFilter.from));
+      filtered = filtered.filter(reservation => new Date(reservation.Conference?.StartDate ?? "") >= new Date(dateFilter.from));
     }
     if(dateFilter.to)
     {
-      filtered = filtered.filter(reservation => new Date(reservation.Conference.EndDate) <= new Date(dateFilter.to));
+      filtered = filtered.filter(reservation => new Date(reservation.Conference?.EndDate ?? "") <= new Date(dateFilter.to));
     }
     
     if(groupFilter === 'Single')
     {
-      filtered = filtered.filter(reservation => reservation.NumberOfTickets == 1);
+      filtered = filtered.filter(reservation => reservation.NumberOfTickets === 1);
     }
     else if(groupFilter === 'Group')
     {
@@ -90,21 +101,45 @@ const UnpaidReservationsPage: React.FC = () => {
     }
     try
     {
-      const response: ApiMsg = await putResirvationsToPay(selectedReservations);
-      if(response.success)
+      await putResirvationsToPay(selectedReservations, Number(user?.id));
+      setSelectedReservations([]);
+      setTotalAmount(0);
+      fetchAllReservations();
+    }
+    catch(error)
+    {
+      console.error(error);
+      setToastType('error');
+      setToastMessage((error as Error).message);
+    }
+  }
+
+  const handleReservationsToDelete = async ()=>{
+    if(selectedReservations.length === 0)
+    {
+      return;
+    }
+    try
+    {
+      if(user)
       {
+        await deleteReservations(selectedReservations, Number(user.id));
         setSelectedReservations([]);
         setTotalAmount(0);
         fetchAllReservations();
       }
       else
       {
-        console.log(response.msg);
+        console.log('Unauthorized user is bad boy!'); //TODO: solve unauthorized user behavioral  
+        setToastType('error');
+        setToastMessage('Unauthorized user is bad boy!');
       }
     }
     catch(error)
     {
       console.error(error);
+      setToastType('error');
+      setToastMessage((error as Error).message);
     }
   }
 
@@ -120,6 +155,9 @@ const UnpaidReservationsPage: React.FC = () => {
 
   return (
     <div className="container mx-auto p-6">
+    {toastMessage && (
+      <Toast message={toastMessage} onClose={closeToast} type={toastType} />
+    )}
     <h1 className="flex text-5xl justify-center font-bold mb-10">Unpaid Reservations</h1>
     <div className='filters'>
       <input
@@ -160,7 +198,9 @@ const UnpaidReservationsPage: React.FC = () => {
         className="bg-green-500 text-white w-32 py-2 px-4 rounded hover:bg-green-600 transition-colors duration-150">
             Pay
         </button>
-        <button className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
+        <button 
+          onClick={handleReservationsToDelete}
+          className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
             Delete
         </button>
     </div>
