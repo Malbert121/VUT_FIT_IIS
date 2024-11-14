@@ -3,7 +3,6 @@ using Conventus.DAL.Repositories.Interfaces;
 using Conventus.Models.Entities;
 using Conventus.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Swashbuckle.AspNetCore.Annotations;
 
 
@@ -16,6 +15,7 @@ namespace Conventus.API.Controllers
         {
 
         }
+
 
         /// <summary>
         /// Retrieves all available reservations for a specific user or all reservations if the user is an admin.
@@ -38,18 +38,18 @@ namespace Conventus.API.Controllers
                 User? user = ((IReservationRepo)MainRepo).GetUser(user_id);
                 if (user == null)
                 {
-                    return BadRequest($"Unknown user with id {user_id}.");
+                    return BadRequest($"Unknown user.");
                 }
                 if(user.Role == Role.Admin)
                 {
-                    return Ok(((IReservationRepo)MainRepo).GetAll());
+                    return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => r.IsPaid));
                 }
-                return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => r.IsPaid == true && r.UserId == user_id));
+                return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => r.IsPaid && r.UserId == user_id));
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}\n{ex.StackTrace}");
-                return Problem("Internal error");
+                return Problem("Internal error.");
             }
         }
 
@@ -74,18 +74,18 @@ namespace Conventus.API.Controllers
                 User? user = ((IReservationRepo)MainRepo).GetUser(user_id);
                 if (user == null)
                 {
-                    return BadRequest($"Unknown user with id {user_id}.");
+                    return BadRequest($"Unknown user.");
                 }
                 if (user.Role == Role.Admin)
                 {
-                    return Ok(((IReservationRepo)MainRepo).GetAll());
+                    return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => !r.IsPaid));
                 }
-                return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => r.IsPaid == false && r.UserId == user_id));
+                return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => !r.IsPaid && r.UserId == user_id));
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}\n{ex.StackTrace}");
-                return Problem("Internal error");
+                return Problem("Internal error.");
             }
         }
 
@@ -110,18 +110,18 @@ namespace Conventus.API.Controllers
                 User? user = ((IReservationRepo)MainRepo).GetUser(user_id);
                 if (user == null)
                 {
-                    return BadRequest($"Unknown user with id {user_id}.");
+                    return BadRequest($"Unknown user.");
                 }
                 if (user.Role == Role.Admin)
                 {
-                    return Ok(((IReservationRepo)MainRepo).GetAll());
+                    return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => r.IsPaid));
                 }
-                return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => r.IsPaid == true && r.Conference.OrganizerId == user_id));
+                return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => r.IsPaid && r.Conference.OrganizerId == user_id));
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}\n{ex.StackTrace}");
-                return Problem("Internal error");
+                return Problem("Internal error.");
             }
         }
 
@@ -151,27 +151,32 @@ namespace Conventus.API.Controllers
                 User? user = ((IReservationRepo)MainRepo).GetUser(user_id);
                 if (user == null)
                 {
-                    return BadRequest($"Unknown user with id {user_id}.");
+                    return BadRequest($"Unknown user.");
                 }
 
                 if (reservationsIds == null || !reservationsIds.Any())
                 {
-                    return BadRequest("Reservations should not be empty");
+                    return BadRequest("Reservations should not be empty.");
                 }
 
                 var reservationsToUpdate = ((IReservationRepo)MainRepo).GetRange(reservationsIds).ToList();
                 if (!reservationsToUpdate.Any())
-                { return NotFound("Not found reservations"); }
+                { 
+                    return NotFound("Not found reservations."); 
+                }
+                
                 if ((user.Role != Role.Admin) && (!reservationsToUpdate.All(r => r.UserId == user.Id)))
                 {
-                    return BadRequest($"User with id={user_id} don`t have to CRUD action with requested reservations.");
+                    return BadRequest($"User don`t have to CRUD action with requested reservations.");
                 }
 
                 foreach (var reservation in reservationsToUpdate)
-                { reservation.IsPaid = true; }
+                { 
+                    reservation.IsPaid = true; 
+                }
                 
                 ((IReservationRepo)MainRepo).UpdateRange(reservationsToUpdate);
-                return Ok("Ok");
+                return Ok("Ok.");
             }
             catch (Exception ex)
             {
@@ -208,7 +213,7 @@ namespace Conventus.API.Controllers
                 User? user = ((IReservationRepo)MainRepo).GetUser(user_id);
                 if (user == null)
                 {
-                    return BadRequest($"Unknown user with id {user_id}.");
+                    return BadRequest($"Unknown user");
                 }
 
                 if (reservationsIds == null || !reservationsIds.Any())
@@ -218,14 +223,19 @@ namespace Conventus.API.Controllers
 
                 var reservationsToUpdate = ((IReservationRepo)MainRepo).GetRange(reservationsIds).ToList();
                 if (!reservationsToUpdate.Any())
-                { return NotFound("Not found reservations"); }
+                { 
+                    return NotFound("Not found reservations"); 
+                }
+                
                 if ((user.Role != Role.Admin) && (!reservationsToUpdate.All(r => r.Conference.OrganizerId == user.Id)))
                 {
-                    return BadRequest($"User with id={user_id} don`t have to CRUD action with requested reservations.");
+                    return BadRequest($"User don`t have to CRUD action with requested reservations.");
                 }
 
                 foreach (var reservation in reservationsToUpdate)
-                { reservation.IsConfirmed = flag; }
+                { 
+                    reservation.IsConfirmed = flag; 
+                }
 
                 ((IReservationRepo)MainRepo).UpdateRange(reservationsToUpdate);
                 return Ok("Ok");
@@ -260,7 +270,7 @@ namespace Conventus.API.Controllers
                 User? user = ((IReservationRepo)MainRepo).GetUser(user_id);
                 if (user == null)
                 {
-                    return BadRequest($"Unknown user with id {user_id}.");
+                    return BadRequest($"Unknown user.");
                 }
 
                 if (reservation == null)
@@ -330,7 +340,7 @@ namespace Conventus.API.Controllers
                 User? user = ((IReservationRepo)MainRepo).GetUser(user_id);
                 if (user == null)
                 {
-                    return BadRequest($"Unknown user with id {user_id}.");
+                    return BadRequest($"Unknown user.");
                 }
 
                 if (reservationsIds == null || !reservationsIds.Any())
@@ -342,7 +352,7 @@ namespace Conventus.API.Controllers
                 if (!reservationsToUpdate.Any())
                 { return NotFound("Not found reservations"); }
                 if(!reservationsToUpdate.All(r=>r.UserId == user_id) && !reservationsToUpdate.All(r => r.Conference.OrganizerId == user_id) && (user.Role != Role.Admin)) // TODO: add admin
-                { return NotFound($"User with id={user_id} don`t have to CRUD action with requested reservations."); }
+                { return NotFound($"User don`t have to CRUD action with requested reservations."); }
 
                 var conferenceReservationsCnt = reservationsToUpdate.GroupBy(r=>r.Conference).ToDictionary(g=>g.Key, g=> g.Sum(r=>r.NumberOfTickets));
                 
