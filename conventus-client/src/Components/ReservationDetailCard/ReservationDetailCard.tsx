@@ -1,7 +1,11 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Reservation } from '../../data';
-import { pathConferences, pathUnpaidReservations, pathGuestReservations } from '../../Routes/Routes';
+import { pathConferences, pathUnpaidReservations, pathGuestReservations, pathAvailableReservations } from '../../Routes/Routes';
+import { putResirvationsToConfirm, putResirvationsToPay, deleteReservations } from '../../api';
+import { useUser } from '../../context/UserContext';
+import Toast from '../../Components/Toast/Toast';
 
 
 interface Props{
@@ -16,8 +20,66 @@ const ReservationDetailCard: React.FC<Props> = ({reservation}) =>
         ? ['Confirmed', 'green'] 
         : ['Unconfirmed', 'yellow'];
     const location = useLocation();
+    const navigate = useNavigate();
+    const user = useUser();
+    const [toastMessage, setToastMessage] = useState<string | null>(null);
+    const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('info');
+    const closeToast = () => setToastMessage(null);
+
+    const handleReservationsToPayment = async ()=>{
+        try
+        {
+          await putResirvationsToPay([reservation.Id], Number(user?.id));
+          navigate(0);
+        }
+        catch(error)
+        {
+          console.error(error);
+          setToastType('error');
+          setToastMessage((error as Error).message);
+        }
+    };
+    const handleReservationsToConfirm = async (flag:boolean)=>{
+        try
+        {
+          await putResirvationsToConfirm([reservation.Id], flag);
+          navigate(0);
+        }
+        catch(error)
+        {
+          console.error(error);
+          setToastType('error');
+          setToastMessage((error as Error).message);
+        }
+    };
+    
+      const handleReservationsToDelete = async ()=>{
+        try
+        {
+          if(user)
+          {
+            await deleteReservations([reservation.Id], Number(user.id));
+            navigate(`../${pathAvailableReservations}`);
+          }
+          else
+          {
+            console.log('Unauthorized user is bad boy!'); //TODO: solve unauthorized user behavioral  
+            setToastType('error');
+            setToastMessage('Unauthorized user is bad boy!');
+          }
+        }
+        catch(error)
+        {
+          console.error(error);
+          setToastType('error');
+          setToastMessage((error as Error).message);
+        }
+    };
+    
 
     return (
+        <>
+        {(user?.role === 'Admin' || Number(user?.id) === reservation.Conference?.OrganizerId  || Number(user?.id) === reservation.UserId) &&(
         <div className='flex flex-col max-w-[800px] mx-auto p-5 border border-gray-300 rounded-lg shadow-md bg-white-100'>
             <h1 className='text-center text-2xl font-semibold'>Reservation #{reservation.Id}</h1>
             <Link to={`../${pathConferences}/${reservation.Conference?.Id}`} className="text-black hover:text-blue-600">
@@ -32,33 +94,84 @@ const ReservationDetailCard: React.FC<Props> = ({reservation}) =>
                 <p className='mb-5 mt-5'><strong>Tickets: </strong>{reservation.NumberOfTickets}</p>
             </div> 
             <div className="flex flex-row space-x-2">
-
-                {location.pathname.startsWith(pathGuestReservations) ? (
-                    <>
-                        <button className="bg-green-500 text-white w-32 py-2 px-4 rounded hover:bg-green-600 transition-colors duration-150">
-                            Confirm
-                        </button>
-                        <button className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
-                            Unconfirm
-                        </button>
-                    </>
-                ) : location.pathname.startsWith(pathUnpaidReservations) ? (
-                    <>
-                        <button className="bg-green-500 text-white w-32 py-2 px-4 rounded hover:bg-green-600 transition-colors duration-150">
+                { user?.role === 'Admin' ? (
+                    reservation.IsPaid ?(
+                        <>
+                            <button          
+                            onClick={() => { handleReservationsToConfirm(true); }}
+                            className="bg-green-500 text-white w-32 py-2 px-4 rounded hover:bg-green-600 transition-colors duration-150">
+                                Confirm
+                            </button>
+                            <button          
+                            onClick={() => { handleReservationsToConfirm(false); }}
+                            className="bg-yellow-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
+                                Unconfirm
+                            </button>
+                            <button           
+                            onClick={() => { handleReservationsToDelete(); }}
+                            className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
+                                Delete
+                            </button>
+                        </>
+                    ):
+                    (
+                        <>
+                        <button           
+                        onClick={() => { handleReservationsToPayment(); }}
+                        className="bg-green-500 text-white w-32 py-2 px-4 rounded hover:bg-green-600 transition-colors duration-150">
                             Paid
                         </button>
-                        <button className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
-                            Cancel
+                        <button           
+                        onClick={() => { handleReservationsToDelete(); }}
+                        className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
+                            Delete
+                        </button>
+                        </>
+                    )
+
+                ): Number(user?.id) === reservation.Conference?.OrganizerId ? (
+                    <>
+                        <button          
+                        onClick={() => { handleReservationsToConfirm(true); }}
+                        className="bg-green-500 text-white w-32 py-2 px-4 rounded hover:bg-green-600 transition-colors duration-150">
+                            Confirm
+                        </button>
+                        <button          
+                        onClick={() => { handleReservationsToConfirm(false); }}
+                        className="bg-yellow-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
+                            Unconfirm
+                        </button>
+                        <button           
+                        onClick={() => { handleReservationsToDelete(); }}
+                        className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
+                            Delete
+                        </button>
+                    </>
+                ) : !reservation.IsPaid ? (
+                    <>
+                        <button           
+                        onClick={() => { handleReservationsToPayment(); }}
+                        className="bg-green-500 text-white w-32 py-2 px-4 rounded hover:bg-green-600 transition-colors duration-150">
+                            Paid
+                        </button>
+                        <button           
+                        onClick={() => { handleReservationsToDelete(); }}
+                        className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
+                            Delete
                         </button>
                     </>
                 ) : (
-                    <button className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
-                        Cancel
+                    <button           
+                    onClick={() => { handleReservationsToDelete(); }}
+                    className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
+                        Delete
                     </button>
                 )}
 
             </div>
         </div>
+        )}
+        </>
     );
 }
 export default ReservationDetailCard;

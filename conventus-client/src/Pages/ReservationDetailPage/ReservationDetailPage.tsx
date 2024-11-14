@@ -38,7 +38,7 @@ const ReservationDetailPage: React.FC<Props> = () => {
             }
         };
         fetchReservation();
-    }, [reservationId])
+    }, [reservationId, user])
     
     if (loading) {
         return <div className="loading">Loading reservation details...</div>;

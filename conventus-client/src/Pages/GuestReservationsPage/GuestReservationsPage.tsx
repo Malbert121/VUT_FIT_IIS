@@ -107,7 +107,7 @@ const GuestReservationsPage: React.FC = () => {
     });
   };
   
-  const handleReservationsToPayment = async (flag:boolean)=>{
+  const handleReservationsToConfirm = async (flag:boolean)=>{
     if(selectedReservations.length === 0)
     {
       return;
@@ -214,12 +214,12 @@ const GuestReservationsPage: React.FC = () => {
     <div className="flex flex-row items-center justify-between mb-4">
       <div className="flex flex-row space-x-2">
         <button 
-          onClick={() => { handleReservationsToPayment(true); }}
+          onClick={() => { handleReservationsToConfirm(true); }}
           className="bg-green-500 text-white w-32 py-2 px-4 rounded hover:bg-green-600 transition-colors duration-150">
           Confirm
         </button>
         <button
-          onClick={() => { handleReservationsToPayment(false); }}
+          onClick={() => { handleReservationsToConfirm(false); }}
           className="bg-yellow-500 text-white w-32 py-2 px-4 rounded hover:bg-yellow-600 transition-colors duration-150">
           Unconfirm
         </button>
@@ -236,8 +236,7 @@ const GuestReservationsPage: React.FC = () => {
       <ReservationCard 
         reservation={reservation}
         onSelect={() => handleSelectReservation(reservation.Id, reservation.Ammount)}
-        isSelected={selectedReservations.includes(reservation.Id)}
-        pathToDetails={`${pathGuestReservations}`}/>
+        isSelected={selectedReservations.includes(reservation.Id)}/>
     ))}
   </div>
 </div>

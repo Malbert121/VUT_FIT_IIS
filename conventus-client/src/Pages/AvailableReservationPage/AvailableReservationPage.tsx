@@ -203,8 +203,7 @@ const AvailableReservationPage: React.FC = () => {
       <ReservationCard 
         reservation={reservation}
         onSelect={() => handleSelectReservation(reservation.Id, reservation.Ammount)}
-        isSelected={selectedReservations.includes(reservation.Id)}
-        pathToDetails={`${pathAvailableReservations}`}/>
+        isSelected={selectedReservations.includes(reservation.Id)}/>
     ))}
   </div>
 </div>
