@@ -10,12 +10,20 @@ const LecturesPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Filtering and sorting states
+  // Filtering states
   const [tagFilter, setTagFilter] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [timeRange, setTimeRange] = useState<{ from: string; to: string }>({ from: '', to: '' });
 
-  const uniqueTags = Array.from(new Set(presentations.map(presentation => presentation.Tags).filter(Boolean)));
+  // Extract unique tags from presentations
+  const uniqueTags = Array.from(
+    new Set(
+      presentations
+        .flatMap((presentation) =>
+          presentation.Tags ? presentation.Tags.split(',').map((tag) => tag.trim()) : []
+        )
+    )
+  );
 
   useEffect(() => {
     const fetchPresentations = async () => {
@@ -40,7 +48,14 @@ const LecturesPage: React.FC = () => {
     let filtered = [...presentations];
 
     // Tag filter
-    if (tagFilter) filtered = filtered.filter(presentation => presentation.Tags === tagFilter);
+    if (tagFilter) {
+      filtered = filtered.filter((presentation) =>
+        presentation.Tags
+          ?.split(',')
+          .map((tag) => tag.trim())
+          .includes(tagFilter)
+      );
+    }
 
     // Title or description search
     if (searchTerm) {
