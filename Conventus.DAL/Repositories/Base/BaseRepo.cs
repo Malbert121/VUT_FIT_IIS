@@ -63,6 +63,8 @@ namespace Conventus.DAL.Repositories.Base
         public virtual IEnumerable<T> GetAll() => Table;
         public virtual IEnumerable<T> GetAllIgnoreQueryFilters() => Table.IgnoreQueryFilters();
 
+        public virtual IEnumerable<T> GetRange(List<int> ids) => Table.Where(r => ids.Contains(r.Id));
+
         public void ExecuteQuery(string sql, object[] sqlParametersObjects)
             => Context.Database.ExecuteSqlRaw(sql, sqlParametersObjects);
 
