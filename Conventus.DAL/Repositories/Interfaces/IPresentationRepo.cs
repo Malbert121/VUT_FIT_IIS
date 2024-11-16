@@ -5,5 +5,7 @@ namespace Conventus.DAL.Repositories.Interfaces
 {
     public interface IPresentationRepo : IRepo<Presentation>
     {
+        public User? GetUser(int id);
+        public Conference? GetConference(int id);
     }
 }

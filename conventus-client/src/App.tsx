@@ -5,7 +5,7 @@ const App: React.FC = () => {
   return (
     <UserProvider>
         <div>
-            <Outlet /> {/* Render the child route components here */}
+            <Outlet /> {}
             <footer>© 2024 Conventus. All rights reserved.</footer>
         </div>
     </UserProvider>

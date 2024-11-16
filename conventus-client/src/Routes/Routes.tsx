@@ -4,19 +4,22 @@ import ConferencesPage from "../Pages/ConferencesPage/ConferencesPage";
 import ConferenceDetailPage from "../Pages/ConferenceDetailPage/ConferenceDetailPage"; // Import your detail page
 import LecturesPage from "../Pages/LecturesPage/LecturesPage";
 import AccountPage from "../Pages/AccountPage/AccountPage";
-import ReservationsPage from "../Pages/AvailableReservationPage/AvailableReservationPage";
 import MainPage from "../Pages/MainPage/MainPage";
 import AdminPanelPage from "../Pages/AdminPanelPage/AdminPanelPage";
 import PageContainer from "../Components/PageContainer/PageContainer";
-import LoginPage from "../Pages/LoginPage/LoginPage";
+import LoginPage from "../Pages/LoginPage/LoginPage"
 import RegistrationPage from "../Pages/RegistrationPage/RegistrationPage";
 import ProtectedRoute from "../Components/ProtectedRoute/ProtectedRoute";
 import UnpaidReservationsPage from "../Pages/UnpaidReservationsPage/UnpaidReservationsPage";
 import ReservationDetailPage from "../Pages/ReservationDetailPage/ReservationDetailPage";
 import GuestReservationsPage from "../Pages/GuestReservationsPage/GuestReservationsPage";
 import UserEditPage from "../Pages/UserEditPage/UserEditPage";
+import AvailableReservationPage from "../Pages/AvailableReservationPage/AvailableReservationPage";
+import LectureDetailPage from "../Pages/LectureDetailPage/LectureDetailPage";
+import MyConferencesPage from "../Pages/MyConferencesPage/MyConferencesPage";
 
 export const pathConferences = "/conferences";
+export const pathMyConferences = "/myconferences";
 export const pathLectures = "/lectures";
 export const pathReservations = "/reservations";
 export const pathAdmin = "/admin";
@@ -28,7 +31,6 @@ export const pathLogin = "/login";
 export const pathRegistration = "/registration";
 export const pathAdminConferenceDetail = `${pathAdmin}/Conferences`
 export const pathAdminReservationDetail = `${pathAdmin}/Reservations`
-
 
 export const router = createBrowserRouter([
     {
@@ -42,18 +44,25 @@ export const router = createBrowserRouter([
             {
                 path: pathConferences,
                 element: <PageContainer WrapperPage={ConferencesPage} sideBarFlag={true} />
+            }, {
+                path: pathMyConferences,
+                element: <PageContainer WrapperPage={MyConferencesPage} sideBarFlag={true} />
             },
             {
-                path: `${pathConferences}/:id`, // Define the parameterized route for conference details
-                element: <PageContainer WrapperPage={ConferenceDetailPage} sideBarFlag={true} /> // Add your ConferenceDetailPage component here
+                path: `${pathConferences}/:id`,
+                element: <PageContainer WrapperPage={ConferenceDetailPage} sideBarFlag={true} /> 
             },
             {
                 path: pathLectures,
                 element: <PageContainer WrapperPage={LecturesPage} sideBarFlag={true} />
             },
             {
+                path: `${pathLectures}/:id`, // Define the parameterized route for lecture details.
+                element: <PageContainer WrapperPage={LectureDetailPage} sideBarFlag={false}/> // Add your LectureDetailPage component here - TODO: side bar flag.
+            },
+            {
                 path: pathAvailableReservations,  // TODO: add usersId
-                element: <PageContainer WrapperPage={ReservationsPage} sideBarFlag={true}/>
+                element: <PageContainer WrapperPage={AvailableReservationPage} sideBarFlag={true}/>
             },
             {
                 path: pathUnpaidReservations,  // TODO: add usersId
@@ -74,9 +83,9 @@ export const router = createBrowserRouter([
             {
                 path: pathAccount,
                 element: (
-                    <ProtectedRoute>
+                   
                         <PageContainer WrapperPage={AccountPage} sideBarFlag={false} />
-                    </ProtectedRoute>
+                   
                 ),
             },
             {
@@ -101,7 +110,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: pathLogin,
-                element: <PageContainer WrapperPage={LoginPage} sideBarFlag={false} />,
+                element: (
+                    <ProtectedRoute>
+                        <PageContainer WrapperPage={LoginPage} sideBarFlag={false} />
+                    </ProtectedRoute>
+                ),
             }, {
                 path: pathRegistration,
                 element: (

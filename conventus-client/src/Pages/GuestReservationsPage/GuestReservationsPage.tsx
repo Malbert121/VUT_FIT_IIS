@@ -1,18 +1,23 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import ReservationCard from '../../Components/ReservationCard/ReservationCard';
-import { Reservation, ApiMsg } from '../../data';
-import { getGuestReservations, putResirvationsToConfirm } from '../../api';
+import { Reservation} from '../../data';
+import { getGuestReservations, putResirvationsToConfirm, deleteReservations } from '../../api';
 import { pathGuestReservations } from '../../Routes/Routes';
+import { useUser } from '../../context/UserContext';
+import Toast from '../../Components/Toast/Toast';
 import './GuestReservationsPage.css'
 
 const GuestReservationsPage: React.FC = () => {
+  const user = useUser();
   const [reservations, setReservation] = useState<Reservation[]>([]);
   const [reservationsFiltered, setReservationsFiltered] = useState<Reservation[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedReservations, setSelectedReservations] = useState<number[]>([]);
-
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('info');
+  
   // filtering
   const [conferenceNameFilter, setConferenceNameFiler] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<string>('');
@@ -21,10 +26,16 @@ const GuestReservationsPage: React.FC = () => {
   
   const reservationStatusList: string[] = ['Confirmed', 'Unconfirmed', 'Unpaid']
   const groupList: string[] = ['Single', 'Group']
-
-  const fetchAllReservations = async () =>{
+  
+  const closeToast = () => setToastMessage(null);
+  
+  const fetchAllReservations = useCallback(async () =>{
+    if(!user)
+    {
+      return;
+    }
     try{
-      const data = await getGuestReservations();
+      const data = await getGuestReservations(Number(user.id));
       console.log("Resrevations data: ", data);
       setReservation(data);
     }
@@ -35,18 +46,18 @@ const GuestReservationsPage: React.FC = () => {
     finally{
       setLoading(false);
     }
-  };
+  }, [user]);
 
   useEffect(()=>{
     fetchAllReservations();
-  }, []);
+  }, [fetchAllReservations]);
 
   useEffect(()=>{
     let filtered = [...reservations];
     if(conferenceNameFilter)
     {
       filtered = filtered.filter(reservation=>
-        reservation.Conference.Name.toLowerCase().includes(conferenceNameFilter.toLowerCase())
+        reservation.Conference?.Name.toLowerCase().includes(conferenceNameFilter.toLowerCase())
       );
     }
     
@@ -65,16 +76,16 @@ const GuestReservationsPage: React.FC = () => {
 
     if(dateFilter.from)
     {
-      filtered = filtered.filter(reservation => new Date(reservation.Conference.StartDate) >= new Date(dateFilter.from));
+      filtered = filtered.filter(reservation => new Date(reservation.Conference?.StartDate ?? "") >= new Date(dateFilter.from));
     }
     if(dateFilter.to)
     {
-      filtered = filtered.filter(reservation => new Date(reservation.Conference.EndDate) <= new Date(dateFilter.to));
+      filtered = filtered.filter(reservation => new Date(reservation.Conference?.EndDate ?? "") <= new Date(dateFilter.to));
     }
     
     if(groupFilter === 'Single')
     {
-      filtered = filtered.filter(reservation => reservation.NumberOfTickets == 1);
+      filtered = filtered.filter(reservation => reservation.NumberOfTickets === 1);
     }
     else if(groupFilter === 'Group')
     {
@@ -96,27 +107,50 @@ const GuestReservationsPage: React.FC = () => {
     });
   };
   
-  const handleReservationsToPayment = async (flag:boolean)=>{
+  const handleReservationsToConfirm = async (flag:boolean)=>{
     if(selectedReservations.length === 0)
     {
       return;
     }
     try
     {
-      const response: ApiMsg = await putResirvationsToConfirm(selectedReservations, flag);
-      if(response.success)
+      await putResirvationsToConfirm(selectedReservations, flag);
+      setSelectedReservations([]);
+      fetchAllReservations();
+    }
+    catch(error)
+    {
+      console.error(error);
+      setToastType('error');
+      setToastMessage((error as Error).message);
+    }
+  }
+
+  const handleReservationsToDelete = async ()=>{
+    if(selectedReservations.length === 0)
+    {
+      return;
+    }
+    try
+    {
+      if(user)
       {
+        await deleteReservations(selectedReservations, Number(user.id));
         setSelectedReservations([]);
         fetchAllReservations();
       }
       else
       {
-        console.log(response.msg);
+        console.log('Unauthorized user is bad boy!'); //TODO: solve unauthorized user behavioral  
+        setToastType('error');
+        setToastMessage('Unauthorized user is bad boy!');
       }
     }
     catch(error)
     {
       console.error(error);
+      setToastType('error');
+      setToastMessage((error as Error).message);
     }
   }
 
@@ -133,6 +167,10 @@ const GuestReservationsPage: React.FC = () => {
   return (
     <div className="container mx-auto p-6">
     <h1 className="flex text-5xl justify-center font-bold mb-10">Guest Reservations</h1>
+    
+    {toastMessage && (
+      <Toast message={toastMessage} onClose={closeToast} type={toastType} />
+    )}
     
     <div className='filters'>
       <input
@@ -176,17 +214,18 @@ const GuestReservationsPage: React.FC = () => {
     <div className="flex flex-row items-center justify-between mb-4">
       <div className="flex flex-row space-x-2">
         <button 
-          onClick={() => { handleReservationsToPayment(true); }}
+          onClick={() => { handleReservationsToConfirm(true); }}
           className="bg-green-500 text-white w-32 py-2 px-4 rounded hover:bg-green-600 transition-colors duration-150">
           Confirm
         </button>
         <button
-          onClick={() => { handleReservationsToPayment(false); }}
+          onClick={() => { handleReservationsToConfirm(false); }}
           className="bg-yellow-500 text-white w-32 py-2 px-4 rounded hover:bg-yellow-600 transition-colors duration-150">
           Unconfirm
         </button>
       </div>
       <button
+        onClick={handleReservationsToDelete}
         className="bg-red-500 text-white w-32 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
         Delete
       </button>
@@ -197,8 +236,7 @@ const GuestReservationsPage: React.FC = () => {
       <ReservationCard 
         reservation={reservation}
         onSelect={() => handleSelectReservation(reservation.Id, reservation.Ammount)}
-        isSelected={selectedReservations.includes(reservation.Id)}
-        pathToDetails={`${pathGuestReservations}`}/>
+        isSelected={selectedReservations.includes(reservation.Id)}/>
     ))}
   </div>
 </div>
