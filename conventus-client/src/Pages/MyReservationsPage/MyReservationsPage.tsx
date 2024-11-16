@@ -164,12 +164,12 @@ const MyReservationsPage: React.FC = () => {
   }
 
   const handleUnPaidReservationsToDelete = async ()=>{
-    if(selectedPaidReservations.length === 0){
+    if(selectedUnPaidReservations.length === 0){
       return;
     }
     try{
       if(user){
-        await deleteReservations(selectedPaidReservations, Number(user.id));
+        await deleteReservations(selectedUnPaidReservations, Number(user.id));
         setSelectedUnPaidReservations([]);
         setTotalAmount(0);
         fetchAllReservations();
