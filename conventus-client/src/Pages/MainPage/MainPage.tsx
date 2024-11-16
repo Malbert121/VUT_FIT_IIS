@@ -1,5 +1,5 @@
 import React from 'react';
-import './MainPage.css';
+import './MainPage.css'; // Ensure to update styles accordingly
 import logo from './conventus-favicon-color1.png';
 
 const MainPage: React.FC = () => {

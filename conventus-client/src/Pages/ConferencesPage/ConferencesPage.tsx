@@ -1,21 +1,15 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { getAllConferences, postReservations } from '../../api';
+import React, { useEffect, useState } from 'react';
+import { getAllConferences } from '../../api';
 import { Conference } from '../../data';
 import { Link } from 'react-router-dom';
-import { useUser } from '../../context/UserContext';
-import { Reservation } from '../../data';
-import Toast from '../../Components/Toast/Toast';
 import './ConferencesPage.css';
 
 function ConferencesPage() {
-  const user = useUser();
   const [conferences, setConferences] = useState<Conference[]>([]);
   const [filteredConferences, setFilteredConferences] = useState<Conference[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('info');
-  
+
   // Filtering and sorting states
   const [genreFilter, setGenreFilter] = useState<string | null>(null);
   const [locationFilter, setLocationFilter] = useState<string | null>(null);
@@ -23,30 +17,28 @@ function ConferencesPage() {
   const [ticketQuantity, setTicketQuantity] = useState<{ [key: number]: number }>({});
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [dateRange, setDateRange] = useState<{ from: string; to: string }>({ from: '', to: '' });
-  const [showAdditionalFilters, setShowAdditionalFilters] = useState<boolean>(false);
+  const [showAdditionalFilters, setShowAdditionalFilters] = useState<boolean>(false); // State for showing additional filters
 
   const uniqueGenres = Array.from(new Set(conferences.map(conference => conference.Genre).filter(Boolean)));
   const uniqueLocations = Array.from(new Set(conferences.map(conference => conference.Location).filter(Boolean)));
-  
-  const closeToast = () => setToastMessage(null);
-  
-  const fetchConferences = useCallback(async () => {
-    try {
-      const data = await getAllConferences();
-      console.log("Conferences data:", data);
-      setConferences(data);
-      setFilteredConferences(data);
-    } catch (error) {
-      setError('Failed to fetch conferences.');
-      console.error("Error fetching conferences:", error);
-    } finally {
-      setLoading(false);
-    }
-  },[]);
 
   useEffect(() => {
+    const fetchConferences = async () => {
+      try {
+        const data = await getAllConferences();
+        console.log("Conferences data:", data);
+        setConferences(data);
+        setFilteredConferences(data);
+      } catch (error) {
+        setError('Failed to fetch conferences.');
+        console.error("Error fetching conferences:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchConferences();
-  }, [fetchConferences]);
+  }, []);
 
   // Handle filtering
   useEffect(() => {
@@ -84,40 +76,6 @@ function ConferencesPage() {
     setTicketQuantity({ ...ticketQuantity, [id]: quantity });
   };
 
-  const handleCreateReservation = async (conferenceId:number, quantity:number) => {
-    try
-    {
-      if(!user)
-      {
-        console.log('Unauthorized user is bad boy!'); //TODO: solve unauthorized user behavioral  
-        setToastType('error');
-        setToastMessage('Unauthorized user is bad boy!');
-        return;
-      }
-      const user_id = Number(user.id);
-      const reservation: Reservation = {
-        Id: 0,
-        UserId: user_id,
-        User: null,
-        ConferenceId: conferenceId,
-        Conference: null,
-        IsConfirmed: false,
-        IsPaid: false,
-        NumberOfTickets: quantity,
-        Ammount: 0,
-        ReservationDate: new Date().toISOString()
-      };
-      await postReservations(reservation, user_id);
-      fetchConferences();
-    }
-    catch(error)
-    {
-      console.error(error);
-      setToastType('error');
-      setToastMessage((error as Error).message);
-    }
-  };
-
   if (loading) {
     return <div className="loading">Loading conferences...</div>;
   }
@@ -128,9 +86,6 @@ function ConferencesPage() {
 
   return (
     <div className="ConferencesPage">
-      {toastMessage && (
-      <Toast message={toastMessage} onClose={closeToast} type={toastType} />
-      )}
       <h1 className="title">Upcoming Conferences</h1>
       <div className="filters">
         {/* Search bar for title and description */}
@@ -210,7 +165,7 @@ function ConferencesPage() {
               <strong>Start Date:</strong> {conference.StartDate} <br />
               <strong>End Date:</strong> {conference.EndDate}
             </p>
-            <p className='conference-dates'><strong>Occupancy:</strong> {conference.Occupancy}/{conference.Capacity}</p>
+
             <div className="ticket-section">
               <p className="conference-price"><strong>Price:</strong> ${conference.Price}</p>
               <div className="flex items-center space-x-2">
@@ -238,11 +193,7 @@ function ConferencesPage() {
                   </button>
                 </div>
               </div>
-              <button 
-                onClick={()=>{const newQuantity = ticketQuantity[conference.Id] || 1;
-                  handleQuantityChange(conference.Id, newQuantity);
-                  handleCreateReservation(conference.Id, newQuantity)}}
-                className="ticket-button bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+              <button className="ticket-button bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
                 Add to Cart
               </button>
             </div>

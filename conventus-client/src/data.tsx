@@ -6,6 +6,12 @@ export enum Role {
     Guest = 2
 }
 
+
+export interface ApiMsg{
+    success: boolean;
+    msg: string | null;
+}
+
 export interface User {
     Id: number;
     UserName: string | null;
@@ -66,9 +72,9 @@ export interface Presentation {
 export interface Reservation {
     Id: number; 
     UserId: number; 
-    User: User|null; // User details
+    User: User; // User details
     ConferenceId: number;
-    Conference: Conference|null;  // TODO:solve null
+    Conference: Conference;  // Conference datails
     IsConfirmed: boolean; 
     IsPaid: boolean; 
     NumberOfTickets: number;
