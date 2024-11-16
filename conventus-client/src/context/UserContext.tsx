@@ -20,22 +20,38 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         if (token) {
             try {
                 const decodedToken: any = jwtDecode(token);
-                const userFromToken = {
-                    id: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"],
-                    username: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
-                    email: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"],
-                    role: decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
-                    emailts: decodedToken["exp"], 
-                };
-                console.log(decodedToken)
-                console.log(userFromToken)
-                setUser(userFromToken); 
+                const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+
+                if (decodedToken.exp < currentTime) {
+                    // Token expired
+                    handleLogout();
+                } else {
+                    const userFromToken = {
+                        id: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"],
+                        username: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+                        email: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"],
+                        role: decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
+                        emailts: decodedToken.exp, 
+                    };
+
+                    setUser(userFromToken);
+
+                    // Set a timeout to logout when the token expires
+                    const timeout = (decodedToken.exp - currentTime) * 1000;
+                    setTimeout(() => {
+                        handleLogout();
+                    }, timeout);
+                }
             } catch (error) {
                 console.error("Decoding Error", error);
+                handleLogout();
             }
         }
     }, []);
-
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setUser(null);
+    };
     return (
         <UserContext.Provider value={user}>
             {children}
