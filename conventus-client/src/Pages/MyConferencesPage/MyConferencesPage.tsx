@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { getAllConferences, postReservations } from '../../api';
+import { getMyConferences, postReservations } from '../../api';
 import { Conference } from '../../data';
 import { Link } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
 import { Reservation } from '../../data';
 import Toast from '../../Components/Toast/Toast';
-import './ConferencesPage.css';
+//import './ConferencesPage.css';
 
-function ConferencesPage() {
+function MyConferencesPage() {
   const user = useUser();
   const [conferences, setConferences] = useState<Conference[]>([]);
   const [filteredConferences, setFilteredConferences] = useState<Conference[]>([]);
@@ -32,7 +32,7 @@ function ConferencesPage() {
   
   const fetchConferences = useCallback(async () => {
     try {
-      const data = await getAllConferences();
+      const data = await getMyConferences(Number(user?.id));
       console.log("Conferences data:", data);
       setConferences(data);
       setFilteredConferences(data);
@@ -83,7 +83,30 @@ function ConferencesPage() {
   const handleQuantityChange = (id: number, quantity: number) => {
     setTicketQuantity({ ...ticketQuantity, [id]: quantity });
   };
+ // Handler for adding a new conference
+ const handleAddNew = () => {
+  console.log('Navigating to Add New Conference page...');
+  // Example: Navigate to another page or show a form/modal
+  // navigate('/add-new-conference');
+};
 
+// Handler for deleting a conference
+const handleDelete = async (conferenceId: number) => {
+  if (window.confirm('Are you sure you want to delete this conference?')) {
+    try {
+      // Call your API to delete the conference
+      console.log(`Deleting conference with ID: ${conferenceId}`);
+      // await deleteConference(conferenceId);
+      fetchConferences(); // Refresh the list after deletion
+      setToastType('success');
+      setToastMessage('Conference deleted successfully.');
+    } catch (error) {
+      console.error('Error deleting conference:', error);
+      setToastType('error');
+      setToastMessage('Failed to delete conference.');
+    }
+  }
+};
   const handleCreateReservation = async (conferenceId:number, quantity:number) => {
     try
     {
@@ -128,6 +151,7 @@ function ConferencesPage() {
 
   return (
     <div className="ConferencesPage">
+     
       {toastMessage && (
       <Toast message={toastMessage} onClose={closeToast} type={toastType} />
       )}
@@ -197,7 +221,15 @@ function ConferencesPage() {
           </div>
         )}
       </div>
-
+        {/* Buttons */}
+     <div className="action-buttons mb-4">
+        <button
+          onClick={handleAddNew}
+          className="bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200"
+        >
+          Add New
+        </button>
+      </div>
       <div className="conference-list">
         {filteredConferences.map((conference) => (
           <div key={conference.Id} className="conference-card">
@@ -213,38 +245,8 @@ function ConferencesPage() {
             <p className='conference-dates'><strong>Occupancy:</strong> {conference.Occupancy}/{conference.Capacity}</p>
             <div className="ticket-section">
               <p className="conference-price"><strong>Price:</strong> ${conference.Price}</p>
-              <div className="flex items-center space-x-2">
-                <span className="font-semibold text-lg">Number of tickets:</span>
-                <input
-                  title="Number of Tickets"
-                  type="number"
-                  min="1"
-                  value={ticketQuantity[conference.Id] || 1}
-                  onChange={(e) => handleQuantityChange(conference.Id, parseInt(e.target.value))}
-                  className="w-12 text-center border border-gray-300 rounded-md p-1 focus:outline-none focus:border-blue-500 transition duration-150"
-                />
-                <div className="flex space-x-1">
-                  <button
-                    className="bg-red-500 text-white w-8 h-8 flex items-center justify-center rounded-l hover:bg-red-600 transition-colors duration-150"
-                    onClick={() => handleQuantityChange(conference.Id, (ticketQuantity[conference.Id] || 1) - 1)}
-                  >
-                    -
-                  </button>
-                  <button
-                    className="bg-green-500 text-white w-8 h-8 flex items-center justify-center rounded-r hover:bg-green-600 transition-colors duration-150"
-                    onClick={() => handleQuantityChange(conference.Id, (ticketQuantity[conference.Id] || 1) + 1)}
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-              <button 
-                onClick={()=>{const newQuantity = ticketQuantity[conference.Id] || 1;
-                  handleQuantityChange(conference.Id, newQuantity);
-                  handleCreateReservation(conference.Id, newQuantity)}}
-                className="ticket-button bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-                Add to Cart
-              </button>
+              
+              
             </div>
 
           </div>
@@ -254,4 +256,4 @@ function ConferencesPage() {
   );
 }
 
-export default ConferencesPage;
+export default MyConferencesPage;

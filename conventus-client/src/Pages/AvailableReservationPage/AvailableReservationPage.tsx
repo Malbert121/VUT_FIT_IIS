@@ -1,17 +1,22 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback} from 'react';
 import ReservationCard from '../../Components/ReservationCard/ReservationCard';
-import { Reservation } from '../../data';
-import { getAvailabelReservations } from '../../api';
+import { Reservation} from '../../data';
+import { getAvailabelReservations, deleteReservations } from '../../api';
 import { pathAvailableReservations } from '../../Routes/Routes';
+import { useUser } from '../../context/UserContext';
+import Toast from '../../Components/Toast/Toast';
 import './AvailableReservationPage.css';
 
 const AvailableReservationPage: React.FC = () => {
+  const user = useUser();
   const [reservations, setReservation] = useState<Reservation[]>([]);
   const [reservationsFiltered, setReservationsFiltered] = useState<Reservation[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedReservations, setSelectedReservations] = useState<number[]>([]);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('info');
   
   // filtering
   const [conferenceNameFilter, setConferenceNameFiler] = useState<string>('');
@@ -21,32 +26,39 @@ const AvailableReservationPage: React.FC = () => {
   
   const reservationStatusList: string[] = ['Confirmed', 'Unconfirmed']
   const groupList: string[] = ['Single', 'Group']
-
+  
+  const closeToast = () => setToastMessage(null);
+  
+  const fetchAllReservations = useCallback(async () =>{
+    if(!user)
+    {
+      return;
+    }
+    try{
+      const data = await getAvailabelReservations(Number(user.id));
+      console.log("Resrevations data: ", data);
+      setReservation(data);
+      setReservation(data);
+    }
+    catch(error){
+      setError('Failed to catch reservations.');
+      console.error(error);
+    }
+    finally{
+      setLoading(false);
+    }
+  }, [user]);
+  
   useEffect(()=>{
-    const fetchAllReservations = async () =>{
-      try{
-        const data = await getAvailabelReservations();
-        console.log("Resrevations data: ", data);
-        setReservation(data);
-        setReservation(data);
-      }
-      catch(error){
-        setError('Failed to catch reservations.');
-        console.error(error);
-      }
-      finally{
-        setLoading(false);
-      }
-    };
     fetchAllReservations();
-  }, []);
+  }, [fetchAllReservations]);
 
   useEffect(()=>{
     let filtered = [...reservations];
     if(conferenceNameFilter)
     {
       filtered = filtered.filter(reservation=>
-        reservation.Conference.Name.toLowerCase().includes(conferenceNameFilter.toLowerCase())
+        reservation.Conference?.Name.toLowerCase().includes(conferenceNameFilter.toLowerCase())
       );
     }
     
@@ -61,16 +73,16 @@ const AvailableReservationPage: React.FC = () => {
 
     if(dateFilter.from)
     {
-      filtered = filtered.filter(reservation => new Date(reservation.Conference.StartDate) >= new Date(dateFilter.from));
+      filtered = filtered.filter(reservation => new Date(reservation.Conference?.StartDate ?? "") >= new Date(dateFilter.from));
     }
     if(dateFilter.to)
     {
-      filtered = filtered.filter(reservation => new Date(reservation.Conference.EndDate) <= new Date(dateFilter.to));
+      filtered = filtered.filter(reservation => new Date(reservation.Conference?.EndDate ?? "") <= new Date(dateFilter.to));
     }
     
     if(groupFilter === 'Single')
     {
-      filtered = filtered.filter(reservation => reservation.NumberOfTickets == 1);
+      filtered = filtered.filter(reservation => reservation.NumberOfTickets === 1);
     }
     else if(groupFilter === 'Group')
     {
@@ -90,7 +102,35 @@ const AvailableReservationPage: React.FC = () => {
             return [...prevSelected, reservationId];
         }
     });
-};
+  };
+
+  const handleReservationsToDelete = async ()=>{
+    if(selectedReservations.length === 0)
+    {
+      return;
+    }
+    try
+    {
+      if(user)
+      {
+        await deleteReservations(selectedReservations, Number(user.id));
+        setSelectedReservations([]);
+        fetchAllReservations();
+      }
+      else
+      {
+        console.log('Unauthorized user is bad boy!'); //TODO: solve unauthorized user behavioral  
+        setToastType('error');
+        setToastMessage('Unauthorized user is bad boy!');
+      }
+    }
+    catch(error)
+    {
+      console.error(error);
+      setToastType('error');
+      setToastMessage((error as Error).message);
+    }
+  }
 
   if(loading)
   {
@@ -104,6 +144,9 @@ const AvailableReservationPage: React.FC = () => {
 
   return (
     <div className="container mx-auto p-6">
+    {toastMessage && (
+      <Toast message={toastMessage} onClose={closeToast} type={toastType} />
+    )}
     <h1 className="flex text-5xl justify-center font-bold mb-10">Available Reservations</h1>
     
     <div className='filters'>
@@ -147,7 +190,9 @@ const AvailableReservationPage: React.FC = () => {
     
     <div className="flex flex-row items-center justify-between mb-4">
       <div className="flex flex-row space-x-2">
-        <button className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
+        <button 
+          onClick={handleReservationsToDelete}
+          className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
           Delete
         </button>
       </div>
@@ -158,8 +203,7 @@ const AvailableReservationPage: React.FC = () => {
       <ReservationCard 
         reservation={reservation}
         onSelect={() => handleSelectReservation(reservation.Id, reservation.Ammount)}
-        isSelected={selectedReservations.includes(reservation.Id)}
-        pathToDetails={`${pathAvailableReservations}`}/>
+        isSelected={selectedReservations.includes(reservation.Id)}/>
     ))}
   </div>
 </div>
