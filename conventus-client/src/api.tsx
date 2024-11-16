@@ -104,9 +104,9 @@ export const getUnpaidReservations = async (user_id:number):Promise<Reservation[
 };
 
 
-export const getGuestReservations = async (user_id:number):Promise<Reservation[]> => {
+export const getGuestReservations = async (user_id:number, paid:boolean):Promise<Reservation[]> => {
     try {
-        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations/guest?user_id=${user_id}`);
+        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations/guest?user_id=${user_id}&paid=${paid}`);
         return response.data; // Assuming the API returns an array of reservations
     } catch (error) {
         handleAxiosError(error);

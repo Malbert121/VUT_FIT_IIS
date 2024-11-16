@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Reservation } from '../../data';
-import { pathConferences, pathUnpaidReservations, pathGuestReservations, pathAvailableReservations } from '../../Routes/Routes';
+import { pathConferences, pathUnpaidReservations, pathGuestReservations, pathMyReservations } from '../../Routes/Routes';
 import { putResirvationsToConfirm, putResirvationsToPay, deleteReservations } from '../../api';
 import { useUser } from '../../context/UserContext';
 import Toast from '../../Components/Toast/Toast';
@@ -59,7 +59,7 @@ const ReservationDetailCard: React.FC<Props> = ({reservation}) =>
           if(user)
           {
             await deleteReservations([reservation.Id], Number(user.id));
-            navigate(`../${pathAvailableReservations}`);
+            navigate(`../${pathMyReservations}`);
           }
           else
           {
