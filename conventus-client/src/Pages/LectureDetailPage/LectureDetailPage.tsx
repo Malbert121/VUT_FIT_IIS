@@ -4,7 +4,7 @@ import { getPresentation } from '../../api'; // Adjust the import based on your 
 import { Presentation } from '../../data'; // Adjust based on your structure
 import './LectureDetailPage.css'; // Ensure you have this CSS file
 
-const LectureDetailPage = () => {
+const LectureDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>(); // Get the ID from the URL
   const [presentation, setPresentation] = useState<Presentation | null>(null);
   const [loading, setLoading] = useState<boolean>(true);

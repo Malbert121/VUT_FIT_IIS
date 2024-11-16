@@ -16,10 +16,12 @@ import GuestReservationsPage from "../Pages/GuestReservationsPage/GuestReservati
 import AvailableReservationPage from "../Pages/AvailableReservationPage/AvailableReservationPage";
 import LectureDetailPage from "../Pages/LectureDetailPage/LectureDetailPage";
 import MyConferencesPage from "../Pages/MyConferencesPage/MyConferencesPage";
+import MyLecturesPage from "../Pages/MyLecturesPage/MyLecturesPage";
 
 export const pathConferences = "/conferences";
 export const pathMyConferences = "/myconferences";
 export const pathLectures = "/lectures";
+export const pathMyLectures = "/mylectures";
 export const pathReservations = "/reservations";
 export const pathAdmin = "/admin";
 export const pathAccount = "/account";
@@ -41,7 +43,8 @@ export const router = createBrowserRouter([
             {
                 path: pathConferences,
                 element: <PageContainer WrapperPage={ConferencesPage} sideBarFlag={true} />
-            }, {
+            },
+            {
                 path: pathMyConferences,
                 element: <PageContainer WrapperPage={MyConferencesPage} sideBarFlag={true} />
             },
@@ -54,8 +57,12 @@ export const router = createBrowserRouter([
                 element: <PageContainer WrapperPage={LecturesPage} sideBarFlag={true} />
             },
             {
-                path: `${pathLectures}/:id`, // Define the parameterized route for lecture details.
-                element: <PageContainer WrapperPage={LectureDetailPage} sideBarFlag={false}/> // Add your LectureDetailPage component here - TODO: side bar flag.
+                path: pathMyLectures,
+                element: <PageContainer WrapperPage={MyLecturesPage} sideBarFlag={true} />
+            },
+            {
+                path: `${pathLectures}/:id`,
+                element: <PageContainer WrapperPage={LectureDetailPage} sideBarFlag={true} />
             },
             {
                 path: pathAvailableReservations,  // TODO: add usersId
