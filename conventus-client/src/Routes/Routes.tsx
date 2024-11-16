@@ -16,9 +16,11 @@ import GuestReservationsPage from "../Pages/GuestReservationsPage/GuestReservati
 import AvailableReservationPage from "../Pages/AvailableReservationPage/AvailableReservationPage";
 import LectureDetailPage from "../Pages/LectureDetailPage/LectureDetailPage";
 import MyConferencesPage from "../Pages/MyConferencesPage/MyConferencesPage";
+import NewConferencePage from "../Pages/NewConferencePage/NewConferencePage";
 
 export const pathConferences = "/conferences";
 export const pathMyConferences = "/myconferences";
+export const pathCreateConference = "/myconferences/create";
 export const pathLectures = "/lectures";
 export const pathReservations = "/reservations";
 export const pathAdmin = "/admin";
@@ -44,6 +46,9 @@ export const router = createBrowserRouter([
             }, {
                 path: pathMyConferences,
                 element: <PageContainer WrapperPage={MyConferencesPage} sideBarFlag={true} />
+            },{
+                path: pathCreateConference,
+                element: <PageContainer WrapperPage={NewConferencePage} sideBarFlag={true} />
             },
             {
                 path: `${pathConferences}/:id`,
