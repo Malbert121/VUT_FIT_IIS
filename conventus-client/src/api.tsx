@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { User, Conference, Presentation, Reservation, Room, ApiMsg } from './data'; // Adjust the import path
+import { RegisterData, AuthResponse } from './data';
 
 
 // Function to fetch user data with token in headers
@@ -9,7 +10,7 @@ export const getUser = async (userId: number): Promise<User> => {
     if (!token) throw new Error('No token found');
 
     try {
-        const response = await axios.get<User>(`https://localhost:7156/api/User/${userId}`, {
+        const response = await axios.get<User>(`https://localhost:7156/api/Users/${userId}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -20,6 +21,23 @@ export const getUser = async (userId: number): Promise<User> => {
     }
 };
 
+
+export const getAnotherUser = async (userId: number): Promise<User> => {
+    try {
+        const response = await axios.get<User>(`https://localhost:7156/api/Users/${userId}`);
+        return response.data;
+    } catch (error) {
+        throw new Error('Failed to fetch user data');
+    }
+};
+export const registerUser = async (registerData: User) => {
+    try {
+        const response = await axios.post('https://localhost:7156/api/Auth/register', registerData);
+        alert("Registration successful!");
+    } catch (err) {
+        alert("Error occured");
+    }
+};
 
 // Fetch all users
 export const getAllUsers = async (): Promise<User[]> => {
@@ -189,6 +207,36 @@ export const putResirvationsToConfirm = async(reservationsIds:number[], flag:boo
     }
 }
 
+export const putResirvation = async (reservationsIds: number): Promise<ApiMsg> => {
+    try {
+        console.log(`reservations ids ${reservationsIds}`);
+        const response = await axios.put<{ message: string }>(`https://localhost:7156/api/Reservations/${reservationsIds}`);
+        return { success: true, msg: response.data.message };
+    }
+    catch (error) {
+        let errMsg: string | null = null;
+        if (axios.isAxiosError(error)) {
+
+            console.error('Error response:', error.response);
+            if (error.response?.status === 400) {
+                errMsg = 'The request body was invalid or empty';
+            }
+            else if (error.response?.status === 404) {
+                errMsg = 'No reservations found to update';
+            }
+            else if (error.response?.status === 500) {
+                errMsg = 'Internal server error';
+            }
+        }
+        else {
+            console.error('Unexpected error:', error);
+            errMsg = 'Unexpected error'
+        }
+
+        return { success: false, msg: errMsg };
+    }
+}
+
 // Fetch all rooms
 export const getAllRooms = async () => {
     try {
@@ -228,3 +276,33 @@ export const getDetailEdit = async (id: number, model: string) => {
         return null; // Return an empty array in case of an error
     }
 };
+
+export const postEntity = async (model: string, data: User | Conference | Reservation | Room | Presentation) => {
+    try {
+        const response = await axios.post(`https://localhost:7156/api/${model}`, data, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data; // Assuming the API returns an array of rooms
+    } catch (error) {
+        console.error("Error fetching rooms:", error);
+        return null; // Return an empty array in case of an error
+    }
+};
+
+export const putEntity = async (id: number, model: string, data: User | Conference | Reservation | Room | Presentation) => {
+    try {
+        const response = await axios.put(`https://localhost:7156/api/${model}/${id}`, data, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data; // Assuming the API returns an array of rooms
+    } catch (error) {
+        console.error("Error fetching rooms:", error);
+        return null; // Return an empty array in case of an error
+    }
+};
+
+

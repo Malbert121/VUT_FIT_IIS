@@ -50,6 +50,14 @@ const AdminPanelPage: React.FC = () => {
         window.location.reload();
     }
 
+    const handleEdit = (id: number) => {
+        navigate(`./edit/${id}`);
+    }
+
+    const handleCreate = () => {
+        navigate(`./create`);
+    }
+
     const handleSelectReservation = (reservationId: number, amount: number) => {
         setSelectedReservations((prevSelected) => {
             const isSelected = prevSelected.includes(reservationId);
@@ -175,7 +183,7 @@ const AdminPanelPage: React.FC = () => {
     
     if(groupFilter === 'Single')
     {
-      filtered = filtered.filter(reservation => reservation.NumberOfTickets == 1);
+      filtered = filtered.filter(reservation => reservation.NumberOfTickets === 1);
     }
     else if(groupFilter === 'Group')
     {
@@ -184,7 +192,14 @@ const AdminPanelPage: React.FC = () => {
 
     setReservationsFiltered(filtered);
 
-  },[conferenceNameFilter, statusFilter, dateFilter, groupFilter, reservations]);
+  }, [conferenceNameFilter, statusFilter, dateFilter, groupFilter, reservations]);
+    if (loading) {
+        return <div className="loading">Loading...</div>;
+    }
+
+    if (error) {
+        return <div className="error">Error: {error}</div>;
+    }
 
         if (showShow === "Conferences") {
 
@@ -368,6 +383,7 @@ const AdminPanelPage: React.FC = () => {
                         </button>
                         <button
                             className={`px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600`}
+                            onClick={() => handleEdit(lecture.Id)}
                         >
                             Edit
                         </button>
@@ -377,28 +393,39 @@ const AdminPanelPage: React.FC = () => {
             </div>)
         }
         if (showShow === "Users") {
-            return (<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                {users.map((user) => (
-                    <div key={user.Id} className="lecture-card">
-                        <h2 className="lecture-title">Username: {user.UserName || 'Untitled'}</h2>
-                        <p className="lecture-description">Email: {user.Email || 'No description available.'}</p>
-                        <p className="lecture-description">User ID: {user.Id || 'No description available.'}</p>
-                        <p className="lecture-description">Role: {user.Role === 1 ? 'Basic' : 'Admin'}</p>
-                        <button
-                            className={`px-4 py-2 rounded text-white bg-red-500 hover:bg-red-600`}
-                            onClick={() => handleDelete(user.Id, showShow)}
+            return (
+                <div>
+                    <div>
+                        <button className="ticket-button bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+                            onClick={() => handleCreate()}
                         >
-                            Delete
+                            Add new User
                         </button>
-                        <button
-                            className={`px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600`}
-                        >
-                            Edit
-                        </button>
-
                     </div>
-                ))}
-            </div>)
+                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                        {users.map((user) => (
+
+                            <div key={user.Id} className="lecture-card">
+                                <h2 className="lecture-title">Username: {user.UserName || 'Untitled'}</h2>
+                                <p className="lecture-description">Email: {user.Email || 'No description available.'}</p>
+                                <p className="lecture-description">User ID: {user.Id || 'No description available.'}</p>
+                                <p className="lecture-description">Role: {user.Role === 1 ? 'Basic' : 'Admin'}</p>
+                                <button
+                                    className={`px-4 py-2 rounded text-white bg-red-500 hover:bg-red-600`}
+                                    onClick={() => handleDelete(user.Id, showShow)}
+                                >
+                                    Delete
+                                </button>
+                                <button
+                                    className={`px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600`}
+                                    onClick={() => handleEdit(user.Id)}
+                                >
+                                    Edit
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>);
         }
         if (showShow === "Rooms") {
             return (<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">

@@ -8,12 +8,13 @@ import ReservationsPage from "../Pages/AvailableReservationPage/AvailableReserva
 import MainPage from "../Pages/MainPage/MainPage";
 import AdminPanelPage from "../Pages/AdminPanelPage/AdminPanelPage";
 import PageContainer from "../Components/PageContainer/PageContainer";
-import LoginPage from "../Pages/LoginPage/LoginPage"
+import LoginPage from "../Pages/LoginPage/LoginPage";
 import RegistrationPage from "../Pages/RegistrationPage/RegistrationPage";
 import ProtectedRoute from "../Components/ProtectedRoute/ProtectedRoute";
 import UnpaidReservationsPage from "../Pages/UnpaidReservationsPage/UnpaidReservationsPage";
 import ReservationDetailPage from "../Pages/ReservationDetailPage/ReservationDetailPage";
 import GuestReservationsPage from "../Pages/GuestReservationsPage/GuestReservationsPage";
+import UserEditPage from "../Pages/UserEditPage/UserEditPage";
 
 export const pathConferences = "/conferences";
 export const pathLectures = "/lectures";
@@ -89,6 +90,14 @@ export const router = createBrowserRouter([
             {
                 path: `${pathAdminReservationDetail}/:reservationId`,
                 element: <PageContainer WrapperPage={ReservationDetailPage} sideBarFlag={true} />,
+            },
+            {
+                path: `${pathAdmin}/Users/edit/:id`,
+                element: <PageContainer WrapperPage={UserEditPage} sideBarFlag={true} />,
+            },
+            {
+                path: `${pathAdmin}/Users/create/`,
+                element: <PageContainer WrapperPage={UserEditPage} sideBarFlag={true} />,
             },
             {
                 path: pathLogin,
