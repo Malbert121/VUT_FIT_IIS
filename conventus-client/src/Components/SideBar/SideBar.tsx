@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {Link, useLocation} from "react-router-dom";
 import './SideBar.css'
 import MenuButton from '../MenuButton/MenuButton';
-import { pathConferences, pathLectures, pathGuestReservations, pathUnpaidReservations, pathAvailableReservations } from '../../Routes/Routes';
+import { pathConferences,pathMyConferences, pathLectures, pathGuestReservations, pathUnpaidReservations, pathAvailableReservations } from '../../Routes/Routes';
 
 
 type Props = {};
@@ -28,7 +28,8 @@ const SideBar2:React.FC<Props> = () =>
           <div className="relative top-10 md:flex-col md:min-w-full flex flex-col list-none">
             {isOpen && (
               <>
-                {location.pathname.startsWith(pathConferences) && (
+                {(location.pathname.startsWith(pathConferences)||
+                location.pathname.startsWith(pathMyConferences)) && (
                   <>
                     <Link
                       to={pathConferences}
@@ -37,7 +38,7 @@ const SideBar2:React.FC<Props> = () =>
                       <h6 className="ml-3">All Conferences</h6>
                     </Link>
                     <Link
-                      to={pathConferences}
+                      to={pathMyConferences}
                       className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
                     >
                       <h6 className="ml-3">My Conferences</h6>

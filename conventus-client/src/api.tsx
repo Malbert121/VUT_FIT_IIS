@@ -40,6 +40,25 @@ export const getAllConferences = async (): Promise<Conference[]> => {
         return []; // Return an empty array in case of an error
     }
 };
+
+export const getMyConferences = async (userId: number): Promise<Conference[]> => {
+    try {
+        const response = await axios.get<Conference[]>(
+            `https://localhost:7156/api/Conferences/myConferences`,
+            { params: { user_id: userId } } // Pass the user_id as query parameter
+        );
+
+        if (response.status === 204) {
+            console.info("No conferences found for this user.");
+            return [];
+        }
+        console.log(response.data)
+        return response.data; // Return the array of conferences
+    } catch (error) {
+        console.error("Error fetching conferences by user:", error);
+        return []; // Return an empty array in case of an error
+    }
+};
 // Function to fetch a specific conference by ID
 export const getConference = async (id: number): Promise<Conference | null> => {
     try {
