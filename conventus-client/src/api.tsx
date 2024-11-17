@@ -117,27 +117,15 @@ export const getAllReservations = async ():Promise<Reservation[]> => {
     }
 };
 
-export const getAvailabelReservations = async (user_id:number):Promise<Reservation[]> => {
+export const getMyReservations = async (user_id:number, paid:boolean):Promise<Reservation[]> => {
     try {
-        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations/available?user_id=${user_id}`);
+        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations/my?user_id=${user_id}&paid=${paid}`);
         return response.data; // Assuming the API returns an array of reservations
     } catch (error) {
         handleAxiosError(error);
         return [];
     }
 };
-
-
-export const getUnpaidReservations = async (user_id:number):Promise<Reservation[]> => {
-    try {
-        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations/unpaid?user_id=${user_id}`);
-        return response.data; // Assuming the API returns an array of reservations
-    } catch (error) {
-        handleAxiosError(error);
-        return [];
-    }
-};
-
 
 export const getGuestReservations = async (user_id:number, paid:boolean):Promise<Reservation[]> => {
     try {
@@ -176,11 +164,11 @@ export const putResirvationsToPay = async(reservationsIds:number[], user_id:numb
     }
 }
 
-export const putResirvationsToConfirm = async(reservationsIds:number[], flag:boolean)=>{
+export const putResirvationsToConfirm = async(reservationsIds:number[], user_id:number, flag:boolean)=>{
     try
     {
         console.log(`reservations ids to confirm ${reservationsIds}`);
-        await axios.put<{message:string}>(`https://localhost:7156/api/Reservations/to_confirm?flag=${flag}`, reservationsIds);
+        await axios.put<{message:string}>(`https://localhost:7156/api/Reservations/to_confirm?user_id=${user_id}&flag=${flag}`, reservationsIds);
     }
     catch(error)
     {

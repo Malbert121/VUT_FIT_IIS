@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState, useCallback} from 'react';
 import ReservationCard from '../../Components/ReservationCard/ReservationCard';
 import { Reservation} from '../../data';
-import { getAvailabelReservations, getUnpaidReservations, putResirvationsToPay, deleteReservations } from '../../api';
+import { getMyReservations, putResirvationsToPay, deleteReservations } from '../../api';
 import { useUser } from '../../context/UserContext';
 import Toast from '../../Components/Toast/Toast';
 import SwitchButton from '../../Components/SwitchButton/SwitchButton';
@@ -45,12 +45,12 @@ const MyReservationsPage: React.FC = () => {
       }
       setIsAuthorized(true);
       if(isOn){  // paid
-          const data = await getAvailabelReservations(Number(user.id));
+          const data = await getMyReservations(Number(user.id), true);
           console.log("Resrevations data: ", data);
           setReservation(data);
       }
       else{
-          const data = await getUnpaidReservations(Number(user.id));
+          const data = await getMyReservations(Number(user.id), false);
           setReservation(data);
       }
     }

@@ -29,7 +29,6 @@ export const pathAccount = "/account";
 export const pathLogin = "/login";
 export const pathRegistration = "/registration";
 export const pathMyReservations = pathReservations;
-export const pathUnpaidReservations = `${pathReservations}/unpaids_reservations`;
 export const pathGuestReservations = `${pathReservations}/guest_reservations`;
 
 export const router = createBrowserRouter([

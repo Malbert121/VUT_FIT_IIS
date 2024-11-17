@@ -56,7 +56,7 @@ const GuestReservationsPage: React.FC = () => {
     finally{
       setLoading(false);
     }
-  }, [user]);
+  }, [user, isOn]);
 
   useEffect(()=>{
     fetchAllReservations();
@@ -131,11 +131,20 @@ const GuestReservationsPage: React.FC = () => {
     }
     try
     {
-      await putResirvationsToConfirm(selectedPaidReservations, flag);
+      if(user)
+      {
+      await putResirvationsToConfirm(selectedPaidReservations, Number(user.id), flag);
       setSelectedPaidReservations([]);
       setToastType("success");
       setToastMessage("User have successfully confirmed reservations.");
       fetchAllReservations();
+      }
+      else
+      {
+        console.log('Unauthorized user is bad boy!'); //TODO: solve unauthorized user behavioral  
+        setToastType('error');
+        setToastMessage('Unauthorized user is bad boy!');
+      }
     }
     catch(error)
     {

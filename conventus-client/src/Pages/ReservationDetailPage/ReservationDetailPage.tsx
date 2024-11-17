@@ -73,10 +73,18 @@ const ReservationDetailPage: React.FC<Props> = () => {
 
     const handleReservationsToConfirm = async (flag:boolean)=>{
         try{
-            await putResirvationsToConfirm([reservation.Id], flag);
+            if(user)
+            {
+            await putResirvationsToConfirm([reservation.Id], Number(user.id), flag);
             setToastType("success");
             setToastMessage("User have successfully confirmed reservation.");
             fetchReservation();
+            }
+            else{
+                console.log('Unauthorized user is bad boy!'); //TODO: solve unauthorized user behavioral  
+                setToastType('error');
+                setToastMessage('Unauthorized user is bad boy!');
+            }
         }
         catch(error){
             console.error(error);

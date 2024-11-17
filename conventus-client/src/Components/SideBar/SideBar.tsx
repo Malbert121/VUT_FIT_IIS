@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {Link, useLocation} from "react-router-dom";
 import './SideBar.css'
 import MenuButton from '../MenuButton/MenuButton';
-import { pathConferences,pathMyConferences, pathMyReservations, pathLectures, pathGuestReservations, pathUnpaidReservations } from '../../Routes/Routes';
+import { pathConferences,pathMyConferences, pathMyReservations, pathLectures, pathGuestReservations} from '../../Routes/Routes';
 
 
 type Props = {};
@@ -62,7 +62,6 @@ const SideBar:React.FC<Props> = () =>
                   </>
                 )}
                 {(location.pathname.startsWith(pathMyReservations) 
-                  ||location.pathname.startsWith(pathUnpaidReservations) 
                   || location.pathname.startsWith(pathGuestReservations) ) 
                   && (
                   <>
