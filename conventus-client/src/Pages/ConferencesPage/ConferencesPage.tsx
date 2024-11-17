@@ -108,6 +108,8 @@ function ConferencesPage() {
         ReservationDate: new Date().toISOString()
       };
       await postReservations(reservation, user_id);
+      setToastType("success");
+      setToastMessage("User have successfully created new reservation.");
       fetchConferences();
     }
     catch(error)

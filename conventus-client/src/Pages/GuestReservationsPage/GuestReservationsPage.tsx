@@ -134,6 +134,8 @@ const GuestReservationsPage: React.FC = () => {
     {
       await putResirvationsToConfirm(selectedPaidReservations, flag);
       setSelectedPaidReservations([]);
+      setToastType("success");
+      setToastMessage("User have successfully confirmed reservations.");
       fetchAllReservations();
     }
     catch(error)
@@ -155,6 +157,8 @@ const GuestReservationsPage: React.FC = () => {
       {
         await deleteReservations(selectedPaidReservations, Number(user.id));
         setSelectedPaidReservations([]);
+        setToastType("success");
+        setToastMessage("User have successfully deleted reservations.");
         fetchAllReservations();
       }
       else
@@ -183,6 +187,8 @@ const GuestReservationsPage: React.FC = () => {
       {
         await deleteReservations(selectedUnPaidReservations, Number(user.id));
         setSelectedUnPaidReservations([]);
+        setToastType("success");
+        setToastMessage("User have successfully deleted reservations.");
         fetchAllReservations();
       }
       else

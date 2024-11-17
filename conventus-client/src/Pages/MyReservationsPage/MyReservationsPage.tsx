@@ -132,6 +132,8 @@ const MyReservationsPage: React.FC = () => {
       await putResirvationsToPay(selectedUnPaidReservations, Number(user?.id));
       setSelectedUnPaidReservations([]);
       setTotalAmount(0);
+      setToastType("success");
+      setToastMessage("User have successfully paid reservations.");
       fetchAllReservations();
     }
     catch(error){
@@ -150,6 +152,8 @@ const MyReservationsPage: React.FC = () => {
         await deleteReservations(selectedPaidReservations, Number(user.id));
         setSelectedPaidReservations([]);
         setTotalAmount(0);
+        setToastType("success");
+        setToastMessage("User have successfully deleted reservations.");
         fetchAllReservations();
       }
       else{
@@ -174,6 +178,8 @@ const MyReservationsPage: React.FC = () => {
         await deleteReservations(selectedUnPaidReservations, Number(user.id));
         setSelectedUnPaidReservations([]);
         setTotalAmount(0);
+        setToastType("success");
+        setToastMessage("User have successfully deleted reservations.");
         fetchAllReservations();
       }
       else{
