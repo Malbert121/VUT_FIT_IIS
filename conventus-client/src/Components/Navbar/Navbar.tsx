@@ -8,7 +8,7 @@ import {
   pathAccount,
   pathLectures,
   pathAdmin,
-  pathAvailableReservations,
+  pathMyReservations,
 } from '../../Routes/Routes';
 
 interface Props {
@@ -36,7 +36,7 @@ const Navbar: React.FC<Props> = ({ updateSideBar }) => {
             <Link to={`../${pathConferences}`} className="text-black hover:text-darkBlue">
               Conferences
             </Link>
-            <Link to={`../${pathAvailableReservations}`} className="text-black hover:text-darkBlue">
+            <Link to={`../${pathMyReservations}`} className="text-black hover:text-darkBlue">
               Reservations
             </Link>
             <Link to={`../${pathLectures}`} className="text-black hover:text-darkBlue">
@@ -97,7 +97,7 @@ const Navbar: React.FC<Props> = ({ updateSideBar }) => {
             <Link to={`../${pathConferences}`} className="text-black hover:text-darkBlue">
               Conferences
             </Link>
-            <Link to={`../${pathAvailableReservations}`} className="text-black hover:text-darkBlue">
+            <Link to={`../${pathMyReservations}`} className="text-black hover:text-darkBlue">
               Reservations
             </Link>
             <Link to={`../${pathLectures}`} className="text-black hover:text-darkBlue">

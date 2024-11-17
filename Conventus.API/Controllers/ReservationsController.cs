@@ -93,6 +93,7 @@ namespace Conventus.API.Controllers
         /// Retrieves all guest reservations for a specific user.
         /// </summary>
         /// <param name="user_id">The ID of the user whose guest reservations are being retrieved.</param>
+        /// <param name="paid">Boolean flag for filtering out data based on their paid status.</param>
         /// <returns>All guest reservations for the specified user.</returns>
         /// <response code="200">Returns a list of guest reservations</response>
         /// <response code="400">Invalid user ID or request parameters</response>
@@ -103,7 +104,7 @@ namespace Conventus.API.Controllers
         [SwaggerResponse(400, "Invalid user ID or request parameters")]
         [SwaggerResponse(500, "Internal server error")]
         [HttpGet("guest")]
-        public ActionResult<IEnumerable<Reservation>> GetGuestReservations([FromQuery] int user_id) // TODO: add user context
+        public ActionResult<IEnumerable<Reservation>> GetGuestReservations([FromQuery] int user_id, [FromQuery] bool paid) // TODO: add user context
         {
             try
             {
@@ -114,9 +115,9 @@ namespace Conventus.API.Controllers
                 }
                 if (user.Role == Role.Admin)
                 {
-                    return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => r.IsPaid));
+                    return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => r.IsPaid == paid));
                 }
-                return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => r.IsPaid && r.Conference.OrganizerId == user_id));
+                return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => r.IsPaid == paid && r.Conference.OrganizerId == user_id));
             }
             catch (Exception ex)
             {

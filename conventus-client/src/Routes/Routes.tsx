@@ -10,10 +10,9 @@ import PageContainer from "../Components/PageContainer/PageContainer";
 import LoginPage from "../Pages/LoginPage/LoginPage"
 import RegistrationPage from "../Pages/RegistrationPage/RegistrationPage";
 import ProtectedRoute from "../Components/ProtectedRoute/ProtectedRoute";
-import UnpaidReservationsPage from "../Pages/UnpaidReservationsPage/UnpaidReservationsPage";
+import MyReservationsPage from "../Pages/MyReservationsPage/MyReservationsPage";
 import ReservationDetailPage from "../Pages/ReservationDetailPage/ReservationDetailPage";
 import GuestReservationsPage from "../Pages/GuestReservationsPage/GuestReservationsPage";
-import AvailableReservationPage from "../Pages/AvailableReservationPage/AvailableReservationPage";
 import LectureDetailPage from "../Pages/LectureDetailPage/LectureDetailPage";
 import MyConferencesPage from "../Pages/MyConferencesPage/MyConferencesPage";
 import NewConferencePage from "../Pages/NewConferencePage/NewConferencePage";
@@ -27,7 +26,7 @@ export const pathAdmin = "/admin";
 export const pathAccount = "/account";
 export const pathLogin = "/login";
 export const pathRegistration = "/registration";
-export const pathAvailableReservations = pathReservations;
+export const pathMyReservations = pathReservations;
 export const pathUnpaidReservations = `${pathReservations}/unpaids_reservations`;
 export const pathGuestReservations = `${pathReservations}/guest_reservations`;
 
@@ -63,19 +62,15 @@ export const router = createBrowserRouter([
                 element: <PageContainer WrapperPage={LectureDetailPage} sideBarFlag={false}/> // Add your LectureDetailPage component here - TODO: side bar flag.
             },
             {
-                path: pathAvailableReservations,  // TODO: add usersId
-                element: <PageContainer WrapperPage={AvailableReservationPage} sideBarFlag={true}/>
-            },
-            {
-                path: pathUnpaidReservations,  // TODO: add usersId
-                element: <PageContainer WrapperPage={UnpaidReservationsPage} sideBarFlag={true}/>,
+                path: pathMyReservations,  // TODO: add usersId
+                element: <PageContainer WrapperPage={MyReservationsPage} sideBarFlag={true}/>
             },
             {
                 path: pathGuestReservations,  // TODO: add usersId
                 element: <PageContainer WrapperPage={GuestReservationsPage} sideBarFlag={true}/>,
             },
             {
-                path: `${pathAvailableReservations}/:reservationId`,  // TODO: add usersId
+                path: `${pathMyReservations}/:reservationId`,  // TODO: add usersId
                 element: <PageContainer WrapperPage={ReservationDetailPage} sideBarFlag={true}/>,
             },
             {
