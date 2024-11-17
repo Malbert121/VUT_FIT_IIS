@@ -33,6 +33,7 @@ namespace Conventus.API
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
        .AddJwtBearer(options =>
        {
+           options.SaveToken = true;
            options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
            {
                ValidateIssuer = true,
@@ -79,7 +80,9 @@ namespace Conventus.API
             app.UseCors("AllowAll");
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
 
 
             app.MapControllers();
