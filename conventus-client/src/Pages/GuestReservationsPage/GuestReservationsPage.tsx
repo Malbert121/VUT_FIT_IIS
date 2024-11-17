@@ -3,7 +3,6 @@ import { useEffect, useState, useCallback } from 'react';
 import ReservationCard from '../../Components/ReservationCard/ReservationCard';
 import { Reservation} from '../../data';
 import { getGuestReservations, putResirvationsToConfirm, deleteReservations } from '../../api';
-import { pathGuestReservations } from '../../Routes/Routes';
 import SwitchButton from '../../Components/SwitchButton/SwitchButton';
 import { useUser } from '../../context/UserContext';
 import Toast from '../../Components/Toast/Toast';

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Reservation } from '../../data';
-import { pathConferences, pathUnpaidReservations, pathGuestReservations, pathMyReservations } from '../../Routes/Routes';
+import { pathConferences, pathMyReservations } from '../../Routes/Routes';
 import { putResirvationsToConfirm, putResirvationsToPay, deleteReservations } from '../../api';
 import { useUser } from '../../context/UserContext';
 import Toast from '../../Components/Toast/Toast';
@@ -19,7 +19,6 @@ const ReservationDetailCard: React.FC<Props> = ({reservation}) =>
     : reservation.IsConfirmed 
         ? ['Confirmed', 'green'] 
         : ['Unconfirmed', 'yellow'];
-    const location = useLocation();
     const navigate = useNavigate();
     const user = useUser();
     const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -79,6 +78,9 @@ const ReservationDetailCard: React.FC<Props> = ({reservation}) =>
 
     return (
         <>
+        {toastMessage && (
+        <Toast message={toastMessage} onClose={closeToast} type={toastType} />
+        )}
         {(user?.role === 'Admin' || Number(user?.id) === reservation.Conference?.OrganizerId  || Number(user?.id) === reservation.UserId) &&(
         <div className='flex flex-col max-w-[800px] mx-auto p-5 border border-gray-300 rounded-lg shadow-md bg-white-100'>
             <h1 className='text-center text-2xl font-semibold'>Reservation #{reservation.Id}</h1>
