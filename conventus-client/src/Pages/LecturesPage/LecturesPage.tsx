@@ -83,7 +83,7 @@ const LecturesPage: React.FC = () => {
   return (
     <div className="LecturesPage">
       <h1 className="title">All Lectures</h1>
-      <p className="description">Welcome to the Lectures page. Here you can find information about upcoming and past lectures.</p>
+      <p className="description">Here you can find information about upcoming and past lectures.</p>
       <div className="filters">
         <input
           type="text"
@@ -118,7 +118,13 @@ const LecturesPage: React.FC = () => {
             <Link to={`./${presentation.Id}`}>
               <h2 className="presentation-title">{presentation.Title || 'Untitled'}</h2>
             </Link>
+            <p className="presentation-conference">
+              <strong>Conference Name</strong> {/* TODO: Use lazy loading to get ConferenceName for Lecture */}
+            </p>
             <p className="presentation-description">{presentation.Description || 'No description available.'}</p>
+            <p className="presentation-tags">
+              <strong>Tags:</strong> {presentation.Tags || 'No tags.'}
+            </p>
             <p className="presentation-dates">
               <strong>Start Time:</strong> {presentation.StartTime} <br />
               <strong>End Time:</strong> {presentation.EndTime}

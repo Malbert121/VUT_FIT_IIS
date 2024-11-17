@@ -46,7 +46,14 @@
     color: #2c5282; /* Darker blue color */
 }
 
-.presentation-description {
+.presentation-conference {
+    font-size: 1.1rem;
+    text-align: center;
+    color: #2c5282;
+}
+
+.presentation-description,
+.presentation-tags {
     color: #4a5568; /* Medium gray text color */
     margin: 10px 0; /* Add margin for spacing */
 }
