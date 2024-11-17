@@ -164,24 +164,19 @@ namespace Conventus.API.Controllers.Base
         [SwaggerResponse(200, "The execution was successful")]
         [SwaggerResponse(400, "The request was invalid")]
         [HttpDelete("{id}")]
-        public ActionResult<T> DeleteOne(int id, T entity)
+        public ActionResult DeleteOne(int id)
         {
-            if (id != entity.Id)
-            {
-                return BadRequest();
-            }
             try
             {
-                MainRepo.Delete(entity);
+                MainRepo.Delete(id); // Assuming MainRepo handles the deletion using the id.
             }
             catch (Exception ex)
             {
-                //Should handle more gracefully
+                // Handle the error gracefully
                 return new BadRequestObjectResult(ex.GetBaseException()?.Message);
             }
 
             return Ok();
         }
-
     }
 }

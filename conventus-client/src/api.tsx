@@ -199,6 +199,15 @@ export const deleteReservations = async (reservationsIds:number[], user_id:numbe
     }   
 }
 
+
+export const deleteConference = async (conferenceId: number): Promise<void> => {
+  try {
+    await axios.delete(`https://localhost:7156/api/Conferences/${conferenceId}`); // Replace with your actual endpoint
+  } catch (error) {
+    throw new Error('Failed to delete the conference');
+  }
+};
+
 // Fetch all rooms
 export const getAllRooms = async () => {
     try {

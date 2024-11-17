@@ -92,7 +92,7 @@ namespace Conventus.DAL.Repositories.Base
             return persist ? SaveChanges() : 0;
         }
 
-        public int Delete(int id, byte[] timeStamp, bool persist = true)
+        public int Delete(int id, bool persist = true)
         {
             var entity = new T { Id = id };
             Context.Entry(entity).State = EntityState.Deleted;
