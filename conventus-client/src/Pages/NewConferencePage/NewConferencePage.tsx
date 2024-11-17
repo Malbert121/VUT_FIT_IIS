@@ -72,7 +72,7 @@ const NewConferencePage: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen  py-12 flex items-center justify-center">
+        <div className="mx-auto">
             <div className="max-w-4xl w-full bg-white shadow-xl rounded-lg p-10">
                 <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">Create a New Conference</h1>
 
