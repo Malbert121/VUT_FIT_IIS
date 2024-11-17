@@ -59,6 +59,22 @@ export const getMyConferences = async (userId: number): Promise<Conference[]> =>
         return []; // Return an empty array in case of an error
     }
 };
+export const updateConference = async (id: number, conferenceData: Conference) => {
+    const response = await fetch(`https://localhost:7156/api/Conferences/${id}`, {
+      method: 'PUT', // or 'PATCH'
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(conferenceData),
+    });
+  
+    if (!response.ok) {
+      throw new Error('Failed to update conference');
+    }
+  
+    return await response.json();
+  };
+  
 // Function to fetch a specific conference by ID
 export const getConference = async (id: number): Promise<Conference | null> => {
     try {

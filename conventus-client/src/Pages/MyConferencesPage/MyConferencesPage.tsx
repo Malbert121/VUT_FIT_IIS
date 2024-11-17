@@ -68,7 +68,6 @@ function MyConferencesPage() {
     setFilteredConferences(filtered);
   }, [genreFilter, locationFilter, searchTerm, sortOption, conferences]);
 
-
   const handleDelete = async (conferenceId: number) => {
     if (window.confirm('Are you sure you want to delete this conference?')) {
       try {
@@ -82,7 +81,6 @@ function MyConferencesPage() {
       }
     }
   };
-  
 
   if (loading) return <div>Loading...</div>;
 
@@ -157,6 +155,12 @@ function MyConferencesPage() {
               <strong>Price:</strong> ${conference.Price}
             </p>
             <div className="flex justify-between mt-4">
+              <Link
+                to={`/myconferences/edit/${conference.Id}`}
+                className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+              >
+                Edit
+              </Link>
               <button
                 onClick={() => handleDelete(conference.Id)}
                 className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
