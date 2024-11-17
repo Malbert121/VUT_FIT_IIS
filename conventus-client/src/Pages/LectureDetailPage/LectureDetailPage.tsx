@@ -36,7 +36,14 @@ const LectureDetailPage: React.FC = () => {
 
   const deleteLecture = () => {
     console.log("Delete button clicked.");
-    // TODO: Do something.
+    const confirmed = window.confirm("Are you sure you want to delete this lecture?");
+    if (confirmed) {
+      // TODO: Delete lecture from the user.
+      console.log("Lecture deleted.");
+      navigate(-1);
+    } else {
+      console.log("Deletion cancelled.");
+    }
   }
 
   if (loading) {
