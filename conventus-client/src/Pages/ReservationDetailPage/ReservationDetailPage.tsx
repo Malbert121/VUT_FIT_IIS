@@ -9,6 +9,7 @@ interface Props{}
 const ReservationDetailPage: React.FC<Props> = () => {
     const user = useUser();
     const { reservationId } = useParams<{ reservationId: string }>();
+    const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
     const [reservation, setReservation] = useState<Reservation | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -22,6 +23,7 @@ const ReservationDetailPage: React.FC<Props> = () => {
                 return;
             }
             console.log("Fetching reservation with ID:", reservationId);
+            setIsAuthorized(true);
             try
             {
                 const data = await getReservation(Number(reservationId), Number(user.id));
@@ -39,6 +41,10 @@ const ReservationDetailPage: React.FC<Props> = () => {
         };
         fetchReservation();
     }, [reservationId, user])
+    
+    if(!isAuthorized){
+        return <div className="error">User should be authorized for interaction with reservations.</div>;
+    }
     
     if (loading) {
         return <div className="loading">Loading reservation details...</div>;

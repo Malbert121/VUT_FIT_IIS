@@ -15,6 +15,7 @@ const GuestReservationsPage: React.FC = () => {
   const [reservationsFiltered, setReservationsFiltered] = useState<Reservation[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
   const [selectedPaidReservations, setSelectedPaidReservations] = useState<number[]>([]);
   const [selectedUnPaidReservations, setSelectedUnPaidReservations] = useState<number[]>([]);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -39,11 +40,12 @@ const GuestReservationsPage: React.FC = () => {
   
   
   const fetchAllReservations = useCallback(async () =>{
-    if(!user)
-    {
-      return;
-    }
     try{
+      if(!user)
+      {
+        return;
+      }
+      setIsAuthorized(true);
       const data = await getGuestReservations(Number(user.id), isOn);
       console.log("Resrevations data: ", data);
       setReservation(data);
@@ -196,6 +198,10 @@ const GuestReservationsPage: React.FC = () => {
       setToastType('error');
       setToastMessage((error as Error).message);
     }
+  }
+
+  if(!isAuthorized){
+    return <div className="error">User should be authorized for interaction with reservations.</div>;
   }
 
   if(loading)

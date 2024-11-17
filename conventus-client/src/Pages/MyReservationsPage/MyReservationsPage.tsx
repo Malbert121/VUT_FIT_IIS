@@ -14,6 +14,7 @@ const MyReservationsPage: React.FC = () => {
   const [reservationsFiltered, setReservationsFiltered] = useState<Reservation[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [selectedPaidReservations, setSelectedPaidReservations] = useState<number[]>([]);
   const [selectedUnPaidReservations, setSelectedUnPaidReservations] = useState<number[]>([]);
@@ -38,19 +39,20 @@ const MyReservationsPage: React.FC = () => {
   const closeToast = () => setToastMessage(null);
   
   const fetchAllReservations = useCallback(async () =>{
-    if(!user){
-      return;
-    }
     try{
-        if(isOn){  // paid
-            const data = await getAvailabelReservations(Number(user.id));
-            console.log("Resrevations data: ", data);
-            setReservation(data);
-        }
-        else{
-            const data = await getUnpaidReservations(Number(user.id));
-            setReservation(data);
-        }
+      if(!user){
+        return;
+      }
+      setIsAuthorized(true);
+      if(isOn){  // paid
+          const data = await getAvailabelReservations(Number(user.id));
+          console.log("Resrevations data: ", data);
+          setReservation(data);
+      }
+      else{
+          const data = await getUnpaidReservations(Number(user.id));
+          setReservation(data);
+      }
     }
     catch(error){
       setError('Failed to catch reservations.');
@@ -185,6 +187,10 @@ const MyReservationsPage: React.FC = () => {
       setToastType('error');
       setToastMessage((error as Error).message);
     }
+  }
+
+  if(!isAuthorized){
+    return <div className="error">User should be authorized for interaction with reservations.</div>;
   }
 
   if(loading){
