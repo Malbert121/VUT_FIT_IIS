@@ -74,9 +74,9 @@ ul {
     margin-top: 20px; /* Add space above the buttons */
 }
 
-.edit-details-button {
+.cancel-edit-button {
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #6c757d; /* Gray color */
     color: white;
     border: none;
     border-radius: 5px;
@@ -84,13 +84,13 @@ ul {
     font-size: 16px;
 }
 
-.edit-details-button:hover {
-    background-color: #0056b3;
+.cancel-edit-button:hover {
+    background-color: #5a6268; /* Darker gray on hover */
 }
 
-.delete-button {
+.save-changes-button {
     padding: 10px 20px;
-    background-color: #dc3545;
+    background-color: #28a745; /* Green color */
     color: white;
     border: none;
     border-radius: 5px;
@@ -98,6 +98,6 @@ ul {
     font-size: 16px;
 }
 
-.delete-button:hover {
-    background-color: #c82333;
+.save-changes-button:hover {
+    background-color: #218838; /* Darker green on hover */
 }

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getPresentation } from '../../api'; // Adjust the import based on your structure
 import { Presentation } from '../../data'; // Adjust based on your structure
-import './LectureDetailPage.css'; // Ensure you have this CSS file
+import './EditLecturePage.css'; // Ensure you have this CSS file
 
-const LectureDetailPage: React.FC = () => {
+const EditLecturePage: React.FC = () => {
   const { id } = useParams<{ id: string }>(); // Get the ID from the URL
   const navigate = useNavigate();
   const [presentation, setPresentation] = useState<Presentation | null>(null);
@@ -29,13 +29,13 @@ const LectureDetailPage: React.FC = () => {
     fetchPresentation();
   }, [id]);
 
-  const editLectureDetails = () => {
-    console.log("Edit Details button clicked.");
-    navigate("edit");
-  };
+  const cancelLectureEdit = () => {
+    console.log("Cancel Edit button clicked.");
+    navigate(-1);
+  }
 
-  const deleteLecture = () => {
-    console.log("Delete button clicked.");
+  const saveLectureChanges = () => {
+    console.log("Save Changes button clicked.");
     // TODO: Do something.
   }
 
@@ -53,10 +53,8 @@ const LectureDetailPage: React.FC = () => {
 
   return (
     <div className="presentation-detail">
-      <h1 className="presentation-title">{presentation.Title}</h1>
-      <Link to={`/conferences/${presentation.ConferenceId}`}>
-        <h2 className="presentation-conference">{presentation.Conference?.Name}</h2>
-      </Link>
+      <h1 className="presentation-title">Edit {presentation.Title}</h1>
+      <h2 className="presentation-conference">{presentation.Conference?.Name}</h2>
       <div className="description-container">
         <p className="presentation-description">{presentation.Description}</p>
       </div>
@@ -76,13 +74,13 @@ const LectureDetailPage: React.FC = () => {
         <p><strong>Email:</strong> {presentation.Speaker.Email || "Email is not specified."}</p>
       </div>
       <div className="button-container">
-        {/* Edit Details Button. */}
-        <button className="edit-details-button" onClick={editLectureDetails}>Edit Details</button>
-        {/* Delete Button. */}
-        <button className="delete-button" onClick={deleteLecture}>Delete Lecture</button>
+        {/* Cancel Edit Button. */}
+        <button className="cancel-edit-button" onClick={cancelLectureEdit}>Cancel Edit</button>
+        {/* Save Changes Button */}
+        <button className="save-changes-button" onClick={saveLectureChanges}>Save Changes</button>
       </div>
     </div>
   );
 };
 
-export default LectureDetailPage;
+export default EditLecturePage;
