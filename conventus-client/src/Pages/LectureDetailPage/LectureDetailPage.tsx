@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { getPresentation } from '../../api'; // Adjust the import based on your structure
 import { Presentation } from '../../data'; // Adjust based on your structure
 import './LectureDetailPage.css'; // Ensure you have this CSS file
@@ -43,19 +43,26 @@ const LectureDetailPage: React.FC = () => {
   return (
     <div className="presentation-detail">
       <h1 className="presentation-title">{presentation.Title}</h1>
+      <Link to={`/conferences/${presentation.ConferenceId}`}>
+        <h2 className="presentation-conference">{presentation.Conference?.Name}</h2>
+      </Link>
       <div className="description-container">
         <p className="presentation-description">{presentation.Description}</p>
       </div>
       <div className="info-container">
-        <p><strong>Tags:</strong> {presentation.Tags}</p>
-        {/* TODO: add photos and pictures. */}
-        <p><strong>Start Time:</strong> {presentation.StartTime}</p>
-        <p><strong>End Time:</strong> {presentation.EndTime}</p>
-        <p><strong>Room:</strong> {presentation.Room.Name}</p>
+        <p className="presentation-tags"><strong>Tags:</strong> {presentation.Tags || "Tags are not specified."}</p>
+        <p className="presentation-location"><strong>Location:</strong> {presentation.Conference?.Location || "Location is not specified."}</p>
+        <p className="presentation-room"><strong>Room:</strong> {presentation.Room.Name || "Room is not specified."}</p>
+        <p className="presentation-dates">
+          <strong>Start Time:</strong> {presentation.StartTime} <br />
+          <strong>End Time:</strong> {presentation.EndTime}
+        </p>
       </div>
+      {/* TODO: add photos and pictures. */}
       <div className="speaker-info">
         <h3>Speaker Information</h3>
-        <p><strong>Speaker:</strong> {presentation.Speaker.UserName}</p>
+        <p><strong>Speaker:</strong> {presentation.Speaker.UserName || "Speaker is not specified."}</p>
+        <p><strong>Email:</strong> {presentation.Speaker.Email || "Email is not specified."}</p>
       </div>
     </div>
   );

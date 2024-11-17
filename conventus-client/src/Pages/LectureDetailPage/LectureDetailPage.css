@@ -8,7 +8,8 @@
     background-color: #f9f9f9; /* Light background */
 }
 
-.presentation-title {
+.presentation-title,
+.presentation-conference {
     text-align: center; /* Center the title */
     font-size: 2em; /* Larger font size */
     margin-bottom: 10px; /* Space below title */
@@ -27,6 +28,18 @@
 
 .info-container {
     text-align: right; /* Align information to the right */
+}
+
+.presentation-tags,
+.presentation-location,
+.presentation-room {
+    color: #4a5568; /* Medium gray text color */
+    margin: 10px 0; /* Add margin for spacing */
+}
+
+.presentation-dates {
+    color: #4a5568; /* Medium gray text color */
+    margin: 5px 0; /* Add margin for spacing */
 }
 
 .speaker-info {
