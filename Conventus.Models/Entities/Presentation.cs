@@ -15,6 +15,5 @@ public class Presentation : BaseEntity
     public int SpeakerId { get; set; }
     public virtual User? Speaker { get; set; }
     public int ConferenceId { get; set; }
-    [JsonIgnore]
     public virtual Conference? Conference { get; set; }
 }

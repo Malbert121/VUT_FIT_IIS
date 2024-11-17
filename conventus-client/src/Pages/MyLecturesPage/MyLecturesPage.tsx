@@ -118,12 +118,10 @@ const MyLecturesPage: React.FC = () => {
             <Link to={`/lectures/${presentation.Id}`}>
               <h2 className="presentation-title">{presentation.Title || 'Untitled'}</h2>
             </Link>
-            <p className="presentation-conference">
-              <strong>Conference Name</strong> {/* TODO: Use lazy loading to get ConferenceName for Lecture */}
-            </p>
+            <p className="presentation-conference">{presentation.Conference?.Name || 'No conference available.'}</p>
             <p className="presentation-description">{presentation.Description || 'No description available.'}</p>
             <p className="presentation-tags">
-              <strong>Tags:</strong> {presentation.Tags || 'No tags.'}
+              <strong>Tags:</strong> {presentation.Tags}
             </p>
             <p className="presentation-dates">
               <strong>Start Time:</strong> {presentation.StartTime} <br />

@@ -60,7 +60,8 @@ export interface Presentation {
     Room: Room; // Room details
     SpeakerId: number; 
     Speaker: User; // Speaker details
-    ConferenceId: number; 
+    ConferenceId: number;
+    Conference: Conference|null; // TODO:solve null
 }
 
 export interface Reservation {
