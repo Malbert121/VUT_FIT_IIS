@@ -24,7 +24,7 @@ const RegistrationPage: React.FC = () => {
     };
 
     return (
-        <div className=" mx-auto items-center justify-center min-h-screen">
+        <div className=" mx-auto flex items-center justify-center min-h-screen">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full sm:w-96">
                 <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
                 <form onSubmit={handleRegister}>
