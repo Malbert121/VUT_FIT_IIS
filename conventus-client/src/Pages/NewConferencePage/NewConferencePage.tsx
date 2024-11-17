@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useUser } from "../../context/UserContext"; // Import useUser hook
-
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 const NewConferencePage: React.FC = () => {
     const user = useUser(); // Get the user data
-
+    const navigate = useNavigate(); // Initialize useNavigate for navigation
     const [conferenceData, setConferenceData] = useState({
         name: "",
         description: "",
@@ -20,7 +20,7 @@ const NewConferencePage: React.FC = () => {
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
+    const [isSubmitDisabled, setIsSubmitDisabled] = useState(false); // State to control submit button
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setConferenceData({
@@ -31,10 +31,21 @@ const NewConferencePage: React.FC = () => {
 
     const createConference = async () => {
         try {
+            if (new Date(conferenceData.startDate) >= new Date(conferenceData.endDate)) {
+                setErrorMessage("Start date must be earlier than the end date.");
+                setSuccessMessage(null);
+                return;
+            }
             const response = await axios.post("https://localhost:7156/api/conferences", conferenceData);
             setSuccessMessage("Conference created successfully!");
             setErrorMessage(null);
             console.log("Conference Created:", response.data);
+            // Redirect to the previous page after success
+             // Disable the submit button and change its text
+             setIsSubmitDisabled(true);
+            setTimeout(() => {
+                navigate(-1); // Go back to the previous page
+            }, 2000); // Optional delay for user to see success message
         } catch (error: any) {
             setErrorMessage(error.response?.data?.message || "Failed to create the conference.");
             setSuccessMessage(null);
@@ -149,28 +160,28 @@ const NewConferencePage: React.FC = () => {
                         ></textarea>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label className="block text-gray-700 font-medium">Start Date</label>
-                            <input
-                                type="datetime-local"
-                                name="startDate"
-                                value={conferenceData.startDate}
-                                onChange={handleInputChange}
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-gray-700 font-medium">End Date</label>
-                            <input
-                                type="datetime-local"
-                                name="endDate"
-                                value={conferenceData.endDate}
-                                onChange={handleInputChange}
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                required
-                            />
-                        </div>
+                    <div>
+                        <label className="block text-gray-700 font-medium">Start Date</label>
+                        <input
+                            type="datetime-local"
+                            name="startDate"
+                            value={conferenceData.startDate}
+                            onChange={handleInputChange}
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-gray-700 font-medium">End Date</label>
+                        <input
+                            type="datetime-local"
+                            name="endDate"
+                            value={conferenceData.endDate}
+                            onChange={handleInputChange}
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            required
+                        />
+                    </div>
                     </div>
                     <div>
                         <label className="block text-gray-700 font-medium">Photo URL</label>
@@ -186,9 +197,14 @@ const NewConferencePage: React.FC = () => {
                     </div>
                     <button
                         type="submit"
-                        className="w-full bg-blue-500 text-white font-semibold py-3 rounded-lg hover:bg-blue-600 transition"
+                        className={`w-full py-3 rounded-lg font-semibold transition ${
+                            isSubmitDisabled
+                                ? "bg-gray-400 cursor-not-allowed text-gray-700"
+                                : "bg-blue-500 hover:bg-blue-600 text-white"
+                        }`}
+                        disabled={isSubmitDisabled}
                     >
-                        Create Conference
+                        {isSubmitDisabled ? "Thanks For Using Our Service" : "Create Conference"}
                     </button>
                 </form>
 

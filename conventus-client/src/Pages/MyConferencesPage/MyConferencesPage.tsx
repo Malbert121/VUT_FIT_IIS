@@ -84,37 +84,6 @@ function MyConferencesPage() {
   };
   
 
-  const handleCreateReservation = async (conferenceId: number) => {
-    try {
-      if (!user) {
-        setToastType('error');
-        setToastMessage('Unauthorized user. Please log in.');
-        return;
-      }
-
-      const reservation: Reservation = {
-        Id: 0,
-        UserId: Number(user.id),
-        User: null,
-        ConferenceId: conferenceId,
-        Conference: null,
-        IsConfirmed: false,
-        IsPaid: false,
-        NumberOfTickets: 1, // Default to 1 ticket
-        Ammount: 0,
-        ReservationDate: new Date().toISOString(),
-      };
-
-      await postReservations(reservation, Number(user.id));
-      fetchConferences();
-      setToastType('success');
-      setToastMessage('Reservation created successfully.');
-    } catch (error) {
-      setToastType('error');
-      setToastMessage('Failed to create reservation.');
-    }
-  };
-
   if (loading) return <div>Loading...</div>;
 
   if (error) return <div>{error}</div>;
