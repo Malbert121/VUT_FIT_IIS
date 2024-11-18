@@ -95,26 +95,39 @@ export const getAllPresentations = async (): Promise<Presentation[]> => {
         return []; // Return an empty array in case of an error
     }
 };
+
+export const getMyPresentations = async (user_id: number): Promise<Presentation[]> => {
+    try{
+        const response = await axios.get<Presentation[]>(`https://localhost:7156/api/Presentations/my_presentations?user_id=${user_id}`);
+        return response.data;
+    }
+    catch(error){
+        handleAxiosError(error);
+        return [];
+    }
+}
+
 // Function to fetch a specific presentation by ID
 export const getPresentation = async (id: number): Promise<Presentation | null> => {
     try {
         const response = await axios.get<Presentation>(`https://localhost:7156/api/Presentations/${id}`);
         return response.data; // Return the presentation object
     } catch (error) {
-        console.error("Error fetching presentation:", error);
+        handleAxiosError(error);
         return null; // Return null in case of an error
     }
 }
+
 // Function to update a specific presentation by ID
-export const updatePresentation = async (presentation: Presentation): Promise<Presentation | null> => {
+export const updatePresentation = async (user_id:number, presentation: Presentation): Promise<Presentation | null> => {
     try {
         const response = await axios.put<Presentation>(
-            `https://localhost:7156/api/Presentations/${presentation.Id}`, 
+            `https://localhost:7156/api/Presentations/update?user_id=${user_id}`, 
             presentation
         )
         return response.data;
     } catch (error) {
-        console.error("Error updating presentation:", error);
+        handleAxiosError(error);
         return null; // Return null in case of an error
     }
 }
@@ -123,7 +136,7 @@ export const deletePresentation = async (id: number): Promise<void> => {
     try {
       await axios.delete(`https://localhost:7156/api/Presentations/${id}`);
     } catch (error) {
-      throw new Error('Failed to delete the presentation');
+        handleAxiosError(error);
     }
 };
 // Function to create a new presentation

@@ -1,14 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { getAllPresentations } from '../../api';
+import React, { useEffect, useState, useCallback } from 'react';
+import { getMyPresentations } from '../../api';
 import { Presentation } from '../../data';
 import { Link } from 'react-router-dom';
+import { useUser } from '../../context/UserContext';
+import Toast from '../../Components/Toast/Toast';
+import { pathCreateLecture } from '../../Routes/Routes';
 import './MyLecturesPage.css';
 
 const MyLecturesPage: React.FC = () => {
+  const user = useUser();
   const [presentations, setPresentations] = useState<Presentation[]>([]);
   const [filteredPresentations, setFilteredPresentations] = useState<Presentation[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('info');
+  const closeToast = () => setToastMessage(null);
+  
 
   // Filtering states
   const [tagFilter, setTagFilter] = useState<string | null>(null);
@@ -24,22 +33,28 @@ const MyLecturesPage: React.FC = () => {
         )
     )
   );
+  
+  const fetchPresentations = useCallback(async () => {
+    try {
+      if(!user){
+        return;
+      }
+      console.log("Ok");
+      console.log(Number(user.id));
+      setIsAuthorized(true);
+      const data = await getMyPresentations(Number(user.id));
+      console.log("Presentations data:", data);
+      setPresentations(data);
+      setFilteredPresentations(data);
+    } catch (error) {
+      setToastType('error');
+      setToastMessage((error as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  }, [user]);
 
   useEffect(() => {
-    const fetchPresentations = async () => {
-      try {
-        const data = await getAllPresentations();
-        console.log("Presentations data:", data);
-        setPresentations(data);
-        setFilteredPresentations(data);
-      } catch (error) {
-        setError('Failed to fetch presentations.');
-        console.error("Error fetching presentations:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchPresentations();
   }, []);
 
@@ -72,6 +87,11 @@ const MyLecturesPage: React.FC = () => {
     setFilteredPresentations(filtered);
   }, [tagFilter, searchTerm, timeRange, presentations]);
 
+  
+  if(!isAuthorized){
+    return <div className="error">User should be authorized for interaction with presentation.</div>;
+  }
+  
   if (loading) {
     return <div className="loading">Loading presentations...</div>;
   }
@@ -82,12 +102,15 @@ const MyLecturesPage: React.FC = () => {
 
   return (
     <div className="MyLecturesPage">
+      {toastMessage && (
+      <Toast message={toastMessage} onClose={closeToast} type={toastType} />
+      )}
       <h1 className="title">My Lectures</h1>
       <p className="description">Here you can find information about your lectures.</p>
 
       {/* Add the "Create New Lecture" button */}
       <div className="create-lecture-button-container">
-        <Link to="/mylectures/create">
+        <Link to={pathCreateLecture}>
           <button className="create-lecture-button">Create New Lecture</button>
         </Link>
       </div>

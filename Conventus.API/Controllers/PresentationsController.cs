@@ -98,6 +98,47 @@ namespace Conventus.API.Controllers
         }
 
         /// <summary>
+        /// Get all presentations where current use is speaker.
+        /// </summary>
+        /// <param name="user_id">The ID of speaker.</param>
+        /// <returns>A message indicating the result of the create operation.</returns>
+        /// <response code="200">Successfully get presentations.</response>
+        /// <response code="400">The request body is invalid or missing required presentation details.</response>
+        /// <response code="500">An internal server error occurred.</response>
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(200, "Successfully created the specified presentation.")]
+        [SwaggerResponse(400, "Invalid request: missing or invalid presentation data.")]
+        [SwaggerResponse(500, "Internal error.")]
+        [HttpGet("my_presentations")]
+        public ActionResult<string> GetMyPresentations([FromQuery] int user_id)
+        {
+            try
+            {
+                User? user = ((IPresentationRepo)MainRepo).GetUser(user_id);  // check user
+                if (user == null)
+                {
+                    return BadRequest("Unknown user.");
+                }
+
+                if (user.Role == Role.Admin)
+                {
+                    return Ok(((IPresentationRepo)MainRepo).GetAll());
+                }
+                return Ok(((IPresentationRepo)MainRepo).GetAll().Where(p=>p.SpeakerId == user_id));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}\n{ex.StackTrace}");
+                return Problem("Internal error");
+            }
+        }
+
+
+
+        /// <summary>
         /// Deletes the specified presentations based on their IDs.
         /// </summary>
         /// <param name="user_id">The ID of the user requesting deletion.</param>

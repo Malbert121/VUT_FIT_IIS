@@ -55,7 +55,8 @@ const MyReservationsPage: React.FC = () => {
       }
     }
     catch(error){
-      setError('Failed to catch reservations.');
+      setToastType('error');
+      setToastMessage((error as Error).message);
       console.error(error);
     }
     finally{

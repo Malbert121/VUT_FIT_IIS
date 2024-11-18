@@ -26,9 +26,9 @@ export const pathMyConferences = "/myconferences";
 export const pathCreateConference = "/myconferences/create";
 export const pathEditConference = "/myconferences/edit";
 export const pathLectures = "/lectures";
-export const pathMyLectures = "/mylectures";
-export const pathCreateLecture = "/mylectures/create";
-export const pathEditLecture = "/mylectures/edit";
+export const pathMyLectures = "/lectures/mylectures";
+export const pathCreateLecture = "/lectures/create";
+export const pathEditLecture = "/lectures/edit";
 export const pathReservations = "/reservations";
 export const pathAdmin = "/admin";
 export const pathAccount = "/account";
@@ -82,7 +82,7 @@ export const router = createBrowserRouter([
                 element: <PageContainer WrapperPage={LectureDetailPage} sideBarFlag={true} />
             },
             {
-                path: `${pathLectures}/:id/edit`,
+                path: `${pathEditLecture}/:id`,
                 element: <PageContainer WrapperPage={EditLecturePage} sideBarFlag={true} />
             },
             {

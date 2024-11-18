@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getPresentation, updatePresentation, getAllConferences, getAllRooms } from '../../api';
 import { Presentation, Conference, Room } from '../../data';
+import { useUser } from '../../context/UserContext';
 import './EditLecturePage.css';
 
 const EditLecturePage: React.FC = () => {
-  const { id } = useParams<{ id: string }>(); // Get the ID from the URL
+  const { id } = useParams<{ id: string }>();
+  const user = useUser();
   const navigate = useNavigate();
+  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
   const [presentation, setPresentation] = useState<Presentation | null>(null);
   const [editedPresentation, setEditedPresentation] = useState<Presentation | null>(null);
   const [conferences, setConferences] = useState<Conference[]>([]);
@@ -14,28 +17,37 @@ const EditLecturePage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchPresentation = async () => {
-      console.log("Fetching presentation with ID:", id);
-      try {
-        const data = await getPresentation(Number(id));
-        const conferencesData = await getAllConferences();
-        const roomsData = await getAllRooms();
-        console.log("Fetched presentation data:", data);
-        setPresentation(data);
-        setEditedPresentation(data);
-        setConferences(conferencesData);
-        setRooms(roomsData || []);
-      } catch (error) {
-        setError('Failed to fetch presentation details.');
-        console.error("Error fetching presentation details:", error);
-      } finally {
-        setLoading(false);
+  const fetchPresentation = useCallback(async () => {
+    console.log("Fetching presentation with ID:", id);
+    try {
+      if(!user)
+      {
+        return;
       }
-    };
+      setIsAuthorized(true);
+      const data = await getPresentation(Number(id));
+      if (data?.SpeakerId !== Number(user?.id)) {
+        //|| data?.Conference?.OrganizerId !== Number(user?.id)
+        setError('You you dont have rights for editing actual presentation.');
+        return;
+      }
+      const conferencesData = await getAllConferences();
+      const roomsData = await getAllRooms();
+      setPresentation(data);
+      setEditedPresentation(data);
+      setConferences(conferencesData);
+      setRooms(roomsData || []);
+    } catch (error) {
+      setError('Failed to fetch presentation details.');
+      console.error("Error fetching presentation details:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [id, user]);
 
+  useEffect(() => {
     fetchPresentation();
-  }, [id]);
+  }, [fetchPresentation]);
 
   const handleInputChange = (field: keyof Presentation, value: any) => {
     if (!editedPresentation) return;
@@ -90,22 +102,28 @@ const EditLecturePage: React.FC = () => {
     navigate(-1);
   }
 
-  const saveLectureChanges = async () => {
+  const saveLectureChanges = async (userId:number) => {
     console.log('Save Changes button clicked.');
     if (editedPresentation) {
       try {
-        const updatedPresentation = await updatePresentation({
+        const updatedPresentation = await updatePresentation(userId,{
           ...presentation, // Keep the original object
           ...editedPresentation, // Overwrite only updated fields
         });
         console.log('Presentation updated:', updatedPresentation);
-        navigate(-1); // Navigate back after saving
+        fetchPresentation();
+        //navigate(-1); // Navigate back after saving
       } catch (error) {
         setError('Failed to save changes.');
         console.error('Error saving presentation details:', error);
       }
     }
   };
+
+  
+  if(!isAuthorized){
+    return <div className="error">User should be authorized for interaction with reservations.</div>;
+  }
 
   if (loading) {
     return <div className="loading">Loading presentation details...</div>;
@@ -233,7 +251,7 @@ const EditLecturePage: React.FC = () => {
         {/* Cancel Edit Button. */}
         <button className="cancel-edit-button" onClick={cancelLectureEdit}>Cancel Edit</button>
         {/* Save Changes Button */}
-        <button className="save-changes-button" onClick={saveLectureChanges}>Save Changes</button>
+        <button className="save-changes-button" onClick={()=>{saveLectureChanges(Number(user?.id))}}>Save Changes</button>
       </div>
     </div>
   );
