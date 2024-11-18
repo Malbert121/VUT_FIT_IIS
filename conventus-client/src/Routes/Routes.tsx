@@ -53,7 +53,8 @@ export const router = createBrowserRouter([
             {
                 path: pathMyConferences,
                 element: <PageContainer WrapperPage={MyConferencesPage} sideBarFlag={true} />
-            },{
+            },
+            {
                 path: pathCreateConference,
                 element: <PageContainer WrapperPage={NewConferencePage} sideBarFlag={true} />
             },

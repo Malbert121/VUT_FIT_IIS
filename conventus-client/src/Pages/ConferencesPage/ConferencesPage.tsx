@@ -131,7 +131,7 @@ function ConferencesPage() {
   return (
     <div className="ConferencesPage">
       {toastMessage && (
-      <Toast message={toastMessage} onClose={closeToast} type={toastType} />
+        <Toast message={toastMessage} onClose={closeToast} type={toastType} />
       )}
       <h1 className="title">Upcoming Conferences</h1>
       <div className="filters">
