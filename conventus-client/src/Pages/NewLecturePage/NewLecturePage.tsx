@@ -1,41 +1,47 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getPresentation, updatePresentation, getAllConferences, getAllRooms } from '../../api';
+import { useNavigate } from 'react-router-dom';
+import { createPresentation, getAllConferences, getAllRooms } from '../../api';
 import { Presentation, Conference, Room } from '../../data';
-import './EditLecturePage.css';
+import './NewLecturePage.css';
 
-const EditLecturePage: React.FC = () => {
-  const { id } = useParams<{ id: string }>(); // Get the ID from the URL
+type PartialPresentation = Partial<Presentation>; // TODO: WTF???
+
+const NewLecturePage: React.FC = () => {
   const navigate = useNavigate();
-  const [presentation, setPresentation] = useState<Presentation | null>(null);
-  const [editedPresentation, setEditedPresentation] = useState<Presentation | null>(null);
+  const [editedPresentation, setEditedPresentation] = useState<PartialPresentation>({
+    Title: '',
+    Description: '',
+    Tags: '',
+    StartTime: '',
+    EndTime: '',
+    Conference: undefined,
+    Room: undefined,
+    Speaker: undefined,
+  });
   const [conferences, setConferences] = useState<Conference[]>([]);
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchPresentation = async () => {
-      console.log("Fetching presentation with ID:", id);
+    const fetchData = async () => {
       try {
-        const data = await getPresentation(Number(id));
-        const conferencesData = await getAllConferences();
-        const roomsData = await getAllRooms();
-        console.log("Fetched presentation data:", data);
-        setPresentation(data);
-        setEditedPresentation(data);
+        const [conferencesData, roomsData] = await Promise.all([
+          getAllConferences(),
+          getAllRooms(),
+        ]);
         setConferences(conferencesData);
         setRooms(roomsData || []);
       } catch (error) {
-        setError('Failed to fetch presentation details.');
-        console.error("Error fetching presentation details:", error);
+        setError('Failed to fetch data for the new lecture.');
+        console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPresentation();
-  }, [id]);
+    fetchData();
+  }, []);
 
   const handleInputChange = (field: keyof Presentation, value: any) => {
     if (!editedPresentation) return;
@@ -47,6 +53,9 @@ const EditLecturePage: React.FC = () => {
         Room: {
           ...editedPresentation.Room,
           Name: value.Name,  // Update the Name property within Room
+          Id: editedPresentation.Room?.Id ?? 0,  // Ensure Id is a valid number (fallback to 0 if undefined)
+          Capacity: editedPresentation.Room?.Capacity ?? 0,  // Ensure Capacity is a valid number (fallback to 0 if undefined)
+          ConferenceId: editedPresentation.Room?.ConferenceId ?? 0,  // Ensure ConferenceId is a valid number (fallback to 0 if undefined)
         },
       });
     } else {
@@ -71,11 +80,11 @@ const EditLecturePage: React.FC = () => {
     const selectedRoom = rooms.find(room => room.Id === roomId);
     if (selectedRoom) {
       setEditedPresentation({
-        ...editedPresentation!,
+        ...editedPresentation,
         Room: selectedRoom,
       });
     }
-  }
+  };
 
   const handleDateChange = (field: 'StartTime' | 'EndTime', value: string) => {
     if (!editedPresentation) return;
@@ -85,25 +94,49 @@ const EditLecturePage: React.FC = () => {
     });
   };
 
-  const cancelLectureEdit = () => {
-    console.log("Cancel Edit button clicked.");
+  const cancelLectureCreation = () => {
+    console.log("Cancel Creation button clicked.");
     navigate(-1);
   }
 
-  const saveLectureChanges = async () => {
-    console.log('Save Changes button clicked.');
-    if (editedPresentation) {
-      try {
-        const updatedPresentation = await updatePresentation({
-          ...presentation, // Keep the original object
-          ...editedPresentation, // Overwrite only updated fields
-        });
-        console.log('Presentation updated:', updatedPresentation);
-        navigate(-1); // Navigate back after saving
-      } catch (error) {
-        setError('Failed to save changes.');
-        console.error('Error saving presentation details:', error);
-      }
+  const createNewLecture = async () => {
+    console.log('Create New Lecture button clicked.');
+    
+    // Ensure Room is selected
+    if (!editedPresentation.Room || !editedPresentation.Room.Id) {
+      setError('Please select a valid room.');
+      return;
+    }
+
+    // Default speaker with ID 1 - TODO: Change this.
+    const defaultSpeaker = { Id: 1, UserName: 'Default User', Email: 'default@example.com', Role: 1 };
+
+    // Provide a fallback value for ConferenceId (0 in case no conference is selected)
+    const conferenceId = editedPresentation.Conference?.Id ?? 0; // Fallback to 0 if no conference is selected
+
+    const presentationToCreate: Presentation = {
+      Id: 0, // This will be assigned by the backend
+      Title: editedPresentation.Title || '',
+      Description: editedPresentation.Description || '',
+      Tags: editedPresentation.Tags || '',
+      // TODO: Add photo.
+      StartTime: editedPresentation.StartTime || '',
+      EndTime: editedPresentation.EndTime || '',
+      RoomId: editedPresentation.Room.Id,
+      Room: editedPresentation.Room,
+      SpeakerId: defaultSpeaker.Id,
+      Speaker: defaultSpeaker,
+      ConferenceId: conferenceId,
+      Conference: editedPresentation.Conference || null,
+    };
+
+    try {
+      const createdPresentation = await createPresentation(presentationToCreate, 1); // Assuming 1 is the user ID
+      console.log('New Presentation created:', createdPresentation);
+      navigate(-1); // Navigate back after creating the lecture
+    } catch (error) {
+      setError('Failed to create new lecture.');
+      console.error('Error creating new lecture:', error);
     }
   };
 
@@ -113,10 +146,6 @@ const EditLecturePage: React.FC = () => {
 
   if (error) {
     return <div className="error">Error: {error}</div>;
-  }
-
-  if (!presentation || !editedPresentation) {
-    return <div className="error">Presentation not found.</div>;
   }
 
   return (
@@ -137,7 +166,7 @@ const EditLecturePage: React.FC = () => {
           <label>Conference:</label>
         <select
           className="input-field"
-          value={editedPresentation.Conference?.Id.toString() || ''}
+          value={editedPresentation.Conference?.Id?.toString() || ''}
           onChange={(e) => handleConferenceChange(Number(e.target.value))}
         >
           <option value="">Select Conference</option>
@@ -185,7 +214,7 @@ const EditLecturePage: React.FC = () => {
         <label>Room:</label>
         <select
           className="input-field"
-          value={editedPresentation.Room?.Id.toString() || ''}
+          value={editedPresentation.Room?.Id?.toString() || ''}
           onChange={(e) => handleRoomChange(Number(e.target.value))}
         >
           <option value="">Select Room</option>
@@ -221,22 +250,15 @@ const EditLecturePage: React.FC = () => {
 
       {/* TODO: add photos and pictures. */}
 
-      {/* Speaker Information (auto-filled) */}
-      <div className="input-container">
-        <h3>Speaker Information</h3>
-        <p><strong>Speaker:</strong> {presentation.Speaker.UserName || "Unknown."}</p>
-        <p><strong>Email:</strong> {presentation.Speaker.Email || "Unknown."}</p>
-      </div>
-
       {/* Button Container */}
       <div className="button-container">
-        {/* Cancel Edit Button. */}
-        <button className="cancel-edit-button" onClick={cancelLectureEdit}>Cancel Edit</button>
-        {/* Save Changes Button */}
-        <button className="save-changes-button" onClick={saveLectureChanges}>Save Changes</button>
+        {/* Cancel Button. */}
+        <button className="cancel-button" onClick={cancelLectureCreation}>Cancel</button>
+        {/* Create Button */}
+        <button className="create-button" onClick={createNewLecture}>Create New Lecture</button>
       </div>
     </div>
   );
 };
 
-export default EditLecturePage;
+export default NewLecturePage;

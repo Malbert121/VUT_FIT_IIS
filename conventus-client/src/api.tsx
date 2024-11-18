@@ -126,6 +126,20 @@ export const deletePresentation = async (id: number): Promise<void> => {
       throw new Error('Failed to delete the presentation');
     }
 };
+// Function to create a new presentation
+export const createPresentation = async (presentation: Presentation, user_id: number) => {
+    try {
+        console.log(`user id ${user_id}`);
+        console.log(`presentation data to create: ${JSON.stringify(presentation)}`);
+        const response = await axios.post<{ message: string }>(
+            `https://localhost:7156/api/Presentations/create?user_id=${user_id}`,
+            presentation
+        );
+        console.log('Presentation created successfully:', response.data);
+    } catch (error) {
+        handleAxiosError(error);
+    }
+}
 // Fetch all reservations
 export const getAllReservations = async ():Promise<Reservation[]> => {
     try {

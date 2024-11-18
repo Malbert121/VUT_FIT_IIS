@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import ConferencesPage from "../Pages/ConferencesPage/ConferencesPage";
-import ConferenceDetailPage from "../Pages/ConferenceDetailPage/ConferenceDetailPage"; // Import your detail page
+import ConferenceDetailPage from "../Pages/ConferenceDetailPage/ConferenceDetailPage";
 import LecturesPage from "../Pages/LecturesPage/LecturesPage";
 import AccountPage from "../Pages/AccountPage/AccountPage";
 import MainPage from "../Pages/MainPage/MainPage";
@@ -19,6 +19,7 @@ import NewConferencePage from "../Pages/NewConferencePage/NewConferencePage";
 import ConferenceEditPage from "../Pages/ConferencesEditPage/ConferenceEditPage";
 import MyLecturesPage from "../Pages/MyLecturesPage/MyLecturesPage";
 import EditLecturePage from "../Pages/EditLecturePage/EditLecturePage";
+import NewLecturePage from "../Pages/NewConferencePage/NewConferencePage";
 
 export const pathConferences = "/conferences";
 export const pathMyConferences = "/myconferences";
@@ -26,6 +27,8 @@ export const pathCreateConference = "/myconferences/create";
 export const pathEditConference = "/myconferences/edit";
 export const pathLectures = "/lectures";
 export const pathMyLectures = "/mylectures";
+export const pathCreateLecture = "/mylectures/create";
+export const pathEditLecture = "/mylectures/edit";
 export const pathReservations = "/reservations";
 export const pathAdmin = "/admin";
 export const pathAccount = "/account";
@@ -69,6 +72,10 @@ export const router = createBrowserRouter([
             {
                 path: pathMyLectures,
                 element: <PageContainer WrapperPage={MyLecturesPage} sideBarFlag={true} />
+            },
+            {
+                path: pathCreateLecture,
+                element: <PageContainer WrapperPage={NewLecturePage} sideBarFlag={true} />
             },
             {
                 path: `${pathLectures}/:id`,

@@ -1,0 +1,140 @@
+.presentation-detail {
+    max-width: 800px; /* Limit width for readability */
+    margin: 20px auto; /* Center the content */
+    padding: 30px; /* Add some padding */
+    border: 1px solid #ddd; /* Border around the detail section */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Slightly larger shadow for depth */
+    background-color: #f9f9f9; /* Light background */
+    word-wrap: break-word; /* Ensure text wraps properly */
+}
+
+.presentation-title,
+.presentation-conference {
+    text-align: center; /* Center the title */
+    font-size: 2.5em; /* Larger font size */
+    font-weight: bold; /* Bold font */
+    margin-bottom: 10px; /* Space below title */
+    color: #333; /* Darker text color for better contrast */
+}
+
+.description-container {
+    background-color: #fff; /* White background for the description */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Padding inside the description */
+    margin-bottom: 20px; /* Space below description */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+}
+
+.input-container {
+    margin-bottom: 20px; /* Space between input fields */
+}
+
+.input-container label {
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: block; /* Display labels above inputs */
+    margin-bottom: 5px; /* Space below label */
+}
+
+.input-container input,
+.input-container textarea,
+.input-container select {
+    width: 100%; /* Ensure inputs take full width */
+    padding: 12px 15px; /* Comfortable padding for readability */
+    font-size: 1rem; /* Standard font size for all inputs */
+    border: 1px solid #ccc; /* Light border around input fields */
+    border-radius: 5px; /* Rounded corners */
+    transition: border-color 0.3s ease; /* Smooth transition for border color */
+}
+
+.input-container input:focus,
+.input-container textarea:focus,
+.input-container select:focus {
+    border-color: #007bff; /* Blue border on focus */
+    outline: none; /* Remove default outline */
+}
+
+.presentation-description {
+    height: 150px; /* Set a fixed height for the textarea */
+    max-height: 300px; /* Max height, so it doesn't grow infinitely */
+    overflow: auto; /* Adds a scrollbar if the content exceeds the max height */
+}
+
+.presentation-tags input {
+    font-size: 1rem;
+}
+
+.presentation-location,
+.presentation-room,
+.presentation-dates {
+    color: #495057; /* Slightly darker gray text */
+    margin: 10px 0; /* Add margin for spacing */
+}
+
+.speaker-info {
+    margin: 20px 0; /* Space around speaker info */
+    background-color: #e9ecef; /* Light grey background */
+    padding: 20px; /* Padding for speaker info */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+}
+
+ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove padding */
+}
+
+.presentation-image {
+    max-width: 100%; /* Responsive image */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 5px; /* Rounded corners for images */
+}
+
+.loading, .error {
+    text-align: center; /* Centered text for loading/error messages */
+    font-size: 1.2em; /* Slightly larger font for visibility */
+    color: #888; /* Grey color for loading/error messages */
+}
+
+.button-container {
+    display: flex; /* Enable flexbox */
+    justify-content: space-between; /* Space between buttons */
+    gap: 15px; /* More space between buttons */
+    margin-top: 30px; /* Add space above the buttons */
+}
+
+.cancel-button,
+.create-button {
+    padding: 12px 25px; /* Larger padding for better clickability */
+    font-size: 16px; /* Larger font size */
+    font-weight: bold; /* Bold text */
+    border-radius: 8px; /* Rounded corners */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Smooth transition for button hover effects */
+}
+
+.cancel-button {
+    background-color: #6c757d; /* Gray color */
+    color: white;
+    border: none;
+}
+
+.cancel-button:hover {
+    background-color: #5a6268; /* Darker gray on hover */
+}
+
+.create-button {
+    background-color: #28a745; /* Green color */
+    color: white;
+    border: none;
+}
+
+.create-button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.create-button:disabled {
+    background-color: #d6e9c6; /* Disabled green color */
+    cursor: not-allowed;
+}
