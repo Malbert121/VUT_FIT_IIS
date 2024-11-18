@@ -6,6 +6,7 @@
     border-radius: 8px; /* Rounded corners */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
     background-color: #f9f9f9; /* Light background */
+    word-wrap: break-word; /* Ensure text wraps properly */
 }
 
 .presentation-title,
@@ -20,10 +21,25 @@
     border-radius: 8px; /* Rounded corners */
     padding: 15px; /* Padding inside the description */
     margin-bottom: 20px; /* Space below description */
+    max-width: 100%; /* Ensure it takes the full available width */
+    word-wrap: break-word; /* Ensure content wraps inside container */
+    overflow: hidden; /* Hide overflow if content exceeds the box */
 }
 
 .presentation-description {
-    margin: 0; /* Remove default margin */
+    width: 100%; /* Ensure description takes the full width of its container */
+    height: auto; /* Allow the textarea to grow vertically if necessary */
+    min-height: 150px; /* Minimum height for textarea */
+    max-height: 300px; /* Max height to avoid expanding beyond bounds */
+    overflow-y: auto; /* Show scrollbar if content exceeds max height */
+    resize: vertical; /* Allow resizing vertically */
+    font-size: 1rem; /* Standardize font size */
+    border: 1px solid #ccc; /* Border for textarea */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px; /* Padding inside textarea */
+    word-wrap: break-word; /* Prevent overflow in words */
+    line-height: 1.5; /* Add space between lines for readability */
+    box-sizing: border-box; /* Ensures padding is included in width/height calculation */
 }
 
 .info-container {
