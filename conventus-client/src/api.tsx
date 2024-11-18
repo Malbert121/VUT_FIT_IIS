@@ -59,6 +59,22 @@ export const getMyConferences = async (userId: number): Promise<Conference[]> =>
         return []; // Return an empty array in case of an error
     }
 };
+export const updateConference = async (id: number, conferenceData: Conference) => {
+    const response = await fetch(`https://localhost:7156/api/Conferences/${id}`, {
+      method: 'PUT', // or 'PATCH'
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(conferenceData),
+    });
+  
+    if (!response.ok) {
+      throw new Error('Failed to update conference');
+    }
+  
+    return await response.json();
+  };
+  
 // Function to fetch a specific conference by ID
 export const getConference = async (id: number): Promise<Conference | null> => {
     try {
@@ -113,9 +129,9 @@ export const getAllReservations = async ():Promise<Reservation[]> => {
     }
 };
 
-export const getAvailabelReservations = async (user_id:number):Promise<Reservation[]> => {
+export const getMyReservations = async (user_id:number, paid:boolean):Promise<Reservation[]> => {
     try {
-        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations/available?user_id=${user_id}`);
+        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations/my?user_id=${user_id}&paid=${paid}`);
         return response.data; // Assuming the API returns an array of reservations
     } catch (error) {
         handleAxiosError(error);
@@ -123,21 +139,9 @@ export const getAvailabelReservations = async (user_id:number):Promise<Reservati
     }
 };
 
-
-export const getUnpaidReservations = async (user_id:number):Promise<Reservation[]> => {
+export const getGuestReservations = async (user_id:number, paid:boolean):Promise<Reservation[]> => {
     try {
-        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations/unpaid?user_id=${user_id}`);
-        return response.data; // Assuming the API returns an array of reservations
-    } catch (error) {
-        handleAxiosError(error);
-        return [];
-    }
-};
-
-
-export const getGuestReservations = async (user_id:number):Promise<Reservation[]> => {
-    try {
-        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations/guest?user_id=${user_id}`);
+        const response = await axios.get<Reservation[]>(`https://localhost:7156/api/Reservations/guest?user_id=${user_id}&paid=${paid}`);
         return response.data; // Assuming the API returns an array of reservations
     } catch (error) {
         handleAxiosError(error);
@@ -172,11 +176,11 @@ export const putResirvationsToPay = async(reservationsIds:number[], user_id:numb
     }
 }
 
-export const putResirvationsToConfirm = async(reservationsIds:number[], flag:boolean)=>{
+export const putResirvationsToConfirm = async(reservationsIds:number[], user_id:number, flag:boolean)=>{
     try
     {
         console.log(`reservations ids to confirm ${reservationsIds}`);
-        await axios.put<{message:string}>(`https://localhost:7156/api/Reservations/to_confirm?flag=${flag}`, reservationsIds);
+        await axios.put<{message:string}>(`https://localhost:7156/api/Reservations/to_confirm?user_id=${user_id}&flag=${flag}`, reservationsIds);
     }
     catch(error)
     {
@@ -210,6 +214,15 @@ export const deleteReservations = async (reservationsIds:number[], user_id:numbe
         handleAxiosError(error);
     }   
 }
+
+
+export const deleteConference = async (conferenceId: number): Promise<void> => {
+  try {
+    await axios.delete(`https://localhost:7156/api/Conferences/${conferenceId}`); // Replace with your actual endpoint
+  } catch (error) {
+    throw new Error('Failed to delete the conference');
+  }
+};
 
 // Fetch all rooms
 export const getAllRooms = async () => {

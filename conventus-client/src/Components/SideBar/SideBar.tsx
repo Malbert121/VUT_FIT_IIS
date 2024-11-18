@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import {Link, useLocation} from "react-router-dom";
 import './SideBar.css'
 import MenuButton from '../MenuButton/MenuButton';
-import { pathConferences, pathMyConferences, pathLectures, pathMyLectures, pathGuestReservations, pathUnpaidReservations, pathAvailableReservations } from '../../Routes/Routes';
+import { pathConferences, pathMyConferences, pathMyReservations, pathLectures, pathMyLectures, pathGuestReservations} from '../../Routes/Routes';
 
 
 type Props = {};
 
-const SideBar2:React.FC<Props> = () =>
+const SideBar:React.FC<Props> = () =>
 {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const toggleSideBar = () => {
@@ -62,23 +62,15 @@ const SideBar2:React.FC<Props> = () =>
                     </Link>
                   </>
                 )}
-                {(location.pathname.startsWith(pathAvailableReservations) 
-                  ||location.pathname.startsWith(pathUnpaidReservations) 
+                {(location.pathname.startsWith(pathMyReservations) 
                   || location.pathname.startsWith(pathGuestReservations) ) 
                   && (
                   <>
                     <Link
-                      to={pathAvailableReservations}
+                      to={pathMyReservations}
                       className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
                     >
-                      <h6 className="ml-3">Available Reservations</h6>
-                    </Link>
-                    
-                    <Link
-                      to={pathUnpaidReservations}
-                      className="text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline"
-                    >
-                      <h6 className="ml-3">Unpaid Reservations</h6>
+                      <h6 className="ml-3">My Reservations</h6>
                     </Link>
 
                     <Link
@@ -98,4 +90,4 @@ const SideBar2:React.FC<Props> = () =>
   );
 }
 
-export default SideBar2;
+export default SideBar;

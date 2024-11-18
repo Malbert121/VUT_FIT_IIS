@@ -1,3 +1,6 @@
+import React from "react";
+import { useEffect, useState } from "react";
+
 interface ToastProps {
     message: string;
     onClose: () => void;
@@ -5,6 +8,8 @@ interface ToastProps {
   }
   
   const Toast: React.FC<ToastProps> = ({ message, onClose, type = 'info' }) => {
+    const [isVisible, setIsVisible] = useState(true); // Контролируем видимость
+
     const getBackgroundColor = () => {
       switch (type) {
         case 'success':
@@ -16,7 +21,16 @@ interface ToastProps {
           return 'bg-blue-500';
       }
     };
-  
+
+
+    useEffect(() => {
+      const timer = window.setTimeout(() => {
+        onClose();
+      }, 5000);
+
+      return () => window.clearTimeout(timer);
+    }, [onClose]);
+    
     return (
       <div
         className={`fixed top-4 right-4 p-4 rounded-md shadow-md text-white ${getBackgroundColor()} transition-opacity duration-300`}

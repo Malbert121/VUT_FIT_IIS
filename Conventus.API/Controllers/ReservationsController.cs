@@ -16,47 +16,11 @@ namespace Conventus.API.Controllers
 
         }
 
-
-        /// <summary>
-        /// Retrieves all available reservations for a specific user or all reservations if the user is an admin.
-        /// </summary>
-        /// <param name="user_id">The ID of the user whose available reservations are being retrieved.</param>
-        /// <returns>All available reservations for the user, or all reservations if the user is an admin.</returns>
-        /// <response code="200">Returns a list of available reservations</response>
-        /// <response code="400">Invalid user ID or request parameters</response>
-        /// <response code="500">Internal server error</response>
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [SwaggerResponse(200, "The execution was successfull")]
-        [SwaggerResponse(400, "The request was invalid")]
-        [SwaggerResponse(500, "The internall error")]
-        [HttpGet("available")]
-        public ActionResult<IEnumerable<Reservation>> GetAvailableReservations([FromQuery] int user_id) // TODO: add user context
-        {
-            try
-            {
-                User? user = ((IReservationRepo)MainRepo).GetUser(user_id);
-                if (user == null)
-                {
-                    return BadRequest($"Unknown user.");
-                }
-                if(user.Role == Role.Admin)
-                {
-                    return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => r.IsPaid));
-                }
-                return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => r.IsPaid && r.UserId == user_id));
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}\n{ex.StackTrace}");
-                return Problem("Internal error.");
-            }
-        }
-
         /// <summary>
         /// Retrieves all unpaid reservations for a specific user.
         /// </summary>
         /// <param name="user_id">The ID of the user whose unpaid reservations are being retrieved.</param>
+        /// <param name="paid">Boolean flag for filtering out data based on their paid status.</param>
         /// <returns>All unpaid reservations for the specified user.</returns>
         /// <response code="200">Returns a list of unpaid reservations</response>
         /// <response code="400">Invalid user ID or request parameters</response>
@@ -66,8 +30,8 @@ namespace Conventus.API.Controllers
         [SwaggerResponse(200, "Returns a list of unpaid reservations")]
         [SwaggerResponse(400, "Invalid user ID or request parameters")]
         [SwaggerResponse(500, "Internal server error")]
-        [HttpGet("unpaid")]
-        public ActionResult<IEnumerable<Reservation>> GetUnpaidReservations([FromQuery] int user_id) // TODO: add user context
+        [HttpGet("my")]
+        public ActionResult<IEnumerable<Reservation>> GetMyReservations([FromQuery] int user_id, [FromQuery] bool paid) // TODO: add user context
         {
             try
             {
@@ -78,9 +42,9 @@ namespace Conventus.API.Controllers
                 }
                 if (user.Role == Role.Admin)
                 {
-                    return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => !r.IsPaid));
+                    return Ok(((IReservationRepo)MainRepo).GetAll().Where(r =>r.IsPaid==paid));
                 }
-                return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => !r.IsPaid && r.UserId == user_id));
+                return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => r.IsPaid==paid && r.UserId == user_id));
             }
             catch (Exception ex)
             {
@@ -93,6 +57,7 @@ namespace Conventus.API.Controllers
         /// Retrieves all guest reservations for a specific user.
         /// </summary>
         /// <param name="user_id">The ID of the user whose guest reservations are being retrieved.</param>
+        /// <param name="paid">Boolean flag for filtering out data based on their paid status.</param>
         /// <returns>All guest reservations for the specified user.</returns>
         /// <response code="200">Returns a list of guest reservations</response>
         /// <response code="400">Invalid user ID or request parameters</response>
@@ -103,7 +68,7 @@ namespace Conventus.API.Controllers
         [SwaggerResponse(400, "Invalid user ID or request parameters")]
         [SwaggerResponse(500, "Internal server error")]
         [HttpGet("guest")]
-        public ActionResult<IEnumerable<Reservation>> GetGuestReservations([FromQuery] int user_id) // TODO: add user context
+        public ActionResult<IEnumerable<Reservation>> GetGuestReservations([FromQuery] int user_id, [FromQuery] bool paid) // TODO: add user context
         {
             try
             {
@@ -114,9 +79,9 @@ namespace Conventus.API.Controllers
                 }
                 if (user.Role == Role.Admin)
                 {
-                    return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => r.IsPaid));
+                    return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => r.IsPaid == paid));
                 }
-                return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => r.IsPaid && r.Conference.OrganizerId == user_id));
+                return Ok(((IReservationRepo)MainRepo).GetAll().Where(r => r.IsPaid == paid && r.Conference.OrganizerId == user_id));
             }
             catch (Exception ex)
             {
@@ -267,6 +232,9 @@ namespace Conventus.API.Controllers
         {
             try
             {
+                bool payFlag = false;
+                bool confirmFlag = false;
+
                 User? user = ((IReservationRepo)MainRepo).GetUser(user_id);
                 if (user == null)
                 {
@@ -289,11 +257,17 @@ namespace Conventus.API.Controllers
                     return BadRequest("The requested number of tickets exceeds the number of available seats");
                 }
 
+                if(conference.OrganizerId == user_id) 
+                {
+                    payFlag = true;
+                    confirmFlag = true;
+                }
+
                 var new_reservation = new Reservation{
                     UserId = reservation.UserId,
                     ConferenceId = conference.Id,
-                    IsConfirmed = false,
-                    IsPaid = false,
+                    IsConfirmed = confirmFlag,
+                    IsPaid = payFlag,
                     NumberOfTickets=reservation.NumberOfTickets,
                     Ammount = (double)conference.Price*reservation.NumberOfTickets,
                     ReservationDate = reservation.ReservationDate,

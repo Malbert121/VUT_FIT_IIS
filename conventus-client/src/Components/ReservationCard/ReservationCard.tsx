@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Reservation } from "../../data";
-import { pathAvailableReservations } from "../../Routes/Routes";
+import { pathMyReservations } from "../../Routes/Routes";
 import Toast from '../../Components/Toast/Toast';
 
 interface Props {
@@ -30,7 +30,7 @@ const ReservationCard: React.FC<Props> = ({reservation, onSelect, isSelected}) =
                 <Toast message={toastMessage} onClose={closeToast} type={toastType} />
         )}
         <div className="flex flex-row items-center justify-between">
-            <Link to={`../${pathAvailableReservations}/${reservation.Id}`} className="text-black hover:text-blue-600">
+            <Link to={`../${pathMyReservations}/${reservation.Id}`} className="text-black hover:text-blue-600">
                 <h2 className="flex text-2xl font-semibold">{`${reservation.Conference?.Name}`}</h2>
             </Link>
             <button

@@ -10,17 +10,20 @@ import PageContainer from "../Components/PageContainer/PageContainer";
 import LoginPage from "../Pages/LoginPage/LoginPage"
 import RegistrationPage from "../Pages/RegistrationPage/RegistrationPage";
 import ProtectedRoute from "../Components/ProtectedRoute/ProtectedRoute";
-import UnpaidReservationsPage from "../Pages/UnpaidReservationsPage/UnpaidReservationsPage";
+import MyReservationsPage from "../Pages/MyReservationsPage/MyReservationsPage";
 import ReservationDetailPage from "../Pages/ReservationDetailPage/ReservationDetailPage";
 import GuestReservationsPage from "../Pages/GuestReservationsPage/GuestReservationsPage";
-import AvailableReservationPage from "../Pages/AvailableReservationPage/AvailableReservationPage";
 import LectureDetailPage from "../Pages/LectureDetailPage/LectureDetailPage";
 import MyConferencesPage from "../Pages/MyConferencesPage/MyConferencesPage";
+import NewConferencePage from "../Pages/NewConferencePage/NewConferencePage";
+import ConferenceEditPage from "../Pages/ConferencesEditPage/ConferenceEditPage";
 import MyLecturesPage from "../Pages/MyLecturesPage/MyLecturesPage";
 import EditLecturePage from "../Pages/EditLecturePage/EditLecturePage";
 
 export const pathConferences = "/conferences";
 export const pathMyConferences = "/myconferences";
+export const pathCreateConference = "/myconferences/create";
+export const pathEditConference = "/myconferences/edit";
 export const pathLectures = "/lectures";
 export const pathMyLectures = "/mylectures";
 export const pathReservations = "/reservations";
@@ -28,8 +31,7 @@ export const pathAdmin = "/admin";
 export const pathAccount = "/account";
 export const pathLogin = "/login";
 export const pathRegistration = "/registration";
-export const pathAvailableReservations = pathReservations;
-export const pathUnpaidReservations = `${pathReservations}/unpaids_reservations`;
+export const pathMyReservations = pathReservations;
 export const pathGuestReservations = `${pathReservations}/guest_reservations`;
 
 export const router = createBrowserRouter([
@@ -48,10 +50,17 @@ export const router = createBrowserRouter([
             {
                 path: pathMyConferences,
                 element: <PageContainer WrapperPage={MyConferencesPage} sideBarFlag={true} />
+            },{
+                path: pathCreateConference,
+                element: <PageContainer WrapperPage={NewConferencePage} sideBarFlag={true} />
             },
             {
                 path: `${pathConferences}/:id`,
                 element: <PageContainer WrapperPage={ConferenceDetailPage} sideBarFlag={true} /> 
+            },
+            {
+                path: `${pathEditConference}/:id`,
+                element: <PageContainer WrapperPage={ConferenceEditPage} sideBarFlag={true} /> 
             },
             {
                 path: pathLectures,
@@ -70,19 +79,15 @@ export const router = createBrowserRouter([
                 element: <PageContainer WrapperPage={EditLecturePage} sideBarFlag={true} />
             },
             {
-                path: pathAvailableReservations,  // TODO: add usersId
-                element: <PageContainer WrapperPage={AvailableReservationPage} sideBarFlag={true}/>
-            },
-            {
-                path: pathUnpaidReservations,  // TODO: add usersId
-                element: <PageContainer WrapperPage={UnpaidReservationsPage} sideBarFlag={true}/>,
+                path: pathMyReservations,  // TODO: add usersId
+                element: <PageContainer WrapperPage={MyReservationsPage} sideBarFlag={true}/>
             },
             {
                 path: pathGuestReservations,  // TODO: add usersId
                 element: <PageContainer WrapperPage={GuestReservationsPage} sideBarFlag={true}/>,
             },
             {
-                path: `${pathAvailableReservations}/:reservationId`,  // TODO: add usersId
+                path: `${pathMyReservations}/:reservationId`,  // TODO: add usersId
                 element: <PageContainer WrapperPage={ReservationDetailPage} sideBarFlag={true}/>,
             },
             {
