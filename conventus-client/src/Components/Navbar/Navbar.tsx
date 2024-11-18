@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from './conventus-favicon-color1.png';
 import { useUser } from '../../context/UserContext'; // Assuming you have a user context
-
+import AuthorizationWindow from '../AuthorizationWindow/AuthorizationWindow';
 import {
   pathConferences,
   pathAccount,
@@ -18,6 +18,8 @@ interface Props {
 const Navbar: React.FC<Props> = ({ updateSideBar }) => {
   const user = useUser(); // Get user data from context
   const [menuOpen, setMenuOpen] = useState(false);
+  const [visibleAuth, setVisibleAuth] = useState<boolean>(false);
+
 
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
@@ -25,6 +27,7 @@ const Navbar: React.FC<Props> = ({ updateSideBar }) => {
 
   return (
     <nav className="relative container mx-auto p-6">
+      {visibleAuth && <AuthorizationWindow actionToClose={setVisibleAuth}/>}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-20">
           {/* Logo */}
@@ -58,12 +61,12 @@ const Navbar: React.FC<Props> = ({ updateSideBar }) => {
             </Link>
           ) : (
             <>
-              <Link to="../login" className="px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70">
-                Login
-              </Link>
-              <Link to="../registration" className="px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70">
-                Register
-              </Link>
+              <button
+                onClick={()=>{setVisibleAuth(true)}}
+                className='px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70'
+                >
+                SignIn/SignUp
+              </button>
             </>
           )}
         </div>
@@ -114,13 +117,13 @@ const Navbar: React.FC<Props> = ({ updateSideBar }) => {
               </Link>
             ) : (
               <>
-                <Link to="../login" className="text-black hover:text-darkBlue">
-                  Login
-                </Link>
-                <Link to="../registration" className="text-black hover:text-darkBlue">
-                  Register
-                </Link>
-              </>
+              <button
+                onClick={()=>{setVisibleAuth(true)}}
+                className='px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70'
+                >
+                SignIn/SignUp
+              </button>
+            </>
             )}
           </div>
         </div>

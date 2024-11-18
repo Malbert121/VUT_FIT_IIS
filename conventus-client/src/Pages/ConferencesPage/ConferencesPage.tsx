@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
 import { Reservation } from '../../data';
 import Toast from '../../Components/Toast/Toast';
+import AuthorizationWindow from '../../Components/AuthorizationWindow/AuthorizationWindow';
 import './ConferencesPage.css';
 
 function ConferencesPage() {
@@ -89,10 +90,10 @@ function ConferencesPage() {
     {
       if(!user)
       {
-        console.log('Unauthorized user is bad boy!'); //TODO: solve unauthorized user behavioral  
+        /*console.log('Unauthorized user is bad boy!'); //TODO: solve unauthorized user behavioral  
         setToastType('error');
         setToastMessage('Unauthorized user is bad boy!');
-        return;
+        */return;
       }
       const user_id = Number(user.id);
       const reservation: Reservation = {

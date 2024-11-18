@@ -9,7 +9,7 @@ const AccountPage: React.FC = () => {
     const handleLogout = () => {
         // Logic to log out the user (e.g., clearing the token)
         localStorage.removeItem('token');
-        navigate('/login'); // Redirect to login page
+        navigate('/'); // Redirect to login page
         window.location.reload();
     };
 

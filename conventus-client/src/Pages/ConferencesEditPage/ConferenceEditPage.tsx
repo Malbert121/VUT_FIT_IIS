@@ -23,7 +23,7 @@ const ConferenceEditPage = () => {
         console.log(user?.id);
         if (data?.OrganizerId !== Number(user?.id)) { // Check if the logged-in user is the owner of the conference
           setError('You are not authorized to edit this conference.');
-          navigate('/login'); // Redirect to a "Forbidden" page or any other page if the user is unauthorized
+          navigate('/'); // Redirect to a "Forbidden" page or any other page if the user is unauthorized
           return;
         }
         setConference(data);
