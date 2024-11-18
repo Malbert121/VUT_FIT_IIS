@@ -79,7 +79,7 @@ export const getAllPresentations = async (): Promise<Presentation[]> => {
         return []; // Return an empty array in case of an error
     }
 };
-// Function to fetch a specific presentation (lecture) by ID - TODO: change to lecture?
+// Function to fetch a specific presentation by ID
 export const getPresentation = async (id: number): Promise<Presentation | null> => {
     try {
         const response = await axios.get<Presentation>(`https://localhost:7156/api/Presentations/${id}`);
@@ -89,7 +89,19 @@ export const getPresentation = async (id: number): Promise<Presentation | null> 
         return null; // Return null in case of an error
     }
 }
-
+// Function to update a specific presentation by ID
+export const updatePresentation = async (presentation: Presentation): Promise<Presentation | null> => {
+    try {
+        const response = await axios.put<Presentation>(
+            `https://localhost:7156/api/Presentations/${presentation.Id}`, 
+            presentation
+        )
+        return response.data;
+    } catch (error) {
+        console.error("Error updating presentation:", error);
+        return null; // Return null in case of an error
+    }
+}
 // Fetch all reservations
 export const getAllReservations = async ():Promise<Reservation[]> => {
     try {
