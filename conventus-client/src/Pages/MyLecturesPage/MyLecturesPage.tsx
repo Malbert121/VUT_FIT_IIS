@@ -84,6 +84,14 @@ const MyLecturesPage: React.FC = () => {
     <div className="MyLecturesPage">
       <h1 className="title">My Lectures</h1>
       <p className="description">Here you can find information about your lectures.</p>
+
+      {/* Add the "Create New Lecture" button */}
+      <div className="create-lecture-button-container">
+        <Link to="/mylectures/create">
+          <button className="create-lecture-button">Create New Lecture</button>
+        </Link>
+      </div>
+
       <div className="filters">
         <input
           type="text"

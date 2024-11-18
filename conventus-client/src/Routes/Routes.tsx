@@ -19,7 +19,7 @@ import NewConferencePage from "../Pages/NewConferencePage/NewConferencePage";
 import ConferenceEditPage from "../Pages/ConferencesEditPage/ConferenceEditPage";
 import MyLecturesPage from "../Pages/MyLecturesPage/MyLecturesPage";
 import EditLecturePage from "../Pages/EditLecturePage/EditLecturePage";
-import NewLecturePage from "../Pages/NewConferencePage/NewConferencePage";
+import NewLecturePage from "../Pages/NewLecturePage/NewLecturePage";
 
 export const pathConferences = "/conferences";
 export const pathMyConferences = "/myconferences";
