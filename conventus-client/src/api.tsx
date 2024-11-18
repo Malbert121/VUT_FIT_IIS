@@ -17,6 +17,7 @@ export const getUser = async (userId: number): Promise<User> => {
         });
         return response.data;
     } catch (error) {
+        handleAxiosError(error);
         throw new Error('Failed to fetch user data');
     }
 };
@@ -24,17 +25,59 @@ export const getUser = async (userId: number): Promise<User> => {
 
 export const getAnotherUser = async (userId: number): Promise<User> => {
     try {
-        const response = await axios.get<User>(`https://localhost:7156/api/Users/${userId}`);
+        const response = await axios.get<User>(`https://localhost:7156/api/Users/detail/admin/${userId}`);
         return response.data;
     } catch (error) {
+        handleAxiosError(error);
         throw new Error('Failed to fetch user data');
     }
 };
+
+export const postUser = async (model: string, data: User) => {
+    try {
+        const response = await axios.post(`https://localhost:7156/api/${model}/post`, data, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data; // Assuming the API returns an array of rooms
+    } catch (error) {
+        handleAxiosError(error);
+        console.error("Error fetching rooms:", error);
+        return null; // Return an empty array in case of an error
+    }
+};
+
+export const putUser = async (id: number, model: string, data: User) => {
+    try {
+        const response = await axios.put(`https://localhost:7156/api/${model}/update/${id}`, data, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data; // Assuming the API returns an array of rooms
+    } catch (error) {
+        handleAxiosError(error);
+        console.error("Error fetching rooms:", error);
+        return null; // Return an empty array in case of an error
+    }
+};
+
+export const deleteUser = async (id: number, model: string) => {
+    try {
+        await axios.delete(`https://localhost:7156/api/${model}/delete/${id}`);
+    } catch (error) {
+        handleAxiosError(error);
+        console.error("Error fetching rooms:", error);
+    }
+};
+
 export const registerUser = async (registerData: User) => {
     try {
         const response = await axios.post('https://localhost:7156/api/Auth/register', registerData);
         alert("Registration successful!");
-    } catch (err) {
+    } catch (error) {
+        handleAxiosError(error);
         alert("Error occured");
     }
 };
@@ -42,7 +85,7 @@ export const registerUser = async (registerData: User) => {
 // Fetch all users
 export const getAllUsers = async (): Promise<User[]> => {
     try {
-        const response = await axios.get<User[]>(`https://localhost:7156/api/Users`);
+        const response = await axios.get<User[]>(`https://localhost:7156/api/Users/all`);
         return response.data; // Assuming the API returns an array of users
     } catch (error) {
         console.error("Error fetching users:", error);

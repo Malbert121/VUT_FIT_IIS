@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getAnotherUser, postEntity, putEntity, registerUser } from '../../api'; // Import your API methods
+import Toast from '../../Components/Toast/Toast';
+import { getAnotherUser, postUser, putUser, registerUser } from '../../api'; // Import your API methods
 import { Role, User } from '../../data'; // Import the data structure
 import './UserEditPage.css'; // Add custom styles if needed
 
@@ -17,8 +18,15 @@ const UserEditPage = () => {
     const [user, setUser] = useState<User | null>(emptyUser);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const [toastMessage, setToastMessage] = useState<string | null>(null);
+    const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('info');
 
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
+    };
 
+    const closeToast = () => setToastMessage(null);
 
 
     useEffect(() => {
@@ -53,50 +61,58 @@ const UserEditPage = () => {
         });
 
     };
-    function getHashCode(input: string): string {
-        let hash = 0;
 
-        if (input.length === 0) return hash.toString();
-        for (let i = 0; i < input.length; i++) {
-            const char = input.charCodeAt(i);
-            hash = (hash << 5) - hash + char;
-            hash |= 0; // Convert to 32-bit integer
-        }
-
-        return hash.toString();
-    }
 
     function isValidEmail(email: string): boolean {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
 
-    // Usage
-    const myString = "Hello, World!";
-    const hashString = getHashCode(myString);
-
-    console.log(`Hash code as string: ${hashString}`);
-
 
     const handleSave = async () => {
         try {
-            if (user && id) {
-                await putEntity(Number(id), "Users", user);
-                alert('Conference updated successfully.');
+            if (user && user.UserName && user.UserName !== '' && id) {
+                if (user.PasswordHash && user.PasswordHash !== "" && user.PasswordHash?.length < 8) {
+                    setToastType('error');
+                    setToastMessage('Password is too short.');
+                    return;
+                }
+                if (user.Email && user.Email !== "" && !isValidEmail(user.Email)) {
+                    setToastType('error');
+                    setToastMessage('Email is not valid');
+                    return;
+                }
+                await putUser(Number(id), "Users", user);
+                setToastType("success");
+                setToastMessage("User have successfully paid reservations.");
+                navigate(-1);
             }
-            else if (user && user.PasswordHash && user.PasswordHash?.length >= 8 && user.Email && isValidEmail(user.Email)) {
-                user.PasswordHash = getHashCode(user.PasswordHash);
-                await postEntity("Users", user);
-                alert('User created successfully.');
-                navigate(`..`);
+            else if (user && user.UserName && user.UserName !== '') {
+                if (user.PasswordHash && user.PasswordHash !== "" && user.PasswordHash?.length < 8) {
+                    setToastType('error');
+                    setToastMessage('Password is too short.');
+                    return;
+                }
+                if (user.Email && user.Email !== "" && !isValidEmail(user.Email)) {
+                    setToastType('error');
+                    setToastMessage('Email is not valid');
+                    return;
+                }
+                await postUser("Users", user);
+                setToastType("success");
+                setToastMessage('User created successfully.');
+                navigate(-1);
             }
             else
             {
-                alert('Something wrong try again');
+                setToastType('error');
+                setToastMessage('Username not found or user in invalid');
             }
 
         } catch (error) {
-            alert('Failed to update the conference.');
+            console.log(error);
+            setToastType('error');
+            setToastMessage('Failed to update the conference.');
         }
     };
 
@@ -116,6 +132,9 @@ const UserEditPage = () => {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
+            {toastMessage && (
+                <Toast message={toastMessage} onClose={closeToast} type={toastType} />
+            )}
             <div className="bg-white shadow-md rounded-lg w-full max-w-md p-6">
                 <h1 className="text-2xl font-semibold text-center mb-6 text-gray-800">
                     {id ? 'Edit User' : 'Create User'}
@@ -151,13 +170,22 @@ const UserEditPage = () => {
                             Password:
                         </label>
                         <input
-                            type="password"
+                            type={passwordVisible ? "text" : "password"}
                             name="PasswordHash"
                             value={user.PasswordHash || ''}
                             onChange={handleInputChange}
                             className="w-full px-3 py-2 border rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Enter password"
                         />
+                        <label style={{ display: "flex", alignItems: "center" }}>
+                            <input
+                                type="checkbox"
+                                checked={passwordVisible}
+                                onChange={togglePasswordVisibility}
+                                style={{ marginRight: "8px" }}
+                            />
+                            Show Password
+                        </label>
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -172,18 +200,6 @@ const UserEditPage = () => {
                             <option value={`${Role.User}`}>Basic</option>
                             <option value={`${Role.Admin}`}>Admin</option>
                         </select>
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            ID:
-                        </label>
-                        <input
-                            name="Id"
-                            value={user.Id}
-                            disabled
-                            placeholder="ID"
-                            className="w-full px-3 py-2 border rounded-md bg-gray-200 text-gray-600"
-                        />
                     </div>
                     <button
                         type="button"

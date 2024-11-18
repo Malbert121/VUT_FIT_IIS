@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllConferences, getAllPresentations, getAllUsers, getAllRooms, getAllReservations, deleteEntity } from '../../api';
+import { getAllConferences, getAllPresentations, getAllUsers, getAllRooms, getAllReservations, deleteEntity, deleteUser } from '../../api';
 import ReservationCard from '../../Components/ReservationCard/ReservationCard';
 import { pathAdmin, pathAvailableReservations } from '../../Routes/Routes';
 import { Presentation, Conference, User, Room, Reservation} from '../../data'; // Adjust based on your structure
@@ -46,7 +46,7 @@ const AdminPanelPage: React.FC = () => {
     };
 
     const handleDelete = (id: number, model: string) => {
-        deleteEntity(id, model);
+        deleteUser(id, model);
         window.location.reload();
     }
 
