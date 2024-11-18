@@ -118,6 +118,14 @@ export const updatePresentation = async (presentation: Presentation): Promise<Pr
         return null; // Return null in case of an error
     }
 }
+// Function to delete a specific presentation by ID
+export const deletePresentation = async (id: number): Promise<void> => {
+    try {
+      await axios.delete(`https://localhost:7156/api/Presentations/${id}`);
+    } catch (error) {
+      throw new Error('Failed to delete the presentation');
+    }
+};
 // Fetch all reservations
 export const getAllReservations = async ():Promise<Reservation[]> => {
     try {

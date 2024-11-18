@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { getPresentation } from '../../api'; // Adjust the import based on your structure
+import { getPresentation, deletePresentation } from '../../api'; // Adjust the import based on your structure
 import { Presentation } from '../../data'; // Adjust based on your structure
 import './LectureDetailPage.css'; // Ensure you have this CSS file
 
@@ -34,13 +34,18 @@ const LectureDetailPage: React.FC = () => {
     navigate("edit");
   };
 
-  const deleteLecture = () => {
+  const deleteLecture = async () => {
     console.log("Delete button clicked.");
     const confirmed = window.confirm("Are you sure you want to delete this lecture?");
     if (confirmed) {
-      // TODO: Delete lecture from the user.
-      console.log("Lecture deleted.");
-      navigate(-1);
+      try {
+        await deletePresentation(Number(id));
+        console.log("Lecture deleted.");
+        navigate(-1);
+      } catch (error) {
+        setError('Failed to delete the lecture.');
+        console.error("Error deleting lecture:", error);
+      }
     } else {
       console.log("Deletion cancelled.");
     }
