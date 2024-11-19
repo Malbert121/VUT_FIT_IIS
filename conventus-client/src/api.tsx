@@ -1,6 +1,37 @@
 import axios from 'axios';
-import { User, Conference, Presentation, Reservation, Room} from './data'; 
 import { API_CONFIG } from './config';
+import { 
+    User, 
+    Conference, 
+    Presentation, 
+    Reservation, 
+    Room, 
+    RegisterData,
+    AuthResponse} from './data'; 
+
+export const postSignUp = async (registerData:RegisterData) => {
+    try {
+        const response = await axios.post<AuthResponse>('https://localhost:7156/api/Auth/register', registerData);
+        localStorage.setItem('token', response.data.token);
+        alert("Registration successful!");
+    } catch (err) {
+        handleAxiosError(err);
+    }
+};
+
+export const postSignIn = async (username:string, password:string) => {
+    try {
+        const response = await axios.post<AuthResponse>('https://localhost:7156/api/Auth/login', {
+            username,
+            password,
+        });
+        localStorage.setItem('token', response.data.token);
+        window.location.reload();
+        alert("Logged in successfully!");
+    } catch (err) {
+        handleAxiosError(err);
+    }
+};
 
 // Function to fetch user data with token in headers
 export const getUser = async (userId: number): Promise<User> => {

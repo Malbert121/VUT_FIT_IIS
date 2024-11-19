@@ -1,33 +1,115 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { getConference } from '../../api';
-import { Conference } from '../../data';
+import { getConference, postReservations } from '../../api';
+import { useUser } from '../../context/UserContext';
+import { Conference, Reservation } from '../../data';
+import Toast from '../../Components/Toast/Toast';
+import AuthorizationWindow from '../../Components/AuthorizationWindow/AuthorizationWindow';
 import './ConferenceDetailPage.css';
 
 const ConferenceDetailPage = () => {
+  const user = useUser();
   const { id } = useParams<{ id: string }>();
   const [conference, setConference] = useState<Conference | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [ticketQuantity, setTicketQuantity] = useState<{ [key: number]: number }>({});
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('info');
+  const closeToast = () => setToastMessage(null);
+  const [visibleAuth, setVisibleAuth] = useState<boolean>(false);
+
+
+  const fetchConference = useCallback(async () => {
+    console.log("Fetching conference with ID:", id);
+    try {
+      const data = await getConference(Number(id));
+      console.log("Fetched conference data:", data);
+      setConference(data);
+    } catch (error) {
+      setError('Failed to fetch conference details.');
+      console.error("Error fetching conference details:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    const fetchConference = async () => {
-      console.log("Fetching conference with ID:", id);
-      try {
-        const data = await getConference(Number(id));
-        console.log("Fetched conference data:", data);
-        setConference(data);
-      } catch (error) {
-        setError('Failed to fetch conference details.');
-        console.error("Error fetching conference details:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-  
     fetchConference();
   }, [id]);
   
+  const handleQuantityChange = (id: number, quantity: number) => {
+    setTicketQuantity({ ...ticketQuantity, [id]: quantity });
+  };
+
+  const handleCreateReservation = async (conferenceId:number, quantity:number) => {
+    try{
+      if(!user){
+        if(!localStorage.getItem("reservation")){  // save only first reservation
+          const reservationToStorage = {
+            timestamp: Date.now(),
+            conferenceId: conferenceId,
+            quantity: quantity
+          }
+          localStorage.setItem("reservation", JSON.stringify(reservationToStorage)); // save reservation data
+        }
+        setVisibleAuth(true);
+        return;
+      }
+      const user_id = Number(user.id);
+      const reservation: Reservation = {
+        Id: 0,
+        UserId: user_id,
+        User: null,
+        ConferenceId: conferenceId,
+        Conference: null,
+        IsConfirmed: false,
+        IsPaid: false,
+        NumberOfTickets: quantity,
+        Ammount: 0,
+        ReservationDate: new Date().toISOString()
+      };
+      await postReservations(reservation, user_id);
+      setToastType("success");
+      setToastMessage("User have successfully created new reservation.");
+      fetchConference();
+    }
+    catch(error)
+    {
+      console.error(error);
+      setToastType('error');
+      setToastMessage((error as Error).message);
+    }
+  };
+
+  useEffect(() => {
+    const reservationFromStorage = localStorage.getItem('reservation');
+    if (reservationFromStorage) {
+      try {
+        const reservationData = JSON.parse(reservationFromStorage);
+        if (reservationData) {
+          const actualTime = Date.now();
+          if(actualTime-reservationData.timestamp >= 5*60*1000){
+            localStorage.removeItem('reservation');    
+            setVisibleAuth(false);
+            return;
+          }
+          if (user) {
+            setVisibleAuth(false);
+            const confId = reservationData.conferenceId;
+            const quant = reservationData.quantity;
+            localStorage.removeItem('reservation');
+            handleCreateReservation(confId, quant);
+          }
+        }
+      } catch (error) {
+        console.error('Error parsing reservation data from localStorage:', error);
+        localStorage.removeItem('reservation');  // for safety
+        setVisibleAuth(false);
+      }
+    }
+  }, [user]);
+
   if (loading) {
     return <div className="loading">Loading conference details...</div>;
   }
@@ -40,23 +122,61 @@ const ConferenceDetailPage = () => {
     return <div className="error">Conference not found.</div>;
   }
 
+
   return (
     <div className="conference-detail">
+      {visibleAuth && <AuthorizationWindow actionToClose={setVisibleAuth}/>}
+      {toastMessage && (
+        <Toast message={toastMessage} onClose={closeToast} type={toastType} />
+      )}
       <h1 className="conference-title">{conference.Name}</h1>
       <div className="description-container">
         <p className="conference-description">{conference.Description}</p>
       </div>
-      <div className="info-container">
+      <div className="text-left p-5">
         <p><strong>Location:</strong> {conference.Location}</p>
         <p><strong>Start Date:</strong> {conference.StartDate}</p>
         <p><strong>End Date:</strong> {conference.EndDate}</p>
+        <p><strong>Occupancy:</strong> {conference.Occupancy}/{conference.Capacity}</p>
         <p><strong>Price:</strong> ${conference.Price.toFixed(2)}</p>
-        <button className="add-to-cart-button">Add to Cart</button>
+        <div className="flex flex-row justify-between mt-10">
+          <div className="flex flex-row items-center space-x-2">
+            <span className="font-semibold text-lg">Number of tickets:</span>
+            <input
+              title="Number of Tickets"
+              type="number"
+              min="1"
+              value={ticketQuantity[conference.Id] || 1}
+              onChange={(e) => handleQuantityChange(conference.Id, parseInt(e.target.value))}
+              className="w-12 text-center border border-gray-300 rounded-md p-1 focus:outline-none focus:border-blue-500 transition duration-150"
+            />
+            <div className="flex space-x-1">
+              <button
+                className="bg-red-500 text-white w-8 h-8 flex items-center justify-center rounded-l hover:bg-red-600 transition-colors duration-150"
+                onClick={() => handleQuantityChange(conference.Id, (ticketQuantity[conference.Id] || 1) - 1)}
+              >
+                -
+              </button>
+              <button
+                className="bg-green-500 text-white w-8 h-8 flex items-center justify-center rounded-r hover:bg-green-600 transition-colors duration-150"
+                onClick={() => handleQuantityChange(conference.Id, (ticketQuantity[conference.Id] || 1) + 1)}
+              >
+                +
+              </button>
+            </div>
+          </div>
+          <button 
+            onClick={()=>{const newQuantity = ticketQuantity[conference.Id] || 1;
+              handleQuantityChange(conference.Id, newQuantity);
+              handleCreateReservation(conference.Id, newQuantity)}}
+            className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+            Add to Cart
+          </button>
+        </div>
       </div>
       <div className="organizer-info">
         <h3>Organizer Information</h3>
         <p><strong>Organizer:</strong> {conference.Organizer.UserName} (Email: {conference.Organizer.Email})</p>
-        <p><strong>Capacity:</strong> {conference.Capacity}</p>
       </div>
       
       <h2 className="presentations-title">Presentations</h2>

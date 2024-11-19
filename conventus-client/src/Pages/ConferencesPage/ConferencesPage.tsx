@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback} from 'react';
 import { getAllConferences, postReservations } from '../../api';
 import { Conference } from '../../data';
 import { Link } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
 import { Reservation } from '../../data';
 import Toast from '../../Components/Toast/Toast';
+import AuthorizationWindow from '../../Components/AuthorizationWindow/AuthorizationWindow';
 import './ConferencesPage.css';
 
 function ConferencesPage() {
@@ -15,7 +16,8 @@ function ConferencesPage() {
   const [error, setError] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('info');
-  
+  const [visibleAuth, setVisibleAuth] = useState<boolean>(false);
+
   // Filtering and sorting states
   const [genreFilter, setGenreFilter] = useState<string | null>(null);
   const [locationFilter, setLocationFilter] = useState<string | null>(null);
@@ -47,6 +49,7 @@ function ConferencesPage() {
   useEffect(() => {
     fetchConferences();
   }, [fetchConferences]);
+  console.log(localStorage.getItem('reservation'));
 
   // Handle filtering
   useEffect(() => {
@@ -85,13 +88,17 @@ function ConferencesPage() {
   };
 
   const handleCreateReservation = async (conferenceId:number, quantity:number) => {
-    try
-    {
-      if(!user)
-      {
-        console.log('Unauthorized user is bad boy!'); //TODO: solve unauthorized user behavioral  
-        setToastType('error');
-        setToastMessage('Unauthorized user is bad boy!');
+    try{
+      if(!user){
+        if(!localStorage.getItem("reservation")){  // save only first reservation
+          const reservationToStorage = {
+            timestamp: Date.now(),
+            conferenceId: conferenceId,
+            quantity: quantity
+          }
+          localStorage.setItem("reservation", JSON.stringify(reservationToStorage)); // save reservation data
+        }
+        setVisibleAuth(true);
         return;
       }
       const user_id = Number(user.id);
@@ -120,6 +127,34 @@ function ConferencesPage() {
     }
   };
 
+  useEffect(() => {
+    const reservationFromStorage = localStorage.getItem('reservation');
+    if (reservationFromStorage) {
+      try {
+        const reservationData = JSON.parse(reservationFromStorage);
+        if (reservationData) {
+          const actualTime = Date.now();
+          if(actualTime-reservationData.timestamp >= 5*60*1000){
+            localStorage.removeItem('reservation');    
+            setVisibleAuth(false);
+            return;
+          }
+          if (user) {
+            setVisibleAuth(false);
+            const confId = reservationData.conferenceId;
+            const quant = reservationData.quantity;
+            localStorage.removeItem('reservation');
+            handleCreateReservation(confId, quant);
+          }
+        }
+      } catch (error) {
+        console.error('Error parsing reservation data from localStorage:', error);
+        localStorage.removeItem('reservation');  // for safety
+        setVisibleAuth(false);
+      }
+    }
+  }, [user]);
+
   if (loading) {
     return <div className="loading">Loading conferences...</div>;
   }
@@ -130,8 +165,9 @@ function ConferencesPage() {
 
   return (
     <div className="ConferencesPage">
+      {visibleAuth && <AuthorizationWindow actionToClose={setVisibleAuth}/>}
       {toastMessage && (
-      <Toast message={toastMessage} onClose={closeToast} type={toastType} />
+        <Toast message={toastMessage} onClose={closeToast} type={toastType} />
       )}
       <h1 className="title">Upcoming Conferences</h1>
       <div className="filters">

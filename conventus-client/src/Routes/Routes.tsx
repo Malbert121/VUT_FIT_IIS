@@ -7,8 +7,6 @@ import AccountPage from "../Pages/AccountPage/AccountPage";
 import MainPage from "../Pages/MainPage/MainPage";
 import AdminPanelPage from "../Pages/AdminPanelPage/AdminPanelPage";
 import PageContainer from "../Components/PageContainer/PageContainer";
-import LoginPage from "../Pages/LoginPage/LoginPage"
-import RegistrationPage from "../Pages/RegistrationPage/RegistrationPage";
 import ProtectedRoute from "../Components/ProtectedRoute/ProtectedRoute";
 import MyReservationsPage from "../Pages/MyReservationsPage/MyReservationsPage";
 import ReservationDetailPage from "../Pages/ReservationDetailPage/ReservationDetailPage";
@@ -32,8 +30,6 @@ export const pathEditLecture = "/lectures/edit";
 export const pathReservations = "/reservations";
 export const pathAdmin = "/admin";
 export const pathAccount = "/account";
-export const pathLogin = "/login";
-export const pathRegistration = "/registration";
 export const pathMyReservations = pathReservations;
 export const pathGuestReservations = `${pathReservations}/guest_reservations`;
 
@@ -53,7 +49,8 @@ export const router = createBrowserRouter([
             {
                 path: pathMyConferences,
                 element: <PageContainer WrapperPage={MyConferencesPage} sideBarFlag={true} />
-            },{
+            },
+            {
                 path: pathCreateConference,
                 element: <PageContainer WrapperPage={NewConferencePage} sideBarFlag={true} />
             },
@@ -108,19 +105,6 @@ export const router = createBrowserRouter([
             {
                 path: pathAdmin,
                 element: <PageContainer WrapperPage={AdminPanelPage} sideBarFlag={false} />,
-            },
-            {
-                path: pathLogin,
-                element: (
-                    <ProtectedRoute>
-                        <PageContainer WrapperPage={LoginPage} sideBarFlag={false} />
-                    </ProtectedRoute>
-                ),
-            }, {
-                path: pathRegistration,
-                element: (
-                    <PageContainer WrapperPage={RegistrationPage} sideBarFlag={false} />
-                ),
             },
         ]
     }
