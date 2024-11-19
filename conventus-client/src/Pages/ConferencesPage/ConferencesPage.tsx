@@ -92,12 +92,13 @@ function ConferencesPage() {
       if(!user){
         if(!localStorage.getItem("reservation")){  // save only first reservation
           const reservationToStorage = {
+            timestamp: Date.now(),
             conferenceId: conferenceId,
             quantity: quantity
           }
           localStorage.setItem("reservation", JSON.stringify(reservationToStorage)); // save reservation data
-          setVisibleAuth(true);
         }
+        setVisibleAuth(true);
         return;
       }
       const user_id = Number(user.id);
@@ -132,6 +133,12 @@ function ConferencesPage() {
       try {
         const reservationData = JSON.parse(reservationFromStorage);
         if (reservationData) {
+          const actualTime = Date.now();
+          if(actualTime-reservationData.timestamp >= 5*60*1000){
+            localStorage.removeItem('reservation');    
+            setVisibleAuth(false);
+            return;
+          }
           if (user) {
             setVisibleAuth(false);
             const confId = reservationData.conferenceId;
@@ -139,13 +146,11 @@ function ConferencesPage() {
             localStorage.removeItem('reservation');
             handleCreateReservation(confId, quant);
           }
-          else {
-            setVisibleAuth(true);
-          }
         }
       } catch (error) {
         console.error('Error parsing reservation data from localStorage:', error);
         localStorage.removeItem('reservation');  // for safety
+        setVisibleAuth(false);
       }
     }
   }, [user]);
