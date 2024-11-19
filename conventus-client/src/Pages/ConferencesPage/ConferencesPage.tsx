@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback} from 'react';
 import { getAllConferences, postReservations } from '../../api';
 import { Conference } from '../../data';
 import { Link } from 'react-router-dom';
@@ -16,7 +16,8 @@ function ConferencesPage() {
   const [error, setError] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('info');
-  
+  const [visibleAuth, setVisibleAuth] = useState<boolean>(false);
+
   // Filtering and sorting states
   const [genreFilter, setGenreFilter] = useState<string | null>(null);
   const [locationFilter, setLocationFilter] = useState<string | null>(null);
@@ -48,6 +49,7 @@ function ConferencesPage() {
   useEffect(() => {
     fetchConferences();
   }, [fetchConferences]);
+  console.log(localStorage.getItem('reservation'));
 
   // Handle filtering
   useEffect(() => {
@@ -86,14 +88,17 @@ function ConferencesPage() {
   };
 
   const handleCreateReservation = async (conferenceId:number, quantity:number) => {
-    try
-    {
-      if(!user)
-      {
-        /*console.log('Unauthorized user is bad boy!'); //TODO: solve unauthorized user behavioral  
-        setToastType('error');
-        setToastMessage('Unauthorized user is bad boy!');
-        */return;
+    try{
+      if(!user){
+        if(!localStorage.getItem("reservation")){  // save only first reservation
+          const reservationToStorage = {
+            conferenceId: conferenceId,
+            quantity: quantity
+          }
+          localStorage.setItem("reservation", JSON.stringify(reservationToStorage)); // save reservation data
+          setVisibleAuth(true);
+        }
+        return;
       }
       const user_id = Number(user.id);
       const reservation: Reservation = {
@@ -121,6 +126,30 @@ function ConferencesPage() {
     }
   };
 
+  useEffect(() => {
+    const reservationFromStorage = localStorage.getItem('reservation');
+    if (reservationFromStorage) {
+      try {
+        const reservationData = JSON.parse(reservationFromStorage);
+        if (reservationData) {
+          if (user) {
+            setVisibleAuth(false);
+            const confId = reservationData.conferenceId;
+            const quant = reservationData.quantity;
+            localStorage.removeItem('reservation');
+            handleCreateReservation(confId, quant);
+          }
+          else {
+            setVisibleAuth(true);
+          }
+        }
+      } catch (error) {
+        console.error('Error parsing reservation data from localStorage:', error);
+        localStorage.removeItem('reservation');  // for safety
+      }
+    }
+  }, [user]);
+
   if (loading) {
     return <div className="loading">Loading conferences...</div>;
   }
@@ -131,6 +160,7 @@ function ConferencesPage() {
 
   return (
     <div className="ConferencesPage">
+      {visibleAuth && <AuthorizationWindow actionToClose={setVisibleAuth}/>}
       {toastMessage && (
         <Toast message={toastMessage} onClose={closeToast} type={toastType} />
       )}
