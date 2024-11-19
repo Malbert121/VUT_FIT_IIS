@@ -1,10 +1,7 @@
 import React from "react";
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Reservation } from "../../data";
 import { pathMyReservations } from "../../Routes/Routes";
-import Toast from '../../Components/Toast/Toast';
-
 interface Props {
     reservation: Reservation,
     onSelect: ()=>void,
@@ -12,10 +9,6 @@ interface Props {
 };
 
 const ReservationCard: React.FC<Props> = ({reservation, onSelect, isSelected}) =>{
-    const [toastMessage, setToastMessage] = useState<string | null>(null);
-    const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('info');
-    const closeToast = () => setToastMessage(null);
-    
     const [statusText, statusColor] = !reservation.IsPaid 
     ? ['Unpaid', 'red'] 
     : reservation.IsConfirmed 
@@ -26,9 +19,6 @@ const ReservationCard: React.FC<Props> = ({reservation, onSelect, isSelected}) =
     return (
         
     <div className={`border rounded-lg shadow-lg p-4 w-full max-w-md bg-${color}`}>
-        {toastMessage && (
-                <Toast message={toastMessage} onClose={closeToast} type={toastType} />
-        )}
         <div className="flex flex-row items-center justify-between">
             <Link to={`../${pathMyReservations}/${reservation.Id}`} className="text-black hover:text-blue-600">
                 <h2 className="flex text-2xl font-semibold">{`${reservation.Conference?.Name}`}</h2>

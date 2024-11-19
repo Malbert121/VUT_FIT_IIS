@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 
 interface ToastProps {
     message: string;
@@ -8,7 +8,6 @@ interface ToastProps {
   }
   
   const Toast: React.FC<ToastProps> = ({ message, onClose, type = 'info' }) => {
-    const [isVisible, setIsVisible] = useState(true); // Контролируем видимость
 
     const getBackgroundColor = () => {
       switch (type) {
