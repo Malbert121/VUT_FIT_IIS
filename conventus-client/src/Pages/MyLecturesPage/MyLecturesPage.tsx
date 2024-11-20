@@ -22,9 +22,11 @@ const MyLecturesPage: React.FC = () => {
 
   // Filtering states
   const [tagFilter, setTagFilter] = useState<string | null>(null);
+  const [conferenceNameFilter, setConferenceNameFilter] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [confirmStatusFilter, setConfirmStatusFilter] = useState<string|null>(null);
   const [timeRange, setTimeRange] = useState<{ from: string; to: string }>({ from: '', to: '' });
-
+  const confirmStatus = ['Confirm', 'Unconfirm'];
   // Extract unique tags from presentations
   const uniqueTags = Array.from(
     new Set(
@@ -38,6 +40,7 @@ const MyLecturesPage: React.FC = () => {
   const fetchPresentations = useCallback(async () => {
     try {
       if(!user){
+        console.log("AAA");
         return;
       }
       console.log("Ok");
@@ -72,7 +75,6 @@ const MyLecturesPage: React.FC = () => {
           .includes(tagFilter)
       );
     }
-
     // Title or description search
     if (searchTerm) {
       filtered = filtered.filter(presentation =>
@@ -80,13 +82,27 @@ const MyLecturesPage: React.FC = () => {
         presentation.Description?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
+    if (confirmStatusFilter) {
+      console.log("aaa");
+      if(confirmStatusFilter === 'Confirm'){
+        filtered = filtered.filter(presentation =>presentation.IsConfirmed);
+      }
+      else{
+        filtered = filtered.filter(presentation =>!presentation.IsConfirmed);
+      }
+    }
+    if(conferenceNameFilter){
+      filtered = filtered.filter(presentation =>
+        presentation.Conference?.Name.toLowerCase().includes(conferenceNameFilter.toLowerCase())
+      )
+    }
 
     // Time range filter
     if (timeRange.from) filtered = filtered.filter(presentation => new Date(presentation.StartTime) >= new Date(timeRange.from));
     if (timeRange.to) filtered = filtered.filter(presentation => new Date(presentation.EndTime) <= new Date(timeRange.to));
 
     setFilteredPresentations(filtered);
-  }, [tagFilter, searchTerm, timeRange, presentations]);
+  }, [tagFilter, searchTerm, timeRange, presentations, conferenceNameFilter, confirmStatusFilter]);
 
   
   if(!isAuthorized){
@@ -116,6 +132,18 @@ const MyLecturesPage: React.FC = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+        <input
+          type="text"
+          placeholder="Search by conference"
+          value={conferenceNameFilter}
+          onChange={(e) => setConferenceNameFilter(e.target.value)}
+        />
+        <select onChange={(e) => setConfirmStatusFilter(e.target.value || null)}>
+          <option value="">All tickets</option>
+          {confirmStatus.map((confirmStatus) => (
+            <option key={confirmStatus}>{confirmStatus}</option>
+          ))}
+        </select>
         <select onChange={(e) => setTagFilter(e.target.value || null)}>
           <option value="">All Tags</option>
           {uniqueTags.map((tag) => (
@@ -140,14 +168,16 @@ const MyLecturesPage: React.FC = () => {
       <div className="presentation-list">
         {filteredPresentations.map((presentation) => (
           <div key={presentation.Id} className="presentation-card">
-            <Link to={`/lectures/${presentation.Id}`}>
-              <h2 className="presentation-title">{presentation.Title || 'Untitled'}</h2>
+            <Link to={`../lectures/${presentation.Id}`}>
+              <h2 className="text-2xl font-bold text-blue-600 mb-2.5">{presentation.Title || 'Untitled'}</h2>
             </Link>
-            <p className="presentation-conference">{presentation.Conference?.Name || 'No conference available.'}</p>
-            <p className="presentation-description">{presentation.Description || 'No description available.'}</p>
             <p>
-              <strong style={{color:presentation.IsConfirmed?'green':'red'}}>{presentation.IsConfirmed?'Confirm':'Unconfirm'}</strong>
+              <strong className="text-xl" style={{color:presentation.IsConfirmed?'green':'red'}}>{presentation.IsConfirmed?'Confirm':'Unconfirm'}</strong>
             </p>
+            <p className="presentation-tags">
+              <strong>Conference:</strong> {presentation.Conference?.Name || 'No conference available.'}
+            </p>
+            
             <p className="presentation-tags">
               <strong>Tags:</strong> {presentation.Tags}
             </p>
@@ -155,6 +185,8 @@ const MyLecturesPage: React.FC = () => {
               <strong>Start Time:</strong> {presentation.StartTime} <br />
               <strong>End Time:</strong> {presentation.EndTime}
             </p>
+            <p className="presentation-description">{presentation.Description || 'No description available.'}</p>
+            
           </div>
         ))}
       </div>

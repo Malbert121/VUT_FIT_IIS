@@ -12,6 +12,7 @@ const LecturesPage: React.FC = () => {
 
   // Filtering states
   const [tagFilter, setTagFilter] = useState<string | null>(null);
+  const [conferenceNameFilter, setConferenceNameFilter] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [timeRange, setTimeRange] = useState<{ from: string; to: string }>({ from: '', to: '' });
 
@@ -30,8 +31,8 @@ const LecturesPage: React.FC = () => {
       try {
         const data = await getAllPresentations();
         console.log("Presentations data:", data);
-        setPresentations(data);
-        setFilteredPresentations(data);
+        setPresentations(data.filter(presentation => presentation.IsConfirmed));  // only confirmed
+        setFilteredPresentations(data.filter(presentation => presentation.IsConfirmed));
       } catch (error) {
         setError('Failed to fetch presentations.');
         console.error("Error fetching presentations:", error);
@@ -65,12 +66,18 @@ const LecturesPage: React.FC = () => {
       );
     }
 
+    if(conferenceNameFilter){
+      filtered = filtered.filter(presentation =>
+        presentation.Conference?.Name.toLowerCase().includes(conferenceNameFilter.toLowerCase())
+      )
+    }
+
     // Time range filter
     if (timeRange.from) filtered = filtered.filter(presentation => new Date(presentation.StartTime) >= new Date(timeRange.from));
     if (timeRange.to) filtered = filtered.filter(presentation => new Date(presentation.EndTime) <= new Date(timeRange.to));
 
     setFilteredPresentations(filtered);
-  }, [tagFilter, searchTerm, timeRange, presentations]);
+  }, [tagFilter, searchTerm,conferenceNameFilter, timeRange, presentations]);
 
   if (loading) {
     return <div className="loading">Loading presentations...</div>;
@@ -90,6 +97,12 @@ const LecturesPage: React.FC = () => {
           placeholder="Search by title or description"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Search by conference"
+          value={conferenceNameFilter}
+          onChange={(e) => setConferenceNameFilter(e.target.value)}
         />
         <select onChange={(e) => setTagFilter(e.target.value || null)}>
           <option value="">All Tags</option>
@@ -116,10 +129,11 @@ const LecturesPage: React.FC = () => {
         {filteredPresentations.map((presentation) => (
           <div key={presentation.Id} className="presentation-card">
             <Link to={`./${presentation.Id}`}>
-              <h2 className="presentation-title">{presentation.Title || 'Untitled'}</h2>
+              <h2 className="text-2xl font-bold text-blue-600 mb-2.5">{presentation.Title || 'Untitled'}</h2>
             </Link>
-            <p className="presentation-conference">{presentation.Conference?.Name || 'No conference available.'}</p>
-            <p className="presentation-description">{presentation.Description || 'No description available.'}</p>
+            <p className="presentation-tags">
+              <strong>Conference:</strong> {presentation.Conference?.Name || 'No conference available.'}
+            </p>
             <p className="presentation-tags">
               <strong>Tags:</strong> {presentation.Tags}
             </p>
@@ -127,6 +141,8 @@ const LecturesPage: React.FC = () => {
               <strong>Start Time:</strong> {presentation.StartTime} <br />
               <strong>End Time:</strong> {presentation.EndTime}
             </p>
+            <p className="presentation-description">{presentation.Description || 'No description available.'}</p>
+            
           </div>
         ))}
       </div>

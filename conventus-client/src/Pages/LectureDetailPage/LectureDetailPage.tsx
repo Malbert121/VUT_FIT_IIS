@@ -94,7 +94,14 @@ const LectureDetailPage: React.FC = () => {
         <h2 className="presentation-conference">{presentation.Conference?.Name}</h2>
       </Link>
       <div className="info-container">
-        <p><strong style={{color:presentation.IsConfirmed?'green':'red'}}>{presentation.IsConfirmed?'Confirm':'Unconfirm'}</strong></p>
+      {
+        (user != null) && (Number(user.id) == presentation.Conference?.OrganizerId || user.role === 'Admin')
+        && (
+          <>
+          <p><strong>Status: </strong><strong style={{color:presentation.IsConfirmed?'green':'red'}}>{presentation.IsConfirmed?'Confirm':'Unconfirm'}</strong></p>
+          </>
+        )
+      }
         <p className="presentation-tags"><strong>Tags:</strong> {presentation.Tags || "Tags are not specified."}</p>
         <p className="presentation-location"><strong>Location:</strong> {presentation.Conference?.Location || "Location is not specified."}</p>
         <p className="presentation-room"><strong>Room:</strong> {presentation.Room?.Name || "Room is not specified."}</p>
@@ -134,3 +141,5 @@ const LectureDetailPage: React.FC = () => {
 };
 
 export default LectureDetailPage;
+//<p><strong style={{color:presentation.IsConfirmed?'green':'red'}}>{presentation.IsConfirmed?'Confirm':'Unconfirm'}</strong></p>
+        
