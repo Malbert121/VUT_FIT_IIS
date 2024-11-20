@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
+
 import { useParams } from 'react-router-dom';
 import { getConference, postReservations } from '../../api';
 import { useUser } from '../../context/UserContext';
@@ -37,15 +39,15 @@ const ConferenceDetailPage = () => {
   useEffect(() => {
     fetchConference();
   }, [id]);
-  
+
   const handleQuantityChange = (id: number, quantity: number) => {
     setTicketQuantity({ ...ticketQuantity, [id]: quantity });
   };
 
-  const handleCreateReservation = async (conferenceId:number, quantity:number) => {
-    try{
-      if(!user){
-        if(!localStorage.getItem("reservation")){  // save only first reservation
+  const handleCreateReservation = async (conferenceId: number, quantity: number) => {
+    try {
+      if (!user) {
+        if (!localStorage.getItem("reservation")) {  // save only first reservation
           const reservationToStorage = {
             timestamp: Date.now(),
             conferenceId: conferenceId,
@@ -74,8 +76,7 @@ const ConferenceDetailPage = () => {
       setToastMessage("User have successfully created new reservation.");
       fetchConference();
     }
-    catch(error)
-    {
+    catch (error) {
       console.error(error);
       setToastType('error');
       setToastMessage((error as Error).message);
@@ -89,8 +90,8 @@ const ConferenceDetailPage = () => {
         const reservationData = JSON.parse(reservationFromStorage);
         if (reservationData) {
           const actualTime = Date.now();
-          if(actualTime-reservationData.timestamp >= 5*60*1000){
-            localStorage.removeItem('reservation');    
+          if (actualTime - reservationData.timestamp >= 5 * 60 * 1000) {
+            localStorage.removeItem('reservation');
             setVisibleAuth(false);
             return;
           }
@@ -125,7 +126,7 @@ const ConferenceDetailPage = () => {
 
   return (
     <div className="conference-detail">
-      {visibleAuth && <AuthorizationWindow actionToClose={setVisibleAuth}/>}
+      {visibleAuth && <AuthorizationWindow actionToClose={setVisibleAuth} />}
       {toastMessage && (
         <Toast message={toastMessage} onClose={closeToast} type={toastType} />
       )}
@@ -165,10 +166,12 @@ const ConferenceDetailPage = () => {
               </button>
             </div>
           </div>
-          <button 
-            onClick={()=>{const newQuantity = ticketQuantity[conference.Id] || 1;
+          <button
+            onClick={() => {
+              const newQuantity = ticketQuantity[conference.Id] || 1;
               handleQuantityChange(conference.Id, newQuantity);
-              handleCreateReservation(conference.Id, newQuantity)}}
+              handleCreateReservation(conference.Id, newQuantity)
+            }}
             className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
             Add to Cart
           </button>
@@ -178,28 +181,37 @@ const ConferenceDetailPage = () => {
         <h3>Organizer Information</h3>
         <p><strong>Organizer:</strong> {conference.Organizer.UserName} (Email: {conference.Organizer.Email})</p>
       </div>
-      
+
       <h2 className="presentations-title">Presentations</h2>
-      {conference.Presentations && conference.Presentations.length > 0 ? (
-        <ul className="presentation-list">
-          {conference.Presentations.map((presentation) => (
-            <li key={presentation.Id} className="presentation-item">
+{conference.Presentations && conference.Presentations.length > 0 ? (
+  <div className="timeline">
+    {conference.Presentations
+      .sort((a, b) => new Date(a.StartTime).getTime() - new Date(b.StartTime).getTime()) // Sorting by StartTime
+      .map((presentation, index) => (
+        <div key={presentation.Id} className="timeline-item">
+          <div className="timeline-marker"></div>
+          <div className="timeline-content">
+            <Link to={`/lectures/${presentation.Id}`} className="timeline-title">
               <h3>{presentation.Title}</h3>
-              <p><strong>Description:</strong> {presentation.Description}</p>
-              <p><strong>Tags:</strong> {presentation.Tags}</p>
-              <p><strong>Speaker:</strong> {presentation.Speaker.UserName} (Email: {presentation.Speaker.Email})</p>
-              <p><strong>Room:</strong> {presentation.Room.Name}</p>
-              <p><strong>Start Time:</strong> {presentation.StartTime}</p>
-              <p><strong>End Time:</strong> {presentation.EndTime}</p>
-              {presentation.PhotoUrl && ( 
-                <img src={presentation.PhotoUrl} alt="photo" className="presentation-image" />
-              )}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No presentations available for this conference.</p>
-      )}
+            </Link>
+            <p><strong>Description:</strong> {presentation.Description}</p>
+            <p><strong>Room:</strong> {presentation.Room.Name}</p> {/* Added Room field */}
+            <p><strong>Tags:</strong> {presentation.Tags}</p>
+            <p><strong>Speaker:</strong> {presentation.Speaker.UserName} (Email: {presentation.Speaker.Email})</p>
+            <p><strong>Start Time:</strong> {new Date(presentation.StartTime).toLocaleString('en-US', { 
+              weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true
+            })}</p>
+            <p><strong>End Time:</strong> {new Date(presentation.EndTime).toLocaleString('en-US', { 
+              weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true
+            })}</p>
+          </div>
+        </div>
+      ))}
+  </div>
+) : (
+  <p>No presentations available for this conference.</p>
+)}
+
     </div>
   );
 };

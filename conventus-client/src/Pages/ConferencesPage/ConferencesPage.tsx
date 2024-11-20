@@ -195,19 +195,10 @@ function ConferencesPage() {
           ))}
         </select>
 
-        {/* Toggle for additional filters */}
-        <button
-          onClick={() => setShowAdditionalFilters(!showAdditionalFilters)}
-          className="toggle-filters bg-blue-600 text-white py-1 px-3 rounded"
-        >
-          {showAdditionalFilters ? 'Hide Additional Filters' : 'Show Additional Filters'}
-        </button>
+        
 
         {/* Additional Filters Section */}
-        {showAdditionalFilters && (
-          <div className="additional-filters">
-            {/* Date range filter */}
-            <div className="flex space-x-4">
+        
               <input
                 type="date"
                 value={dateRange.from}
@@ -220,7 +211,7 @@ function ConferencesPage() {
                 onChange={(e) => setDateRange({ ...dateRange, to: e.target.value })}
                 placeholder="To date"
               />
-            </div>
+          
 
             {/* Sorting options */}
             <select onChange={(e) => setSortOption(e.target.value)}>
@@ -232,8 +223,8 @@ function ConferencesPage() {
               <option value="TicketsAvailable">Sort by Tickets Available</option>
               <option value="Popularity">Sort by Popularity</option>
             </select>
-          </div>
-        )}
+        
+        
       </div>
 
       <div className="conference-list">
