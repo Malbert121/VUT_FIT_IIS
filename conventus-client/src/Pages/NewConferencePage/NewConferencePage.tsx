@@ -19,7 +19,7 @@ const NewConferencePage: React.FC = () => {
         organizerId: user?.id || 0, // Automatically set organizerId from user context
     });
     const [rooms, setRooms] = useState<
-        { name: string; capacity: number }[]
+        { name: string;}[]
     >([]);
 
     const handleRoomChange = (
@@ -34,7 +34,7 @@ const NewConferencePage: React.FC = () => {
     };
 
     const addRoom = () => {
-        setRooms([...rooms, { name: "", capacity: 0 }]);
+        setRooms([...rooms, { name: ""}]);
     };
 
     const removeRoom = (index: number) => {

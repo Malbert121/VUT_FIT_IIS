@@ -70,7 +70,7 @@ const ConferenceEditPage = () => {
     const updatedRooms = [...rooms];
     updatedRooms[index] = {
       ...updatedRooms[index],
-      [field]: field === "Capacity" ? Number(value) : value,
+      [field]: value,
     };
     setRooms(updatedRooms);
   };
@@ -81,7 +81,6 @@ const ConferenceEditPage = () => {
       {
         Id: 0, // временный уникальный ID для новой комнаты
         Name: "",
-        Capacity: 0,
         ConferenceId: Number(id), // привязываем к текущей конференции
       },
     ]);

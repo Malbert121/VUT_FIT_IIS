@@ -70,7 +70,6 @@ namespace Conventus.DAL.Repositories
                     {
                         // Update the room properties
                         existingRoom.Name = room.Name;
-                        existingRoom.Capacity = room.Capacity;
                     }
                 }
                 else

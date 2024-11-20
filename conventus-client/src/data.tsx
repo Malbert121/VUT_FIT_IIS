@@ -80,7 +80,6 @@ export interface Reservation {
 
 export interface Room {
     Id: number; 
-    Name?: string | null; 
-    Capacity: number;
+    Name?: string | null;
     ConferenceId: number;
 }

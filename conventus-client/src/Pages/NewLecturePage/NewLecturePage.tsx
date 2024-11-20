@@ -54,7 +54,6 @@ const NewLecturePage: React.FC = () => {
           ...editedPresentation.Room,
           Name: value.Name,  // Update the Name property within Room
           Id: editedPresentation.Room?.Id ?? 0,  // Ensure Id is a valid number (fallback to 0 if undefined)
-          Capacity: editedPresentation.Room?.Capacity ?? 0,  // Ensure Capacity is a valid number (fallback to 0 if undefined)
           ConferenceId: editedPresentation.Room?.ConferenceId ?? 0,  // Ensure ConferenceId is a valid number (fallback to 0 if undefined)
         },
       });

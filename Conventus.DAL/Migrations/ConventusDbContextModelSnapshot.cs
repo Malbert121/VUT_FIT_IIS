@@ -182,9 +182,6 @@ namespace Conventus.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Capacity")
-                        .HasColumnType("int");
-
                     b.Property<int>("ConferenceId")
                         .HasColumnType("int");
 

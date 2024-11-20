@@ -109,7 +109,6 @@ namespace Conventus.DAL.Initialization
             {
                 Id = 1,
                 Name = "Room A",
-                Capacity = 50,
                 Presentations = new List<Presentation>(),
                 ConferenceId = 1
             },
@@ -117,7 +116,6 @@ namespace Conventus.DAL.Initialization
             {
                 Id = 2,
                 Name = "Room B",
-                Capacity = 100,
                 Presentations = new List<Presentation>(),
                 ConferenceId = 2
             },
@@ -125,7 +123,6 @@ namespace Conventus.DAL.Initialization
             {
                 Id = 3,
                 Name = "Room C",
-                Capacity = 75,
                 Presentations = new List<Presentation>(),
                 ConferenceId = 3
             }

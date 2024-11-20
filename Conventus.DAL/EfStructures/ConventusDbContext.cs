@@ -176,9 +176,6 @@ namespace Conventus.DAL.EfStructures
                     .IsRequired()
                     .HasMaxLength(100); // Adjust length as necessary
 
-                builder.Property(r => r.Capacity)
-                    .IsRequired();
-
                 // Relationships configuration
                 builder.HasMany(r => r.Presentations)
                     .WithOne(p => p.Room) // Assuming Presentation has a Room navigation property
