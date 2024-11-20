@@ -41,6 +41,7 @@ export interface Conference {
     Price: number; 
     Capacity: number; 
     Occupancy: number;
+    PhotoUrl : string;
     Presentations?: Presentation[]; // Array of presentations
     Reservations?: Reservation[]; // Array of reservations
     Rooms?: Room[];

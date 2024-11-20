@@ -85,3 +85,111 @@ ul {
     font-size: 1.2em; /* Slightly larger font for visibility */
     color: #888; /* Grey color for loading/error messages */
 }
+.presentation-link {
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+  }
+  
+  .presentation-link:hover {
+    color: blue;
+    text-decoration: underline;
+  }
+  /* Таймлайн */
+.timeline {
+    position: relative;
+    margin: 20px 0;
+    padding-left: 40px; /* Отступ для маркеров */
+    border-left: 2px solid #ddd; /* Линия таймлайна */
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px; /* Расстояние между элементами */
+    padding-left: 20px;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -9px;
+    top: 5px;
+    width: 18px;
+    height: 18px;
+    background-color: #007bff; /* Цвет маркера */
+    border: 2px solid white; /* Белая окантовка */
+    border-radius: 50%; /* Круглый маркер */
+    z-index: 1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Лёгкая тень */
+}
+
+.timeline-content {
+    background-color: #ffffff; /* Белый фон */
+    padding: 15px;
+    border: 1px solid #e0e0e0; /* Лёгкий бордер */
+    border-radius: 8px; /* Закруглённые углы */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Тень */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Анимация наведения */
+}
+
+.timeline-content:hover {
+    transform: translateY(-3px); /* Лёгкий подъём при наведении */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Увеличение тени */
+}
+
+/* Заголовок лекции */
+.timeline-title {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    display: block;
+    transition: color 0.3s ease;
+}
+
+.timeline-title:hover {
+    color: #0056b3; /* Более тёмный оттенок при наведении */
+    text-decoration: underline;
+}
+
+/* Изображение презентации */
+.presentation-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+}
+
+/* Таймлайн для мобильных */
+@media (max-width: 768px) {
+    .timeline {
+        padding-left: 20px; /* Меньший отступ для мобильных */
+    }
+
+    .timeline-marker {
+        left: -6px;
+        width: 12px;
+        height: 12px;
+    }
+}
+.timeline-item {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease forwards;
+}
+
+.timeline-item:nth-child(odd) {
+    animation-delay: 0.1s;
+}
+
+.timeline-item:nth-child(even) {
+    animation-delay: 0.2s;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

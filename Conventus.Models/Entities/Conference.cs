@@ -20,7 +20,7 @@ public class Conference : BaseEntity
     public virtual List<Presentation> Presentations { get; set; } = new List<Presentation>();
     [JsonIgnore]
     public virtual List<Reservation> Reservations { get; set; } = new List<Reservation>();
-    [JsonIgnore]
+    
     public virtual List<Room> Rooms { get; set; } = new List<Room>();
     public int OrganizerId { get; set; }
     [ForeignKey(nameof(OrganizerId))]
