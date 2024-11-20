@@ -131,75 +131,81 @@ namespace Conventus.DAL.Initialization
         // Sample Presentations
         public static List<Presentation> Presentations => new()
         {
-           new Presentation
-        {
-            Id = 1,
-            Title = "Advancements in AI Technology",
-            Description = "Exploring the latest breakthroughs in Artificial Intelligence and how they will shape the future.",
-            Tags = "AI, Innovation, Technology, Future",
-            PhotoUrl = "https://example.com/photo1.jpg",
-            StartTime = new DateTime(2024, 5, 20, 10, 0, 0), // May 20, 2024, 10:00 AM
-            EndTime = new DateTime(2024, 5, 20, 11, 0, 0), // May 20, 2024, 11:00 AM
-            RoomId = 1, // Assuming RoomId matches a Room entity
-            SpeakerId = 1, // Linking to the third user as the speaker
-            ConferenceId = 1, // Linking to the first conference
-        },
-        new Presentation
-        {
-            Id = 2,
-            Title = "The Role of AI in Healthcare",
-            Description = "A discussion on how AI is transforming healthcare, from diagnostics to personalized treatment.",
-            Tags = "AI, Healthcare, Medicine, Technology",
-            PhotoUrl = "https://example.com/photo2.jpg",
-            StartTime = new DateTime(2024, 5, 20, 11, 0, 0), // May 20, 2024, 11:00 AM
-            EndTime = new DateTime(2024, 5, 20, 12, 0, 0), // May 20, 2024, 12:00 PM
-            RoomId = 2,
-            SpeakerId = 2, 
-            ConferenceId = 1,
-        },
-        new Presentation
-        {
-            Id = 3,
-            Title = "Ethical Considerations in AI",
-            Description = "An in-depth analysis of the ethical dilemmas surrounding AI, including bias and accountability.",
-            Tags = "AI, Ethics, Society, Technology",
-            PhotoUrl = "https://example.com/photo3.jpg",
-            StartTime = new DateTime(2024, 5, 20, 12, 0, 0), // May 20, 2024, 12:00 PM
-            EndTime = new DateTime(2024, 5, 20, 1, 0, 0), // May 20, 2024, 1:00 PM
-            RoomId = 3, 
-            SpeakerId = 3,
-            ConferenceId = 1,
-        },
-        new Presentation
-        {
-            Id = 4,
-            Title = "AI in Autonomous Vehicles",
-            Description = "Exploring how AI is revolutionizing autonomous vehicles, making self-driving cars a reality.",
-            Tags = "AI, Autonomous Vehicles, Transportation, Technology",
-            PhotoUrl = "https://example.com/photo4.jpg",
-            StartTime = new DateTime(2024, 5, 20, 13, 0, 0), // May 20, 2024, 1:00 PM
-            EndTime = new DateTime(2024, 5, 20, 14, 0, 0), // May 20, 2024, 2:00 PM
-            RoomId = 1,
-            SpeakerId = 1, 
-            ConferenceId = 1, 
-        },
-        new Presentation
-        {
-            Id = 5,
-            Title = "Machine Learning in Data Science",
-            Description = "An overview of how machine learning techniques are driving insights in the field of data science.",
-            Tags = "ML, Data Science, AI, Technology",
-            PhotoUrl = "https://example.com/photo5.jpg",
-            StartTime = new DateTime(2024, 5, 20, 10, 0, 0), // May 20, 2023, 10:00 AM
-            EndTime = new DateTime(2024, 5, 20, 11, 0, 0), // May 20, 2023, 11:00 AM
-            RoomId = 2, 
-            SpeakerId = 2, 
-            ConferenceId = 1, 
-        },
+            new Presentation
+            {
+                Id = 1,
+                Title = "Advancements in AI Technology",
+                IsConfirmed = true,
+                Description = "Exploring the latest breakthroughs in Artificial Intelligence and how they will shape the future.",
+                Tags = "AI, Innovation, Technology, Future",
+                PhotoUrl = "https://example.com/photo1.jpg",
+                StartTime = new DateTime(2024, 5, 20, 10, 0, 0), // May 20, 2024, 10:00 AM
+                EndTime = new DateTime(2024, 5, 20, 11, 0, 0), // May 20, 2024, 11:00 AM
+                RoomId = 1, // Assuming RoomId matches a Room entity
+                SpeakerId = 1, // Linking to the third user as the speaker
+                ConferenceId = 1, // Linking to the first conference
+            },
+            new Presentation
+            {
+                Id = 2,
+                Title = "The Role of AI in Healthcare",
+                IsConfirmed = true,
+                Description = "A discussion on how AI is transforming healthcare, from diagnostics to personalized treatment.",
+                Tags = "AI, Healthcare, Medicine, Technology",
+                PhotoUrl = "https://example.com/photo2.jpg",
+                StartTime = new DateTime(2024, 5, 20, 11, 0, 0), // May 20, 2024, 11:00 AM
+                EndTime = new DateTime(2024, 5, 20, 12, 0, 0), // May 20, 2024, 12:00 PM
+                RoomId = 2,
+                SpeakerId = 2, 
+                ConferenceId = 2,
+            },
+            new Presentation
+            {
+                Id = 3,
+                Title = "Ethical Considerations in AI",
+                IsConfirmed = true,
+                Description = "An in-depth analysis of the ethical dilemmas surrounding AI, including bias and accountability.",
+                Tags = "AI, Ethics, Society, Technology",
+                PhotoUrl = "https://example.com/photo3.jpg",
+                StartTime = new DateTime(2024, 5, 20, 12, 0, 0), // May 20, 2024, 12:00 PM
+                EndTime = new DateTime(2024, 5, 20, 1, 0, 0), // May 20, 2024, 1:00 PM
+                RoomId = 3, 
+                SpeakerId = 3,
+                ConferenceId = 3,
+            },
+            new Presentation
+            {
+                Id = 4,
+                Title = "AI in Autonomous Vehicles",
+                IsConfirmed = true,
+                Description = "Exploring how AI is revolutionizing autonomous vehicles, making self-driving cars a reality.",
+                Tags = "AI, Autonomous Vehicles, Transportation, Technology",
+                PhotoUrl = "https://example.com/photo4.jpg",
+                StartTime = new DateTime(2024, 5, 20, 13, 0, 0), // May 20, 2024, 1:00 PM
+                EndTime = new DateTime(2024, 5, 20, 14, 0, 0), // May 20, 2024, 2:00 PM
+                RoomId = 1,
+                SpeakerId = 1, 
+                ConferenceId = 1, 
+            },
+            new Presentation
+            {
+                Id = 5,
+                Title = "Machine Learning in Data Science",
+                IsConfirmed = true,
+                Description = "An overview of how machine learning techniques are driving insights in the field of data science.",
+                Tags = "ML, Data Science, AI, Technology",
+                PhotoUrl = "https://example.com/photo5.jpg",
+                StartTime = new DateTime(2024, 5, 20, 10, 0, 0), // May 20, 2023, 10:00 AM
+                EndTime = new DateTime(2024, 5, 20, 11, 0, 0), // May 20, 2023, 11:00 AM
+                RoomId = 2, 
+                SpeakerId = 2, 
+                ConferenceId = 2, 
+            },
             new Presentation
             {
                 Id = 6,
                 Title = "Nutrition and Health",
+                IsConfirmed = true,
                 Description = "The importance of nutrition in maintaining good health.",
                 Tags = "Health, Nutrition",
                 PhotoUrl = "https://example.com/photo2.jpg",
@@ -216,6 +222,7 @@ namespace Conventus.DAL.Initialization
             {
                 Id = 7,
                 Title = "Innovative Learning Techniques",
+                IsConfirmed = true,
                 Description = "Exploring modern approaches to education.",
                 Tags = "Education, Innovation",
                 PhotoUrl = "https://example.com/photo3.jpg",

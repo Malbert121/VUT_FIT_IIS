@@ -152,6 +152,7 @@ export const getPresentation = async (id: number): Promise<Presentation | null> 
 // Function to update a specific presentation by ID
 export const updatePresentation = async (user_id:number, presentation: Presentation): Promise<Presentation | null> => {
     try {
+        console.log(presentation);
         const response = await axios.put<Presentation>(
             `${API_CONFIG.API_BASE}/Presentations/update?user_id=${user_id}`, 
             presentation
@@ -173,17 +174,24 @@ export const deletePresentation = async (id: number): Promise<void> => {
 // Function to create a new presentation
 export const createPresentation = async (presentation: Presentation, user_id: number) => {
     try {
-        console.log(`user id ${user_id}`);
-        console.log(`presentation data to create: ${JSON.stringify(presentation)}`);
-        const response = await axios.post<{ message: string }>(
-            `${API_CONFIG.API_BASE}/Presentations/create?user_id=${user_id}`,
-            presentation
-        );
-        console.log('Presentation created successfully:', response.data);
+        await axios.post<{ message: string }>(`${API_CONFIG.API_BASE}/Presentations/create?user_id=${user_id}`, presentation);
     } catch (error) {
         handleAxiosError(error);
     }
 }
+
+export const putPresentationsToConfirm = async(presentationsIds:number[], user_id:number, flag:boolean)=>{
+    try
+    {
+        console.log(`presentations ids to confirm ${presentationsIds}`);
+        await axios.put<{message:string}>(`${API_CONFIG.API_BASE}/Presentations/to_confirm?user_id=${user_id}&flag=${flag}`, presentationsIds);
+    }
+    catch(error)
+    {
+        handleAxiosError(error);
+    }
+}
+
 // Fetch all reservations
 export const getAllReservations = async ():Promise<Reservation[]> => {
     try {

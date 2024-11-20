@@ -99,6 +99,9 @@ namespace Conventus.DAL.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsConfirmed")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PhotoUrl")
                         .IsRequired()
                         .HasMaxLength(500)

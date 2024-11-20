@@ -67,12 +67,10 @@ const NewConferencePage: React.FC = () => {
             setSuccessMessage("Conference created successfully!");
             setErrorMessage(null);
             console.log("Conference Created:", response.data);
-            // Redirect to the previous page after success
-            // Disable the submit button and change its text
             setIsSubmitDisabled(true);
             setTimeout(() => {
-                navigate(-1); // Go back to the previous page
-            }, 2000); // Optional delay for user to see success message
+                navigate(-1);
+            }, 2000);
         } catch (error: any) {
             setErrorMessage(error.response?.data?.message || "Failed to create the conference.");
             setSuccessMessage(null);

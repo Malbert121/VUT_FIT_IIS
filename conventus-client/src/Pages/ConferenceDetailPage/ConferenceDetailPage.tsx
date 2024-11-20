@@ -1,16 +1,18 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getConference, postReservations } from '../../api';
 import { useUser } from '../../context/UserContext';
 import { Conference, Reservation } from '../../data';
+import { pathCreateLecture } from '../../Routes/Routes';
 import Toast from '../../Components/Toast/Toast';
 import AuthorizationWindow from '../../Components/AuthorizationWindow/AuthorizationWindow';
 import './ConferenceDetailPage.css';
 
 const ConferenceDetailPage = () => {
   const user = useUser();
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [conference, setConference] = useState<Conference | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -183,6 +185,12 @@ const ConferenceDetailPage = () => {
       </div>
 
       <h2 className="presentations-title">Presentations</h2>
+      <Link
+        to={pathCreateLecture}
+        state={conference}
+        className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+        Add Presentation
+      </Link>
 {conference.Presentations && conference.Presentations.length > 0 ? (
   <div className="timeline">
     {conference.Presentations
@@ -195,9 +203,9 @@ const ConferenceDetailPage = () => {
               <h3>{presentation.Title}</h3>
             </Link>
             <p><strong>Description:</strong> {presentation.Description}</p>
-            <p><strong>Room:</strong> {presentation.Room.Name}</p> {/* Added Room field */}
+            <p><strong>Room:</strong> {presentation.Room?.Name || "Undefined"}</p> {/* Added Room field */}
             <p><strong>Tags:</strong> {presentation.Tags}</p>
-            <p><strong>Speaker:</strong> {presentation.Speaker.UserName} (Email: {presentation.Speaker.Email})</p>
+            <p><strong>Speaker:</strong> {presentation.Speaker?.UserName} (Email: {presentation.Speaker?.Email})</p>
             <p><strong>Start Time:</strong> {new Date(presentation.StartTime).toLocaleString('en-US', { 
               weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true
             })}</p>

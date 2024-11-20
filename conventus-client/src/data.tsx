@@ -52,15 +52,16 @@ export interface Conference {
 export interface Presentation {
     Id: number; 
     Title?: string | null; 
+    IsConfirmed: boolean;
     Description?: string | null; 
     Tags?: string | null; 
     PhotoUrl?: string | null; 
     StartTime: string; // ISO 8601 date-time
     EndTime: string; // ISO 8601 date-time
     RoomId: number; 
-    Room: Room; // Room details
+    Room?: Room | null; // Room details
     SpeakerId: number; 
-    Speaker: User; // Speaker details
+    Speaker: User|null; // Speaker details
     ConferenceId: number;
     Conference: Conference|null; // TODO:solve null
 }

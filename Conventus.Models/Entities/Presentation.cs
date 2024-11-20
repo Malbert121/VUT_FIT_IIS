@@ -5,6 +5,7 @@ namespace Conventus.Models.Entities;
 public class Presentation : BaseEntity
 {
     public string Title { get; set; }
+    public bool IsConfirmed { get; set; }
     public string Description { get; set; }
     public string Tags { get; set; }
     public string PhotoUrl { get; set; }  // For poster/logo/photo

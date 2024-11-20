@@ -8,6 +8,7 @@ import { pathCreateLecture } from '../../Routes/Routes';
 import './MyLecturesPage.css';
 
 const MyLecturesPage: React.FC = () => {
+  
   const user = useUser();
   const [presentations, setPresentations] = useState<Presentation[]>([]);
   const [filteredPresentations, setFilteredPresentations] = useState<Presentation[]>([]);
@@ -47,8 +48,8 @@ const MyLecturesPage: React.FC = () => {
       setPresentations(data);
       setFilteredPresentations(data);
     } catch (error) {
-      setToastType('error');
-      setToastMessage((error as Error).message);
+      setError('Failed to fetch presentation.');
+      console.error("Error fetching presentation:", error);
     } finally {
       setLoading(false);
     }
@@ -108,13 +109,6 @@ const MyLecturesPage: React.FC = () => {
       <h1 className="title">My Lectures</h1>
       <p className="description">Here you can find information about your lectures.</p>
 
-      {/* Add the "Create New Lecture" button */}
-      <div className="create-lecture-button-container">
-        <Link to={pathCreateLecture}>
-          <button className="create-lecture-button">Create New Lecture</button>
-        </Link>
-      </div>
-
       <div className="filters">
         <input
           type="text"
@@ -151,6 +145,9 @@ const MyLecturesPage: React.FC = () => {
             </Link>
             <p className="presentation-conference">{presentation.Conference?.Name || 'No conference available.'}</p>
             <p className="presentation-description">{presentation.Description || 'No description available.'}</p>
+            <p>
+              <strong style={{color:presentation.IsConfirmed?'green':'red'}}>{presentation.IsConfirmed?'Confirm':'Unconfirm'}</strong>
+            </p>
             <p className="presentation-tags">
               <strong>Tags:</strong> {presentation.Tags}
             </p>

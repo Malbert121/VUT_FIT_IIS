@@ -94,6 +94,9 @@ namespace Conventus.DAL.EfStructures
                     .IsRequired()
                     .HasMaxLength(100); // Adjust length as necessary
 
+                builder.Property(p => p.IsConfirmed)
+                    .IsRequired();
+
                 builder.Property(p => p.Description)
                     .HasMaxLength(500); // Adjust length as necessary
 

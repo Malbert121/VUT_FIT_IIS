@@ -101,10 +101,9 @@ function ConferencesPage() {
         setVisibleAuth(true);
         return;
       }
-      const user_id = Number(user.id);
       const reservation: Reservation = {
         Id: 0,
-        UserId: user_id,
+        UserId: Number(user.id),
         User: null,
         ConferenceId: conferenceId,
         Conference: null,
@@ -112,9 +111,9 @@ function ConferencesPage() {
         IsPaid: false,
         NumberOfTickets: quantity,
         Ammount: 0,
-        ReservationDate: new Date().toISOString()
+        ReservationDate: new Date().toISOString(),
       };
-      await postReservations(reservation, user_id);
+      await postReservations(reservation, Number(user.id));
       setToastType("success");
       setToastMessage("User have successfully created new reservation.");
       fetchConferences();
