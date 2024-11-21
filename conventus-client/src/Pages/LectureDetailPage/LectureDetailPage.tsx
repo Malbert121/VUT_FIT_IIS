@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
-import { getPresentation, deletePresentation, putPresentationsToConfirm } from '../../api'; // Adjust the import based on your structure
+import { getPresentation, deletePresentation } from '../../api'; // Adjust the import based on your structure
 import { Presentation } from '../../data'; // Adjust based on your structure
 import { pathEditLecture } from '../../Routes/Routes';
-import SwitchButton from '../../Components/SwitchButton/SwitchButton';
 import Toast from '../../Components/Toast/Toast';
 import './LectureDetailPage.css'; // Ensure you have this CSS file
 
@@ -18,11 +17,7 @@ const LectureDetailPage: React.FC = () => {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('info');
   const closeToast = () => setToastMessage(null);
-  // swicth
-  const [isOn, setIsOn] = useState(false);  // isOne = confirm
-  const handleSwitch = () => {
-    setIsOn((prev) => !prev);
-  };
+  
   const fetchPresentation = useCallback(async () => {
     console.log("Fetching presentation with ID:", id);
     try {
@@ -40,17 +35,6 @@ const LectureDetailPage: React.FC = () => {
   useEffect(() => {
     fetchPresentation();
   }, [fetchPresentation]);
-
-  useEffect(()=>{
-    if(presentation && user){
-      if(isOn){
-        confirmLecture(presentation.Id, Number(user.id), true);
-      }
-      else{
-        confirmLecture(presentation.Id, Number(user.id), false);
-      }
-    }
-  }, [isOn])
 
   const editLectureDetails = (presentationId: number) => {
     console.log("Edit Details button clicked.");
@@ -75,19 +59,6 @@ const LectureDetailPage: React.FC = () => {
     }
   }
 
-  const confirmLecture = async (presentation_id:number, user_id:number, flag:boolean) => {
-    try{
-        await putPresentationsToConfirm([presentation_id], user_id, flag);
-        setToastType("success");
-        setToastMessage("User have successfully change confirm status of presentation.");
-        fetchPresentation();
-    }
-    catch(error){
-      setToastType("error");
-      setToastMessage((error as Error).message);
-    }
-  }
-
   if (loading) {
     return <div className="loading">Loading presentation details...</div>;
   }
@@ -104,22 +75,11 @@ const LectureDetailPage: React.FC = () => {
       {toastMessage && (
         <Toast message={toastMessage} onClose={closeToast} type={toastType} />
       )}
-      {(user != null) && (Number(user.id) === presentation.Conference?.OrganizerId || user.role === 'Admin') && (
-        <SwitchButton OnText='Confirm' OffText='UnConfirm' isOn={isOn} onSwitch={handleSwitch}/>
-      )}
       <h1 className="presentation-title">{presentation.Title}</h1>
         <Link to={`/conferences/${presentation.ConferenceId}`}>
           <h2 className="text-center text-2xl underline underline-offset-2 text-blue-500 mb-10">{presentation.Conference?.Name}</h2>
         </Link>
       <div className="info-container">
-      {
-        (user != null) && (Number(user.id) === presentation.Conference?.OrganizerId || user.role === 'Admin')
-        && (
-          <>
-          <p><strong>Status: </strong><strong style={{color:presentation.IsConfirmed?'green':'red'}}>{presentation.IsConfirmed?'Confirm':'Unconfirm'}</strong></p>
-          </>
-        )
-      }
         <p className="presentation-tags"><strong>Tags:</strong> {presentation.Tags || "Tags are not specified."}</p>
         <p className="presentation-location"><strong>Location:</strong> {presentation.Conference?.Location || "Location is not specified."}</p>
         <p className="presentation-room"><strong>Room:</strong> {presentation.Room?.Name || "Room is not specified."}</p>

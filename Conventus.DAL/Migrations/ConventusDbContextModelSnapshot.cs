@@ -99,9 +99,6 @@ namespace Conventus.DAL.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsConfirmed")
-                        .HasColumnType("bit");
-
                     b.Property<string>("PhotoUrl")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -134,7 +131,7 @@ namespace Conventus.DAL.Migrations
 
                     b.HasIndex("SpeakerId");
 
-                    b.ToTable("Presentations");
+                    b.ToTable("Presentations", (string)null);
                 });
 
             modelBuilder.Entity("Conventus.Models.Entities.Reservation", b =>
@@ -174,7 +171,7 @@ namespace Conventus.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reservations");
+                    b.ToTable("Reservations", (string)null);
                 });
 
             modelBuilder.Entity("Conventus.Models.Entities.Room", b =>
@@ -197,7 +194,7 @@ namespace Conventus.DAL.Migrations
 
                     b.HasIndex("ConferenceId");
 
-                    b.ToTable("Rooms");
+                    b.ToTable("Rooms", (string)null);
                 });
 
             modelBuilder.Entity("Conventus.Models.Entities.User", b =>

@@ -51,8 +51,7 @@ export interface Conference {
 
 export interface Presentation {
     Id: number; 
-    Title?: string | null; 
-    IsConfirmed: boolean;
+    Title?: string | null;
     Description?: string | null; 
     Tags?: string | null; 
     PhotoUrl?: string | null; 

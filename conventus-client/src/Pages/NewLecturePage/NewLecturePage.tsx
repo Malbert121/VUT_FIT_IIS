@@ -101,7 +101,6 @@ const NewLecturePage: React.FC = () => {
     const presentationToCreate: Presentation = {
       Id: 0,
       Title: editedPresentation.Title || '',
-      IsConfirmed: false,
       Description: editedPresentation.Description || '',
       Tags: editedPresentation.Tags || '',
       // TODO: Add photo.

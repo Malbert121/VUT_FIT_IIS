@@ -180,18 +180,6 @@ export const createPresentation = async (presentation: Presentation, user_id: nu
     }
 }
 
-export const putPresentationsToConfirm = async(presentationsIds:number[], user_id:number, flag:boolean)=>{
-    try
-    {
-        console.log(`presentations ids to confirm ${presentationsIds}`);
-        await axios.put<{message:string}>(`${API_CONFIG.API_BASE}/Presentations/to_confirm?user_id=${user_id}&flag=${flag}`, presentationsIds);
-    }
-    catch(error)
-    {
-        handleAxiosError(error);
-    }
-}
-
 // Fetch all reservations
 export const getAllReservations = async ():Promise<Reservation[]> => {
     try {
