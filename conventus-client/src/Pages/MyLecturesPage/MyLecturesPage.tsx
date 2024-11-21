@@ -4,7 +4,7 @@ import { Presentation } from '../../data';
 import { Link } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
 import Toast from '../../Components/Toast/Toast';
-import { pathCreateLecture } from '../../Routes/Routes';
+import SwitchButton from '../../Components/SwitchButton/SwitchButton';
 import './MyLecturesPage.css';
 
 const MyLecturesPage: React.FC = () => {
@@ -28,6 +28,12 @@ const MyLecturesPage: React.FC = () => {
   const [timeRange, setTimeRange] = useState<{ from: string; to: string }>({ from: '', to: '' });
   const confirmStatus = ['Confirm', 'Unconfirm'];
   // Extract unique tags from presentations
+  // swicth
+  const [isOn, setIsOn] = useState(false);  // isOne = I am owner
+  const handleSwitch = () => {
+    setIsOn((prev) => !prev);
+  };
+  
   const uniqueTags = Array.from(
     new Set(
       presentations
@@ -40,10 +46,8 @@ const MyLecturesPage: React.FC = () => {
   const fetchPresentations = useCallback(async () => {
     try {
       if(!user){
-        console.log("AAA");
         return;
       }
-      console.log("Ok");
       console.log(Number(user.id));
       setIsAuthorized(true);
       const data = await getMyPresentations(Number(user.id));
@@ -83,7 +87,6 @@ const MyLecturesPage: React.FC = () => {
       );
     }
     if (confirmStatusFilter) {
-      console.log("aaa");
       if(confirmStatusFilter === 'Confirm'){
         filtered = filtered.filter(presentation =>presentation.IsConfirmed);
       }
@@ -96,13 +99,21 @@ const MyLecturesPage: React.FC = () => {
         presentation.Conference?.Name.toLowerCase().includes(conferenceNameFilter.toLowerCase())
       )
     }
+    if(isOn){
+      if(user?.role !== 'Admin'){
+        filtered = filtered.filter(presentations=>presentations.Conference?.OrganizerId == Number(user?.id));
+      }
+    }
+    else{
+      filtered = filtered.filter(presentations=>presentations.SpeakerId == Number(user?.id));
+    }
 
     // Time range filter
     if (timeRange.from) filtered = filtered.filter(presentation => new Date(presentation.StartTime) >= new Date(timeRange.from));
     if (timeRange.to) filtered = filtered.filter(presentation => new Date(presentation.EndTime) <= new Date(timeRange.to));
 
     setFilteredPresentations(filtered);
-  }, [tagFilter, searchTerm, timeRange, presentations, conferenceNameFilter, confirmStatusFilter]);
+  }, [tagFilter, searchTerm, timeRange, presentations, conferenceNameFilter, confirmStatusFilter, isOn]);
 
   
   if(!isAuthorized){
@@ -119,6 +130,7 @@ const MyLecturesPage: React.FC = () => {
 
   return (
     <div className="MyLecturesPage">
+      <SwitchButton OnText='Conference owner' OffText='Conference speaker' isOn={isOn} onSwitch={handleSwitch}/>
       {toastMessage && (
       <Toast message={toastMessage} onClose={closeToast} type={toastType} />
       )}
@@ -139,7 +151,7 @@ const MyLecturesPage: React.FC = () => {
           onChange={(e) => setConferenceNameFilter(e.target.value)}
         />
         <select onChange={(e) => setConfirmStatusFilter(e.target.value || null)}>
-          <option value="">All tickets</option>
+          <option value="">All confirm status</option>
           {confirmStatus.map((confirmStatus) => (
             <option key={confirmStatus}>{confirmStatus}</option>
           ))}

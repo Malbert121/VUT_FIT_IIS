@@ -133,7 +133,7 @@ namespace Conventus.API.Controllers
                 {
                     return Ok(((IPresentationRepo)MainRepo).GetAll());
                 }
-                return Ok(((IPresentationRepo)MainRepo).GetAll().Where(p=>p.SpeakerId == user_id));
+                return Ok(((IPresentationRepo)MainRepo).GetAll().Where(p=>p.SpeakerId == user_id || p.Conference?.OrganizerId == user_id));
             }
             catch (Exception ex)
             {

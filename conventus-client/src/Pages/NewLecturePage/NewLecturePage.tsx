@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { createPresentation, getAllRooms, getAllUsers } from '../../api';
 import { Presentation, Room, User } from '../../data';
 import { useUser } from '../../context/UserContext';
-import Toast from '../../Components/Toast/Toast';
 import './NewLecturePage.css';
 
 type PartialPresentation = Partial<Presentation>; // TODO: WTF???
