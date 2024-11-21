@@ -61,9 +61,9 @@ namespace Conventus.API
         options.JsonSerializerOptions.WriteIndented = true;
 
     });
-            var app = builder.Build();
-            if (app.Environment.IsDevelopment())
-            {
+//            var app = builder.Build();
+//            if (app.Environment.IsDevelopment())
+//            {
                 if (configuration.GetValue<bool>("RebuildDataBase"))
                 {
                     SampleDataInitializer.InitializeData(new ConventusDbContext(
@@ -72,7 +72,7 @@ namespace Conventus.API
                 }
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            }
+//            }
 
             // Configure the HTTP request pipeline.
 
