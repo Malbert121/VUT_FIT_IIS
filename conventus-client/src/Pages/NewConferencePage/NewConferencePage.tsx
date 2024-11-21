@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useUser } from "../../context/UserContext"; // Import useUser hook
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-
+import { API_CONFIG } from '../../config';
 const NewConferencePage: React.FC = () => {
     const user = useUser(); // Get the user data
     const navigate = useNavigate(); // Initialize useNavigate for navigation
@@ -63,7 +63,7 @@ const NewConferencePage: React.FC = () => {
             // Include rooms in the conferenceData
             const dataToPost = { ...conferenceData, rooms };
 
-            const response = await axios.post("https://localhost:7156/api/conferences", dataToPost);
+            const response = await axios.post(`${API_CONFIG.API_REMOTE}/conferences`, dataToPost);
             setSuccessMessage("Conference created successfully!");
             setErrorMessage(null);
             console.log("Conference Created:", response.data);
