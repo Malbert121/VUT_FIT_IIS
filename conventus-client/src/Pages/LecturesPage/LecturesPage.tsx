@@ -30,9 +30,8 @@ const LecturesPage: React.FC = () => {
     const fetchPresentations = async () => {
       try {
         const data = await getAllPresentations();
+        setPresentations(data);
         console.log("Presentations data:", data);
-        setPresentations(data.filter(presentation => presentation.IsConfirmed));  // only confirmed
-        setFilteredPresentations(data.filter(presentation => presentation.IsConfirmed));
       } catch (error) {
         setError('Failed to fetch presentations.');
         console.error("Error fetching presentations:", error);

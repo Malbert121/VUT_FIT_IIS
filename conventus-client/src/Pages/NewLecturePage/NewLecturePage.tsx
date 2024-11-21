@@ -101,7 +101,6 @@ const NewLecturePage: React.FC = () => {
     const presentationToCreate: Presentation = {
       Id: 0,
       Title: editedPresentation.Title || '',
-      IsConfirmed: false,
       Description: editedPresentation.Description || '',
       Tags: editedPresentation.Tags || '',
       // TODO: Add photo.
@@ -118,7 +117,7 @@ const NewLecturePage: React.FC = () => {
     };
     console.log(presentationToCreate);
     try {
-      await createPresentation(presentationToCreate, Number(user?.id)); // Assuming 1 is the user ID
+      await createPresentation(presentationToCreate, Number(user?.id));
       setSuccessMessage("Presentation created successfully!");
       setErrorMessage(null);
       setIsSubmitDisabled(true);

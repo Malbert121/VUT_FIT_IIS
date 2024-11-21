@@ -147,7 +147,6 @@ namespace Conventus.DAL.Initialization
             {
                 Id = 1,
                 Title = "Exploring the Cosmos: New Discoveries in Astronomy",
-                IsConfirmed = true,
                 Description = "Exploring the Cosmos: New Discoveries in Astronomy.",
                 Tags = "Сosmos, Astronomy, Future",
                 PhotoUrl = "https://example.com/photo1.jpg",
@@ -161,7 +160,6 @@ namespace Conventus.DAL.Initialization
             {
                 Id = 2,
                 Title = "The Ethics of Genetic Engineering: Opportunities and Challenges",
-                IsConfirmed = true,
                 Description = "The Ethics of Genetic Engineering: Opportunities and Challenges.",
                 Tags = "Science,Biology, Genetic, Future",
                 PhotoUrl = "https://example.com/photo1.jpg",
@@ -175,7 +173,6 @@ namespace Conventus.DAL.Initialization
             {
                 Id = 3,
                 Title = "Climate Change and the Role of Science in Mitigating Its Effects",
-                IsConfirmed = true,
                 Description = "Climate Change and the Role of Science in Mitigating Its Effects.",
                 Tags = "Сlimat, Warm, Water, Science, Future",
                 PhotoUrl = "https://example.com/photo1.jpg",
@@ -189,7 +186,6 @@ namespace Conventus.DAL.Initialization
             {
                 Id = 4,
                 Title = "Artificial Intelligence: Transforming Science and Society",
-                IsConfirmed = false,
                 Description = "Artificial Intelligence: Transforming Science and Society.",
                 Tags = "IT, AI, Science, Society",
                 PhotoUrl = "https://example.com/photo1.jpg",
@@ -203,7 +199,6 @@ namespace Conventus.DAL.Initialization
             {
                 Id = 5,
                 Title = "Quantum Computing: Unlocking the Next Frontier",
-                IsConfirmed = true,
                 Description = "Quantum Computing: Unlocking the Next Frontier.",
                 Tags = "IT, Quantum",
                 PhotoUrl = "https://example.com/photo1.jpg",
@@ -219,7 +214,6 @@ namespace Conventus.DAL.Initialization
             {
                 Id = 6,
                 Title = "The Science of Nutrition: Eating for a Better Tomorrow",
-                IsConfirmed = true,
                 Description = "The Science of Nutrition: Eating for a Better Tomorrow",
                 Tags = "Science, Nutrition, Health, Food",
                 PhotoUrl = "https://example.com/photo1.jpg",
@@ -233,7 +227,6 @@ namespace Conventus.DAL.Initialization
             {
                 Id = 7,
                 Title = "Mental Health Matters: Reducing the Stigma and Improving Care",
-                IsConfirmed = true,
                 Description = "Mental Health Matters: Reducing the Stigma and Improving Care.",
                 Tags = "Mental, Health",
                 PhotoUrl = "https://example.com/photo1.jpg",
@@ -247,7 +240,6 @@ namespace Conventus.DAL.Initialization
             {
                 Id = 8,
                 Title = "Preventive Healthcare: A Pathway to Longevity",
-                IsConfirmed = true,
                 Description = "Preventive Healthcare: A Pathway to Longevity.",
                 Tags = "Health",
                 PhotoUrl = "https://example.com/photo1.jpg",
@@ -261,7 +253,6 @@ namespace Conventus.DAL.Initialization
             {
                 Id = 9,
                 Title = "Fitness in the 21st Century: Balancing Technology and Physical Activity",
-                IsConfirmed = false,
                 Description = "Fitness in the 21st Century: Balancing Technology and Physical Activity.",
                 Tags = "Technology, Health, Activity, Fitness",
                 PhotoUrl = "https://example.com/photo1.jpg",
@@ -275,7 +266,6 @@ namespace Conventus.DAL.Initialization
             {
                 Id = 10,
                 Title = "The Future of Medicine: Personalized Healthcare Solutions",
-                IsConfirmed = false,
                 Description = "The Future of Medicine: Personalized Healthcare Solutions.",
                 Tags = "Health, Medicine",
                 PhotoUrl = "https://example.com/photo1.jpg",

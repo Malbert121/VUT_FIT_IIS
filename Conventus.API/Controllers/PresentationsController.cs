@@ -81,7 +81,6 @@ namespace Conventus.API.Controllers
                 var newPresentation = new Presentation
                 {
                     Title = presentation.Title,
-                    IsConfirmed = conference.OrganizerId == user_id || user.Role == Role.Admin?true:false,
                     Description = presentation.Description,
                     Tags = presentation.Tags,
                     StartTime = presentation.StartTime,
@@ -295,70 +294,6 @@ namespace Conventus.API.Controllers
                 ((IPresentationRepo)MainRepo).Update(presentationToUpdate);  // update
 
                 return Ok("Successfully created the reservation");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}\n{ex.StackTrace}");
-                return Problem("Internal error");
-            }
-        }
-
-        /// <summary>
-        /// Update status of presentation with confirmation.
-        /// </summary>
-        /// <param name="user_id">The ID of the user who makes the request.</param>
-        /// <param name="flag">Boolean flag indicating the confirmation status to set (true for confirmed, false for unconfirmed).</param>
-        /// <param name="reservationsIds">List of presentations IDs to update.</param>
-        /// <returns>Confirmation message indicating the result of the update operation.</returns>
-        /// <response code="200">Successfully updated the reservations</response>
-        /// <response code="400">The request body was invalid or empty</response>
-        /// <response code="403">Forbind request: user dont have rights to update.</response>
-        /// <response code="404">No reservations found to update</response>
-        /// <response code="500">Internal error</response>
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [SwaggerResponse(200, "Successfully updated the reservations")]
-        [SwaggerResponse(400, "The request body was invalid or empty")]
-        [SwaggerResponse(403, "Forbind request: user dont have rights to update.")]
-        [SwaggerResponse(404, "No reservations found to update")]
-        [SwaggerResponse(500, "Internal error.")]
-        [HttpPut("to_confirm")]
-        public ActionResult<string> PutPresentationsToConfirm([FromQuery] int user_id, [FromQuery] bool flag, [FromBody] List<int> presentationsIds)
-        {
-            try
-            {
-                User? user = ((IPresentationRepo)MainRepo).GetUser(user_id);
-                if (user == null)
-                {
-                    return BadRequest($"Unknown user.");
-                }
-
-                if (presentationsIds == null || !presentationsIds.Any())
-                {
-                    return BadRequest("Reservations should not be empty.");
-                }
-
-                var presentationsToUpdate = ((IPresentationRepo)MainRepo).GetRange(presentationsIds).ToList();
-                if (!presentationsToUpdate.Any())
-                {
-                    return NotFound("Not found reservations.");
-                }
-
-                if ((user.Role != Role.Admin) && (!presentationsToUpdate.All(p => p.Conference.OrganizerId == user_id)))
-                {
-                    return Forbid($"User dont have rights to update.");
-                }
-
-                foreach (var reservation in presentationsToUpdate)
-                {
-                    reservation.IsConfirmed = flag;
-                }
-
-                ((IPresentationRepo)MainRepo).UpdateRange(presentationsToUpdate);
-                return Ok("Ok");
             }
             catch (Exception ex)
             {

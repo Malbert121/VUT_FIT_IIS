@@ -24,9 +24,7 @@ const MyLecturesPage: React.FC = () => {
   const [tagFilter, setTagFilter] = useState<string | null>(null);
   const [conferenceNameFilter, setConferenceNameFilter] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [confirmStatusFilter, setConfirmStatusFilter] = useState<string|null>(null);
   const [timeRange, setTimeRange] = useState<{ from: string; to: string }>({ from: '', to: '' });
-  const confirmStatus = ['Confirm', 'Unconfirm'];
   // Extract unique tags from presentations
   // swicth
   const [isOn, setIsOn] = useState(false);  // isOne = I am owner
@@ -86,14 +84,6 @@ const MyLecturesPage: React.FC = () => {
         presentation.Description?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-    if (confirmStatusFilter) {
-      if(confirmStatusFilter === 'Confirm'){
-        filtered = filtered.filter(presentation =>presentation.IsConfirmed);
-      }
-      else{
-        filtered = filtered.filter(presentation =>!presentation.IsConfirmed);
-      }
-    }
     if(conferenceNameFilter){
       filtered = filtered.filter(presentation =>
         presentation.Conference?.Name.toLowerCase().includes(conferenceNameFilter.toLowerCase())
@@ -113,7 +103,7 @@ const MyLecturesPage: React.FC = () => {
     if (timeRange.to) filtered = filtered.filter(presentation => new Date(presentation.EndTime) <= new Date(timeRange.to));
 
     setFilteredPresentations(filtered);
-  }, [tagFilter, searchTerm, timeRange, presentations, conferenceNameFilter, confirmStatusFilter, isOn]);
+  }, [tagFilter, searchTerm, timeRange, presentations, conferenceNameFilter, isOn]);
 
   
   if(!isAuthorized){
@@ -150,12 +140,6 @@ const MyLecturesPage: React.FC = () => {
           value={conferenceNameFilter}
           onChange={(e) => setConferenceNameFilter(e.target.value)}
         />
-        <select onChange={(e) => setConfirmStatusFilter(e.target.value || null)}>
-          <option value="">All confirm status</option>
-          {confirmStatus.map((confirmStatus) => (
-            <option key={confirmStatus}>{confirmStatus}</option>
-          ))}
-        </select>
         <select onChange={(e) => setTagFilter(e.target.value || null)}>
           <option value="">All Tags</option>
           {uniqueTags.map((tag) => (
@@ -183,9 +167,6 @@ const MyLecturesPage: React.FC = () => {
             <Link to={`../lectures/${presentation.Id}`}>
               <h2 className="text-2xl font-bold text-blue-600 mb-2.5">{presentation.Title || 'Untitled'}</h2>
             </Link>
-            <p>
-              <strong className="text-xl" style={{color:presentation.IsConfirmed?'green':'red'}}>{presentation.IsConfirmed?'Confirm':'Unconfirm'}</strong>
-            </p>
             <p className="presentation-tags">
               <strong>Conference:</strong> {presentation.Conference?.Name || 'No conference available.'}
             </p>

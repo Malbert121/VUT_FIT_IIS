@@ -186,7 +186,7 @@ const MyReservationsPage: React.FC = () => {
       else{
         console.log('Unauthorized user is bad boy!'); //TODO: solve unauthorized user behavioral  
         setToastType('error');
-        setToastMessage('Unauthorized user is bad boy!');
+        setToastMessage('Unauthorized user.');
       }
     }
     catch(error){

@@ -180,18 +180,6 @@ export const createPresentation = async (presentation: Presentation, user_id: nu
     }
 }
 
-export const putPresentationsToConfirm = async(presentationsIds:number[], user_id:number, flag:boolean)=>{
-    try
-    {
-        console.log(`presentations ids to confirm ${presentationsIds}`);
-        await axios.put<{message:string}>(`${API_CONFIG.API_REMOTE}/Presentations/to_confirm?user_id=${user_id}&flag=${flag}`, presentationsIds);
-    }
-    catch(error)
-    {
-        handleAxiosError(error);
-    }
-}
-
 // Fetch all reservations
 export const getAllReservations = async ():Promise<Reservation[]> => {
     try {
@@ -312,7 +300,7 @@ export const getAllRooms = async () => {
 const handleAxiosError = (error: unknown) => {
     if (axios.isAxiosError(error)) {
         console.log("Error message:", error.message);
-        throw new Error(error.message); // Rethrow error for handling in component
+        throw new Error(error.response?.data); // Rethrow data about error for handling in component
     } else {
         console.log("Unexpected error:", error);
         throw new Error("Unexpected Error");
