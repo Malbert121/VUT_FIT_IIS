@@ -11,7 +11,7 @@ import {
 
 export const postSignUp = async (registerData:RegisterData) => {
     try {
-        const response = await axios.post<AuthResponse>('https://localhost:7156/api/Auth/register', registerData);
+        const response = await axios.post<AuthResponse>(`${API_CONFIG.API_REMOTE}/Auth/register`, registerData);
         localStorage.setItem('token', response.data.token);
         alert("Registration successful!");
     } catch (err) {
@@ -21,7 +21,7 @@ export const postSignUp = async (registerData:RegisterData) => {
 
 export const postSignIn = async (username:string, password:string) => {
     try {
-        const response = await axios.post<AuthResponse>('https://localhost:7156/api/Auth/login', {
+        const response = await axios.post<AuthResponse>(`${API_CONFIG.API_REMOTE}/Auth/login`, {
             username,
             password,
         });
