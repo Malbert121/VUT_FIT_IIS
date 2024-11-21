@@ -22,9 +22,9 @@ namespace Conventus.DAL.Initialization
             new User
             {
                 Id = 2,
-                UserName = "jdoe",
-                Email = "jdoe@example.com",
-                PasswordHash = "jdoe@password".GetHashCode().ToString(), // Use proper password hashing in production
+                UserName = "science2",
+                Email = "science1@example.com",
+                PasswordHash = "science1@password".GetHashCode().ToString(), // Use proper password hashing in production
                 Role = Role.User,
                 OrganizedConferences = new List<Conference>(),
                 Presentations = new List<Presentation>(),
@@ -33,9 +33,31 @@ namespace Conventus.DAL.Initialization
             new User
             {
                 Id = 3,
-                UserName = "asmith",
-                Email = "asmith@example.com",
-                PasswordHash = "asmith@password".GetHashCode().ToString(), // Use proper password hashing in production
+                UserName = "education1",
+                Email = "education1@example.com",
+                PasswordHash = "education1@password".GetHashCode().ToString(), // Use proper password hashing in production
+                Role = Role.User,
+                OrganizedConferences = new List<Conference>(),
+                Presentations = new List<Presentation>(),
+                Reservations = new List<Reservation>()
+            },
+            new User
+            {
+                Id = 4,
+                UserName = "education2",
+                Email = "education2@example.com",
+                PasswordHash = "education2@password".GetHashCode().ToString(), // Use proper password hashing in production
+                Role = Role.User,
+                OrganizedConferences = new List<Conference>(),
+                Presentations = new List<Presentation>(),
+                Reservations = new List<Reservation>()
+            },
+            new User
+            {
+                Id = 5,
+                UserName = "myron",
+                Email = "myron@gmail.com",
+                PasswordHash = "myron@password".GetHashCode().ToString(), // Use proper password hashing in production
                 Role = Role.User,
                 OrganizedConferences = new List<Conference>(),
                 Presentations = new List<Presentation>(),
@@ -55,9 +77,9 @@ namespace Conventus.DAL.Initialization
                 Location = "Silicon Valley, CA",
                 StartDate = new DateTime(2024, 5, 20),
                 EndDate = new DateTime(2024, 5, 22),
-                Price = 299.99m,
+                Price = 100.00m,
                 Capacity = 200,
-                Occupancy = 6,
+                Occupancy = 12,
                 PhotoUrl = "path/to/location",
                 Presentations = new List<Presentation>(),
                 Reservations = new List<Reservation>(),
@@ -73,27 +95,9 @@ namespace Conventus.DAL.Initialization
                 Location = "New York City, NY",
                 StartDate = new DateTime(2024, 6, 15),
                 EndDate = new DateTime(2024, 6, 17),
-                Price = 199.99m,
+                Price = 50.00m,
                 Capacity = 150,
-                Occupancy = 4,
-                PhotoUrl = "path/to/location",
-                Presentations = new List<Presentation>(),
-                Reservations = new List<Reservation>(),
-                Rooms = new List<Room>(),
-                OrganizerId = 2,
-            },
-            new Conference
-            {
-                Id = 3,
-                Name = "Future of Education",
-                Description = "Exploring innovative approaches in education for the 21st century.",
-                Genre = "Education",
-                Location = "Chicago, IL",
-                StartDate = new DateTime(2024, 7, 10),
-                EndDate = new DateTime(2024, 7, 12),
-                Price = 249.99m,
-                Capacity = 300,
-                Occupancy = 6,
+                Occupancy = 12,
                 PhotoUrl = "path/to/location",
                 Presentations = new List<Presentation>(),
                 Reservations = new List<Reservation>(),
@@ -117,30 +121,38 @@ namespace Conventus.DAL.Initialization
                 Id = 2,
                 Name = "Room B",
                 Presentations = new List<Presentation>(),
-                ConferenceId = 2
+                ConferenceId = 1
             },
             new Room
             {
                 Id = 3,
                 Name = "Room C",
                 Presentations = new List<Presentation>(),
-                ConferenceId = 3
+                ConferenceId = 2
+            },
+            new Room
+            {
+                Id = 4,
+                Name = "Room D",
+                Presentations = new List<Presentation>(),
+                ConferenceId = 2
             }
         };
 
         // Sample Presentations
         public static List<Presentation> Presentations => new()
         {
+            // Tech conf
             new Presentation
             {
                 Id = 1,
-                Title = "Advancements in AI Technology",
+                Title = "Exploring the Cosmos: New Discoveries in Astronomy",
                 IsConfirmed = true,
-                Description = "Exploring the latest breakthroughs in Artificial Intelligence and how they will shape the future.",
-                Tags = "AI, Innovation, Technology, Future",
+                Description = "Exploring the Cosmos: New Discoveries in Astronomy.",
+                Tags = "Сosmos, Astronomy, Future",
                 PhotoUrl = "https://example.com/photo1.jpg",
-                StartTime = new DateTime(2024, 5, 20, 10, 0, 0), // May 20, 2024, 10:00 AM
-                EndTime = new DateTime(2024, 5, 20, 11, 0, 0), // May 20, 2024, 11:00 AM
+                StartTime = new DateTime(2024, 5, 20, 10, 0, 0),
+                EndTime = new DateTime(2024, 5, 20, 12, 0, 0),
                 RoomId = 1, // Assuming RoomId matches a Room entity
                 SpeakerId = 1, // Linking to the third user as the speaker
                 ConferenceId = 1, // Linking to the first conference
@@ -148,107 +160,146 @@ namespace Conventus.DAL.Initialization
             new Presentation
             {
                 Id = 2,
-                Title = "The Role of AI in Healthcare",
+                Title = "The Ethics of Genetic Engineering: Opportunities and Challenges",
                 IsConfirmed = true,
-                Description = "A discussion on how AI is transforming healthcare, from diagnostics to personalized treatment.",
-                Tags = "AI, Healthcare, Medicine, Technology",
-                PhotoUrl = "https://example.com/photo2.jpg",
-                StartTime = new DateTime(2024, 5, 20, 11, 0, 0), // May 20, 2024, 11:00 AM
-                EndTime = new DateTime(2024, 5, 20, 12, 0, 0), // May 20, 2024, 12:00 PM
-                RoomId = 2,
-                SpeakerId = 2, 
-                ConferenceId = 2,
+                Description = "The Ethics of Genetic Engineering: Opportunities and Challenges.",
+                Tags = "Science,Biology, Genetic, Future",
+                PhotoUrl = "https://example.com/photo1.jpg",
+                StartTime = new DateTime(2024, 5, 20, 10, 0, 0),
+                EndTime = new DateTime(2024, 5, 20, 12, 0, 0),
+                RoomId = 2, // Assuming RoomId matches a Room entity
+                SpeakerId = 2, // Linking to the third user as the speaker
+                ConferenceId = 1, // Linking to the first conference
             },
             new Presentation
             {
                 Id = 3,
-                Title = "Ethical Considerations in AI",
+                Title = "Climate Change and the Role of Science in Mitigating Its Effects",
                 IsConfirmed = true,
-                Description = "An in-depth analysis of the ethical dilemmas surrounding AI, including bias and accountability.",
-                Tags = "AI, Ethics, Society, Technology",
-                PhotoUrl = "https://example.com/photo3.jpg",
-                StartTime = new DateTime(2024, 5, 20, 12, 0, 0), // May 20, 2024, 12:00 PM
-                EndTime = new DateTime(2024, 5, 20, 1, 0, 0), // May 20, 2024, 1:00 PM
-                RoomId = 3, 
-                SpeakerId = 3,
-                ConferenceId = 3,
+                Description = "Climate Change and the Role of Science in Mitigating Its Effects.",
+                Tags = "Сlimat, Warm, Water, Science, Future",
+                PhotoUrl = "https://example.com/photo1.jpg",
+                StartTime = new DateTime(2024, 5, 21, 10, 0, 0),
+                EndTime = new DateTime(2024, 5, 21, 12, 0, 0),
+                RoomId = 1, // Assuming RoomId matches a Room entity
+                SpeakerId = 1, // Linking to the third user as the speaker
+                ConferenceId = 1, // Linking to the first conference
             },
             new Presentation
             {
                 Id = 4,
-                Title = "AI in Autonomous Vehicles",
-                IsConfirmed = true,
-                Description = "Exploring how AI is revolutionizing autonomous vehicles, making self-driving cars a reality.",
-                Tags = "AI, Autonomous Vehicles, Transportation, Technology",
-                PhotoUrl = "https://example.com/photo4.jpg",
-                StartTime = new DateTime(2024, 5, 20, 13, 0, 0), // May 20, 2024, 1:00 PM
-                EndTime = new DateTime(2024, 5, 20, 14, 0, 0), // May 20, 2024, 2:00 PM
-                RoomId = 1,
-                SpeakerId = 1, 
-                ConferenceId = 1, 
+                Title = "Artificial Intelligence: Transforming Science and Society",
+                IsConfirmed = false,
+                Description = "Artificial Intelligence: Transforming Science and Society.",
+                Tags = "IT, AI, Science, Society",
+                PhotoUrl = "https://example.com/photo1.jpg",
+                StartTime = new DateTime(2024, 5, 21, 10, 0, 0),
+                EndTime = new DateTime(2024, 5, 21, 12, 0, 0),
+                RoomId = 2, // Assuming RoomId matches a Room entity
+                SpeakerId = 2, // Linking to the third user as the speaker
+                ConferenceId = 1, // Linking to the first conference
             },
             new Presentation
             {
                 Id = 5,
-                Title = "Machine Learning in Data Science",
+                Title = "Quantum Computing: Unlocking the Next Frontier",
                 IsConfirmed = true,
-                Description = "An overview of how machine learning techniques are driving insights in the field of data science.",
-                Tags = "ML, Data Science, AI, Technology",
-                PhotoUrl = "https://example.com/photo5.jpg",
-                StartTime = new DateTime(2024, 5, 20, 10, 0, 0), // May 20, 2023, 10:00 AM
-                EndTime = new DateTime(2024, 5, 20, 11, 0, 0), // May 20, 2023, 11:00 AM
-                RoomId = 2, 
-                SpeakerId = 2, 
-                ConferenceId = 2, 
+                Description = "Quantum Computing: Unlocking the Next Frontier.",
+                Tags = "IT, Quantum",
+                PhotoUrl = "https://example.com/photo1.jpg",
+                StartTime = new DateTime(2024, 5, 21, 17, 0, 0),
+                EndTime = new DateTime(2024, 5, 21, 19, 0, 0),
+                RoomId = 1, // Assuming RoomId matches a Room entity
+                SpeakerId = 1, // Linking to the third user as the speaker
+                ConferenceId = 1, // Linking to the first conference
             },
+
+            // Health conf
             new Presentation
             {
                 Id = 6,
-                Title = "Nutrition and Health",
+                Title = "The Science of Nutrition: Eating for a Better Tomorrow",
                 IsConfirmed = true,
-                Description = "The importance of nutrition in maintaining good health.",
-                Tags = "Health, Nutrition",
-                PhotoUrl = "https://example.com/photo2.jpg",
-                StartTime = new DateTime(2024, 6, 16, 9, 0, 0), // June 16, 2024, 9:00 AM
-                EndTime = new DateTime(2024, 6, 16, 10, 0, 0), // June 16, 2024, 10:00 AM
-                RoomId = 2, // Assuming RoomId matches a Room entity
-               
+                Description = "The Science of Nutrition: Eating for a Better Tomorrow",
+                Tags = "Science, Nutrition, Health, Food",
+                PhotoUrl = "https://example.com/photo1.jpg",
+                StartTime = new DateTime(2024, 6, 15, 10, 0, 0),
+                EndTime = new DateTime(2024, 6, 15, 12, 0, 0),
+                RoomId = 3, // Assuming RoomId matches a Room entity
                 SpeakerId = 3, // Linking to the third user as the speaker
-                
-                ConferenceId = 2, // Linking to the second conference
-              
+                ConferenceId = 2, // Linking to the first conference
             },
             new Presentation
             {
                 Id = 7,
-                Title = "Innovative Learning Techniques",
+                Title = "Mental Health Matters: Reducing the Stigma and Improving Care",
                 IsConfirmed = true,
-                Description = "Exploring modern approaches to education.",
-                Tags = "Education, Innovation",
-                PhotoUrl = "https://example.com/photo3.jpg",
-                StartTime = new DateTime(2024, 7, 10, 14, 0, 0), // July 10, 2024, 2:00 PM
-                EndTime = new DateTime(2024, 7, 10, 15, 0, 0), // July 10, 2024, 3:00 PM
+                Description = "Mental Health Matters: Reducing the Stigma and Improving Care.",
+                Tags = "Mental, Health",
+                PhotoUrl = "https://example.com/photo1.jpg",
+                StartTime = new DateTime(2024, 6, 15, 10, 0, 0),
+                EndTime = new DateTime(2024, 6, 15, 12, 0, 0),
+                RoomId = 4, // Assuming RoomId matches a Room entity
+                SpeakerId = 4, // Linking to the third user as the speaker
+                ConferenceId = 2, // Linking to the first conference
+            },
+            new Presentation
+            {
+                Id = 8,
+                Title = "Preventive Healthcare: A Pathway to Longevity",
+                IsConfirmed = true,
+                Description = "Preventive Healthcare: A Pathway to Longevity.",
+                Tags = "Health",
+                PhotoUrl = "https://example.com/photo1.jpg",
+                StartTime = new DateTime(2024, 6, 16, 10, 0, 0),
+                EndTime = new DateTime(2024, 6, 16, 12, 0, 0),
                 RoomId = 3, // Assuming RoomId matches a Room entity
-               
-                SpeakerId = 2, // Linking to the second user as the speaker
-               
-                ConferenceId = 3, // Linking to the third conference
-
-            }
+                SpeakerId = 3, // Linking to the third user as the speaker
+                ConferenceId = 2, // Linking to the first conference
+            },
+            new Presentation
+            {
+                Id = 9,
+                Title = "Fitness in the 21st Century: Balancing Technology and Physical Activity",
+                IsConfirmed = false,
+                Description = "Fitness in the 21st Century: Balancing Technology and Physical Activity.",
+                Tags = "Technology, Health, Activity, Fitness",
+                PhotoUrl = "https://example.com/photo1.jpg",
+                StartTime = new DateTime(2024, 6, 16, 10, 0, 0),
+                EndTime = new DateTime(2024, 6, 16, 12, 0, 0),
+                RoomId = 4, // Assuming RoomId matches a Room entity
+                SpeakerId = 4, // Linking to the third user as the speaker
+                ConferenceId = 2, // Linking to the first conference
+            },
+            new Presentation
+            {
+                Id = 10,
+                Title = "The Future of Medicine: Personalized Healthcare Solutions",
+                IsConfirmed = false,
+                Description = "The Future of Medicine: Personalized Healthcare Solutions.",
+                Tags = "Health, Medicine",
+                PhotoUrl = "https://example.com/photo1.jpg",
+                StartTime = new DateTime(2024, 6, 16, 17, 0, 0),
+                EndTime = new DateTime(2024, 6, 16, 19, 0, 0),
+                RoomId = 4, // Assuming RoomId matches a Room entity
+                SpeakerId = 3, // Linking to the third user as the speaker
+                ConferenceId = 2, // Linking to the first conference
+            },
         };
 
         // Sample Reservations
         public static List<Reservation> Reservations => new()
         {
+            // user 1
             new Reservation
             {
                 Id = 1,
                 UserId = 1, // Linking to the second user
-                ConferenceId = 1, // Linking to the first conference
-                IsConfirmed = true,
-                IsPaid = true,
-                NumberOfTickets = 2,
-                Ammount = 100.0,
+                ConferenceId = 2, // Linking to the first conference
+                IsConfirmed = false,
+                IsPaid = false,
+                NumberOfTickets = 1,
+                Ammount = 50.0,
                 ReservationDate = DateTime.Now,
             },
             new Reservation
@@ -258,73 +309,191 @@ namespace Conventus.DAL.Initialization
                 ConferenceId = 2, // Linking to the first conference
                 IsConfirmed = false,
                 IsPaid = true,
-                NumberOfTickets = 2,
-                Ammount = 100.0,
+                NumberOfTickets = 1,
+                Ammount = 50.0,
                 ReservationDate = DateTime.Now,
             },
             new Reservation
             {
                 Id = 3,
                 UserId = 1, // Linking to the second user
-                ConferenceId = 1, // Linking to the first conference
-                IsConfirmed = false,
-                IsPaid = false,
-                NumberOfTickets = 2,
-                Ammount = 100.0,
-                ReservationDate = DateTime.Now,
-            },
-            new Reservation
-            {
-                Id = 4,
-                UserId = 1, // Linking to the second user
                 ConferenceId = 2, // Linking to the first conference
-                IsConfirmed = false,
-                IsPaid = false,
-                NumberOfTickets = 2,
-                Ammount = 100.0,
-                ReservationDate = DateTime.Now,
-            },
-            // RESERVATIONS FOR USER 2
-            new Reservation
-            {
-                Id = 5,
-                UserId = 2, // Linking to the second user
-                ConferenceId = 1, // Linking to the first conference
                 IsConfirmed = true,
                 IsPaid = true,
                 NumberOfTickets = 2,
                 Ammount = 100.0,
                 ReservationDate = DateTime.Now,
             },
+
+            // user 2
+            new Reservation
+            {
+                Id = 4,
+                UserId = 2, // Linking to the second user
+                ConferenceId = 2, // Linking to the first conference
+                IsConfirmed = false,
+                IsPaid = false,
+                NumberOfTickets = 1,
+                Ammount = 50.0,
+                ReservationDate = DateTime.Now,
+            },
+            new Reservation
+            {
+                Id = 5,
+                UserId = 2, // Linking to the second user
+                ConferenceId = 2, // Linking to the first conference
+                IsConfirmed = false,
+                IsPaid = true,
+                NumberOfTickets = 1,
+                Ammount = 50.0,
+                ReservationDate = DateTime.Now,
+            },
             new Reservation
             {
                 Id = 6,
                 UserId = 2, // Linking to the second user
-                ConferenceId = 3, // Linking to the first conference
-                IsConfirmed = false,
+                ConferenceId = 2, // Linking to the first conference
+                IsConfirmed = true,
                 IsPaid = true,
                 NumberOfTickets = 2,
                 Ammount = 100.0,
                 ReservationDate = DateTime.Now,
             },
+
+            // user 3
             new Reservation
             {
                 Id = 7,
-                UserId = 2, // Linking to the second user
-                ConferenceId = 3, // Linking to the first conference
+                UserId = 3, // Linking to the second user
+                ConferenceId = 1, // Linking to the first conference
                 IsConfirmed = false,
                 IsPaid = false,
-                NumberOfTickets = 2,
+                NumberOfTickets = 1,
                 Ammount = 100.0,
                 ReservationDate = DateTime.Now,
             },
             new Reservation
             {
                 Id = 8,
+                UserId = 3, // Linking to the second user
+                ConferenceId = 1, // Linking to the first conference
+                IsConfirmed = false,
+                IsPaid = true,
+                NumberOfTickets = 1,
+                Ammount = 100.0,
+                ReservationDate = DateTime.Now,
+            },
+            new Reservation
+            {
+                Id = 9,
                 UserId = 2, // Linking to the second user
-                ConferenceId = 3, // Linking to the first conference
+                ConferenceId = 1, // Linking to the first conference
+                IsConfirmed = true,
+                IsPaid = true,
+                NumberOfTickets = 2,
+                Ammount = 200.0,
+                ReservationDate = DateTime.Now,
+            },
+
+
+            // user 4
+            new Reservation
+            {
+                Id = 10,
+                UserId = 4, // Linking to the second user
+                ConferenceId = 1, // Linking to the first conference
                 IsConfirmed = false,
                 IsPaid = false,
+                NumberOfTickets = 1,
+                Ammount = 100.0,
+                ReservationDate = DateTime.Now,
+            },
+            new Reservation
+            {
+                Id = 11,
+                UserId = 4, // Linking to the second user
+                ConferenceId = 1, // Linking to the first conference
+                IsConfirmed = false,
+                IsPaid = true,
+                NumberOfTickets = 1,
+                Ammount = 100.0,
+                ReservationDate = DateTime.Now,
+            },
+            new Reservation
+            {
+                Id = 12,
+                UserId = 4, // Linking to the second user
+                ConferenceId = 1, // Linking to the first conference
+                IsConfirmed = true,
+                IsPaid = true,
+                NumberOfTickets = 2,
+                Ammount = 200.0,
+                ReservationDate = DateTime.Now,
+            },
+
+            // user 5
+            new Reservation
+            {
+                Id = 13,
+                UserId = 5, // Linking to the second user
+                ConferenceId = 1, // Linking to the first conference
+                IsConfirmed = false,
+                IsPaid = false,
+                NumberOfTickets = 1,
+                Ammount = 100.0,
+                ReservationDate = DateTime.Now,
+            },
+            new Reservation
+            {
+                Id = 14,
+                UserId = 5, // Linking to the second user
+                ConferenceId = 1, // Linking to the first conference
+                IsConfirmed = false,
+                IsPaid = true,
+                NumberOfTickets = 1,
+                Ammount = 100.0,
+                ReservationDate = DateTime.Now,
+            },
+            new Reservation
+            {
+                Id = 15,
+                UserId = 5, // Linking to the second user
+                ConferenceId = 1, // Linking to the first conference
+                IsConfirmed = true,
+                IsPaid = true,
+                NumberOfTickets = 2,
+                Ammount = 200.0,
+                ReservationDate = DateTime.Now,
+            },
+            new Reservation
+            {
+                Id = 16,
+                UserId = 5, // Linking to the second user
+                ConferenceId = 2, // Linking to the first conference
+                IsConfirmed = false,
+                IsPaid = false,
+                NumberOfTickets = 1,
+                Ammount = 50.0,
+                ReservationDate = DateTime.Now,
+            },
+            new Reservation
+            {
+                Id = 17,
+                UserId = 5, // Linking to the second user
+                ConferenceId = 2, // Linking to the first conference
+                IsConfirmed = false,
+                IsPaid = true,
+                NumberOfTickets = 1,
+                Ammount = 50.0,
+                ReservationDate = DateTime.Now,
+            },
+            new Reservation
+            {
+                Id = 18,
+                UserId = 5, // Linking to the second user
+                ConferenceId = 2, // Linking to the first conference
+                IsConfirmed = true,
+                IsPaid = true,
                 NumberOfTickets = 2,
                 Ammount = 100.0,
                 ReservationDate = DateTime.Now,

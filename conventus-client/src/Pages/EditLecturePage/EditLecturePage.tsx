@@ -39,7 +39,8 @@ const EditLecturePage: React.FC = () => {
       setEditedPresentation(data);
       setConferences(conferencesData);
       setUsers(usersData||[]);
-      setRooms(roomsData?.filter(r=>r.ConferenceId === presentation?.ConferenceId) || []);
+      const filteredRooms = roomsData?.filter(r=>r.ConferenceId === data?.ConferenceId);
+      setRooms(filteredRooms || []);
     } catch (error) {
       setError('Failed to fetch presentation details.');
       console.error("Error fetching presentation details:", error);
