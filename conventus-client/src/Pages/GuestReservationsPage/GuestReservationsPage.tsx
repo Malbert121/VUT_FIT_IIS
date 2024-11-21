@@ -141,9 +141,9 @@ const GuestReservationsPage: React.FC = () => {
       }
       else
       {
-        console.log('Unauthorized user is bad boy!'); //TODO: solve unauthorized user behavioral  
+        console.log('Unauthorized user.'); //TODO: solve unauthorized user behavioral  
         setToastType('error');
-        setToastMessage('Unauthorized user is bad boy!');
+        setToastMessage('Unauthorized user.');
       }
     }
     catch(error)
@@ -203,7 +203,7 @@ const GuestReservationsPage: React.FC = () => {
       {
         console.log('Unauthorized user is bad boy!'); //TODO: solve unauthorized user behavioral  
         setToastType('error');
-        setToastMessage('Unauthorized user is bad boy!');
+        setToastMessage('Unauthorized user.');
       }
     }
     catch(error)
