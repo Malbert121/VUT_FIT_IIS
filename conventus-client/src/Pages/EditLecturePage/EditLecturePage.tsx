@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getPresentation, updatePresentation, getAllConferences, getAllRooms } from '../../api';
-import { Presentation, Conference, Room } from '../../data';
+import { getPresentation, updatePresentation, getAllConferences, getAllRooms, getAllUsers } from '../../api';
+import { Presentation, Conference, Room, User } from '../../data';
 import { useUser } from '../../context/UserContext';
 import Toast from '../../Components/Toast/Toast';
 import './EditLecturePage.css';
@@ -14,6 +14,7 @@ const EditLecturePage: React.FC = () => {
   const [presentation, setPresentation] = useState<Presentation | null>(null);
   const [editedPresentation, setEditedPresentation] = useState<Presentation | null>(null);
   const [conferences, setConferences] = useState<Conference[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,10 +34,12 @@ const EditLecturePage: React.FC = () => {
       const data = await getPresentation(Number(id));
       const conferencesData = await getAllConferences();
       const roomsData = await getAllRooms();
+      const usersData = await getAllUsers();
       setPresentation(data);
       setEditedPresentation(data);
       setConferences(conferencesData);
-      setRooms(roomsData || []);
+      setUsers(usersData||[]);
+      setRooms(roomsData?.filter(r=>r.ConferenceId === presentation?.ConferenceId) || []);
     } catch (error) {
       setError('Failed to fetch presentation details.');
       console.error("Error fetching presentation details:", error);
@@ -65,6 +68,17 @@ const EditLecturePage: React.FC = () => {
         RoomId: roomId,
         Room: selectedRoom,
       });
+    }
+  }
+
+  const handleSpeakerChange = (userId: number) => {
+    const selectedSpeaker = users.find(u=>u.Id=== userId);
+    if(selectedSpeaker){
+      setEditedPresentation({
+        ...editedPresentation!,
+        SpeakerId: userId,
+        Speaker: selectedSpeaker
+      })
     }
   }
 
@@ -121,6 +135,20 @@ const EditLecturePage: React.FC = () => {
       {toastMessage && (
         <Toast message={toastMessage} onClose={closeToast} type={toastType} />
       )}
+      
+      <div className="input-container">
+      <label className="font-bold text-gray-800">Conference:</label>
+      <span className="text-gray-800">{presentation.Conference?.Name || ''}</span>
+      </div>
+      <div className="input-container">
+      <label className="font-bold text-gray-800">Conference Start Date:</label>
+      <span className="text-gray-800">{presentation.Conference?.StartDate || ''}</span>
+      </div>
+      <div className="input-container">
+      <label className="font-bold text-gray-800">Conference End Date:</label>
+      <span className="text-gray-800">{presentation.Conference?.EndDate || ''}</span>
+      </div>
+      
       {/* Title Input */}
       <div className="input-container">
         <label>Title:</label>
@@ -132,10 +160,28 @@ const EditLecturePage: React.FC = () => {
         />
       </div>
 
-      <div className="input-container">
-      <label className="font-bold text-gray-800">Conference:</label>
-      <span className="text-gray-800">{presentation.Conference?.Name || ''}</span>
-      </div>
+      {user?.id === presentation.Conference?.OrganizerId || user?.role === 'Admin'?
+        <div className="input-container">
+          <label>Speaker:</label>
+          <select
+            className="input-field"
+            value={editedPresentation.Speaker?.Id.toString() || ''}
+            onChange={(e) => handleSpeakerChange(Number(e.target.value))}
+          >
+            <option value="">Select User</option>
+            {users.map((user) => (
+              <option key={user.Id} value={user.Id}>
+                {user.UserName}
+              </option>
+            ))}
+          </select>
+        </div>
+        :
+        <div className="input-container">
+        <label className="font-bold text-gray-800">Speaker:</label>
+        <span className="text-gray-800">{presentation.Speaker?.UserName || ''}</span>
+        </div>
+      }
 
       {/* Description Input */}
       <div className="input-container">
@@ -146,7 +192,7 @@ const EditLecturePage: React.FC = () => {
           onChange={(e) => handleInputChange('Description', e.target.value)}
         />
       </div>
-
+    
       {/* Tags Input */}
       <div className="input-container">
         <label>Tags:</label>
@@ -154,17 +200,6 @@ const EditLecturePage: React.FC = () => {
           className="input-field"
           value={editedPresentation.Tags || ''}
           onChange={(e) => handleInputChange('Tags', e.target.value)}
-        />
-      </div>
-
-      {/* Location (auto-filled based on Conference) */}
-      <div className="input-container">
-        <label>Location:</label>
-        <input
-          className="input-field"
-          type="text"
-          value={editedPresentation.Conference?.Location || "Location is not specified."}
-          disabled
         />
       </div>
 
@@ -205,14 +240,6 @@ const EditLecturePage: React.FC = () => {
           value={editedPresentation.EndTime || ''}
           onChange={(e) => handleDateChange('EndTime', e.target.value)}
         />
-      </div>
-
-      {/* TODO: add photos and pictures. */}
-
-      {/* Speaker Information (auto-filled) */}
-      <div className="input-container">
-        <h3>Speaker Information</h3>
-        <p><strong>Speaker:</strong> {presentation.Speaker?.UserName || "Unknown."}</p>
       </div>
 
       {/* Button Container */}

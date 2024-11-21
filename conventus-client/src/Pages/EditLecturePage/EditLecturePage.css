@@ -1,5 +1,5 @@
 .presentation-detail {
-    max-width: 800px; /* Limit width for readability */
+    width: 70%; /* Limit width for readability */
     margin: 20px auto; /* Center the content */
     padding: 30px; /* Add some padding */
     border: 1px solid #ddd; /* Border around the detail section */

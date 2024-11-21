@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { createPresentation, getAllRooms } from '../../api';
-import { Presentation, Room } from '../../data';
+import { createPresentation, getAllRooms, getAllUsers } from '../../api';
+import { Presentation, Room, User } from '../../data';
 import { useUser } from '../../context/UserContext';
 import Toast from '../../Components/Toast/Toast';
 import './NewLecturePage.css';
@@ -12,17 +12,21 @@ const NewLecturePage: React.FC = () => {
   const user = useUser();
   const navigate = useNavigate();
   const {state} = useLocation();
+  if(!state){
+    navigate('/');
+  }
   const [editedPresentation, setEditedPresentation] = useState<PartialPresentation>({
     Title: '',
     Description: '',
     Tags: '',
     StartTime: '',
     EndTime: '',
-    Conference: undefined,
-    Room: undefined,
+    SpeakerId: 0,
     Speaker: undefined,
+    ConferenceId: state.id,
   });
   const [rooms, setRooms] = useState<Room[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -34,13 +38,14 @@ const NewLecturePage: React.FC = () => {
         if(!user){
           navigate('/');
         }
-        const [roomsData] = await Promise.all([
-          getAllRooms(),
-        ]);
-        setRooms(roomsData || []);
+        const roomsData = await getAllRooms();  
+        const usersData = await getAllUsers();
+        setRooms(roomsData?.filter(r=>r.ConferenceId === state?.Id) || []);
+        setUsers(usersData || []);
       } catch (error) {
         setError('Failed to fetch data for the new lecture.');
         console.error('Error fetching data:', error);
+        navigate('/');
       }
     };
 
@@ -66,6 +71,17 @@ const NewLecturePage: React.FC = () => {
     }
   }
 
+  const handleSpeakerChange = (userId: number) => {
+    const selectedSpeaker = users.find(u=>u.Id=== userId);
+    if(selectedSpeaker){
+      setEditedPresentation({
+        ...editedPresentation!,
+        SpeakerId: userId,
+        Speaker: selectedSpeaker
+      })
+    }
+  }
+
   const handleDateChange = (field: 'StartTime' | 'EndTime', value: string) => {
     if (!editedPresentation) return;
     setEditedPresentation({
@@ -79,14 +95,10 @@ const NewLecturePage: React.FC = () => {
     
     // Ensure Room is selected
     if (!editedPresentation.Room || !editedPresentation.Room.Id) {
-      setError('Please select a valid room.');
+      setErrorMessage('Please select a valid room.');
       setSuccessMessage(null);
       return;
     }
-
-    // Default speaker with ID 1 - TODO: Change this.
-    const defaultSpeaker = { Id: 1, UserName: 'Default User', Email: 'default@example.com', Role: 1 };
-
     const presentationToCreate: Presentation = {
       Id: 0,
       Title: editedPresentation.Title || '',
@@ -98,7 +110,8 @@ const NewLecturePage: React.FC = () => {
       EndTime: editedPresentation.EndTime || '',
       RoomId: editedPresentation.Room.Id,
       Room: editedPresentation.Room,
-      SpeakerId: defaultSpeaker.Id,
+      SpeakerId: (Number(user?.id) === state?.OrganizerId || user?.role === 'Admin')? (editedPresentation.SpeakerId ?? 0)
+      : (user?.id ? Number(user.id) : 0),
       Speaker: null,
       ConferenceId: state?.Id,
       Conference: null,
@@ -128,7 +141,18 @@ const NewLecturePage: React.FC = () => {
   return (
     <div className="presentation-detail">
       <form onSubmit={handleSubmit} className="space-y-6">
-        
+        <div className="input-container">
+        <label className="font-bold text-gray-800">Conference:</label>
+        <span className="text-gray-800">{state?.Name || ''}</span>
+        </div>
+        <div className="input-container">
+        <label className="font-bold text-gray-800">Conference Start Date:</label>
+        <span className="text-gray-800">{state?.StartDate || ''}</span>
+        </div>
+        <div className="input-container">
+        <label className="font-bold text-gray-800">Conference End Date:</label>
+        <span className="text-gray-800">{state?.EndDate || ''}</span>
+        </div>
         <div className="input-container">
           <label>Title:</label>
           <input
@@ -139,12 +163,28 @@ const NewLecturePage: React.FC = () => {
             required
           />
         </div>
-
+        {user?.id === state?.OrganizerId || user?.role === 'Admin'?
         <div className="input-container">
-        <label className="font-bold text-gray-800">Conference:</label>
-        <span className="text-gray-800">{state?.Name || ''}</span>
-        </div>
-
+            <label>Speaker:</label>
+            <select
+              className="input-field"
+              value={editedPresentation.Speaker?.Id.toString() || ''}
+              onChange={(e) => handleSpeakerChange(Number(e.target.value))}
+            >
+              <option value="">Select User</option>
+              {users.map((user) => (
+                <option key={user.Id} value={user.Id}>
+                  {user.UserName}
+                </option>
+              ))}
+            </select>
+          </div>
+          :
+          <div className="input-container">
+          <label className="font-bold text-gray-800">Speaker:</label>
+          <span className="text-gray-800">{user?.username || ''}</span>
+          </div>
+        }
         {/* Description Input */}
         <div className="input-container">
           <label>Description:</label>

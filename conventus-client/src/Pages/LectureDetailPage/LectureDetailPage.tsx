@@ -4,6 +4,7 @@ import { useUser } from '../../context/UserContext';
 import { getPresentation, deletePresentation, putPresentationsToConfirm } from '../../api'; // Adjust the import based on your structure
 import { Presentation } from '../../data'; // Adjust based on your structure
 import { pathEditLecture } from '../../Routes/Routes';
+import SwitchButton from '../../Components/SwitchButton/SwitchButton';
 import Toast from '../../Components/Toast/Toast';
 import './LectureDetailPage.css'; // Ensure you have this CSS file
 
@@ -17,7 +18,11 @@ const LectureDetailPage: React.FC = () => {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('info');
   const closeToast = () => setToastMessage(null);
-  
+  // swicth
+  const [isOn, setIsOn] = useState(false);  // isOne = confirm
+  const handleSwitch = () => {
+    setIsOn((prev) => !prev);
+  };
   const fetchPresentation = useCallback(async () => {
     console.log("Fetching presentation with ID:", id);
     try {
@@ -35,6 +40,17 @@ const LectureDetailPage: React.FC = () => {
   useEffect(() => {
     fetchPresentation();
   }, [fetchPresentation]);
+
+  useEffect(()=>{
+    if(presentation && user){
+      if(isOn){
+        confirmLecture(presentation.Id, Number(user.id), true);
+      }
+      else{
+        confirmLecture(presentation.Id, Number(user.id), false);
+      }
+    }
+  }, [isOn])
 
   const editLectureDetails = (presentationId: number) => {
     console.log("Edit Details button clicked.");
@@ -83,19 +99,21 @@ const LectureDetailPage: React.FC = () => {
   if (!presentation) {
     return <div className="error">Presentation not found.</div>;
   }
-  console.log(`${presentation.IsConfirmed}`)
   return (
     <div className="presentation-detail">
       {toastMessage && (
         <Toast message={toastMessage} onClose={closeToast} type={toastType} />
       )}
+      {(user != null) && (Number(user.id) === presentation.Conference?.OrganizerId || user.role === 'Admin') && (
+        <SwitchButton OnText='Confirm' OffText='UnConfirm' isOn={isOn} onSwitch={handleSwitch}/>
+      )}
       <h1 className="presentation-title">{presentation.Title}</h1>
-      <Link to={`/conferences/${presentation.ConferenceId}`}>
-        <h2 className="presentation-conference">{presentation.Conference?.Name}</h2>
-      </Link>
+        <Link to={`/conferences/${presentation.ConferenceId}`}>
+          <h2 className="text-center text-2xl underline underline-offset-2 text-blue-500 mb-10">{presentation.Conference?.Name}</h2>
+        </Link>
       <div className="info-container">
       {
-        (user != null) && (Number(user.id) == presentation.Conference?.OrganizerId || user.role === 'Admin')
+        (user != null) && (Number(user.id) === presentation.Conference?.OrganizerId || user.role === 'Admin')
         && (
           <>
           <p><strong>Status: </strong><strong style={{color:presentation.IsConfirmed?'green':'red'}}>{presentation.IsConfirmed?'Confirm':'Unconfirm'}</strong></p>
@@ -120,26 +138,15 @@ const LectureDetailPage: React.FC = () => {
       </div>
       {/* TODO: add photos and pictures. */}
       { (user != null 
-        &&(Number(user.id) == presentation.SpeakerId || Number(user.id) == presentation.Conference?.OrganizerId || user.role === "Admin"))
+        &&(Number(user.id) === presentation.SpeakerId || Number(user.id) === presentation.Conference?.OrganizerId || user.role === "Admin"))
         &&(
         <div className="button-container">
           <button className="edit-details-button" onClick={()=>{editLectureDetails(presentation.Id)}}>Edit Details</button>
           <button className="delete-button" onClick={deleteLecture}>Delete Lecture</button>
         </div>)
       }
-      {
-        (user != null) && (Number(user.id) == presentation.Conference?.OrganizerId || user.role === 'Admin')
-        && (
-          <>
-          <button className="bg-green-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-green-600 transition-colors duration-150" onClick={()=>{confirmLecture(presentation.Id, Number(user.id), true)}}>Confirm</button>
-          <button className="bg-yellow-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-yellow-600 transition-colors duration-150" onClick={()=>{confirmLecture(presentation.Id, Number(user.id), false)}}>Unconfirm</button>
-          </>
-        )
-      }
     </div>
   );
 };
 
 export default LectureDetailPage;
-//<p><strong style={{color:presentation.IsConfirmed?'green':'red'}}>{presentation.IsConfirmed?'Confirm':'Unconfirm'}</strong></p>
-        

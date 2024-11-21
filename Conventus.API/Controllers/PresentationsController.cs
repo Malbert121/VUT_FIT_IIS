@@ -81,7 +81,7 @@ namespace Conventus.API.Controllers
                 var newPresentation = new Presentation
                 {
                     Title = presentation.Title,
-                    IsConfirmed = conference.OrganizerId == user_id?true:false,
+                    IsConfirmed = conference.OrganizerId == user_id || user.Role == Role.Admin?true:false,
                     Description = presentation.Description,
                     Tags = presentation.Tags,
                     StartTime = presentation.StartTime,
@@ -282,14 +282,13 @@ namespace Conventus.API.Controllers
 
                 // update data
                 presentationToUpdate.Title = presentation.Title;
-                if (conference.OrganizerId == user_id)
-                {
-                    presentationToUpdate.IsConfirmed = presentation.IsConfirmed;
-                }
                 presentationToUpdate.Description = presentation.Description;
                 presentationToUpdate.Tags = presentation.Tags;
                 presentationToUpdate.RoomId = presentation.RoomId;
-                presentationToUpdate.SpeakerId = presentation.SpeakerId;
+                if (conference.OrganizerId == user_id || user.Role == Role.Admin)
+                {
+                    presentationToUpdate.SpeakerId = presentation.SpeakerId;
+                }
                 presentationToUpdate.StartTime = presentation.StartTime;
                 presentationToUpdate.EndTime = presentation.EndTime;
 
