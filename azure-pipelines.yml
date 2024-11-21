@@ -15,7 +15,7 @@ variables:
   buildConfiguration: 'Release'
   # Azure deployment variables
   azureSubscription: 'AzureServiceConnection'  # Replace with your service connection name
-  appName: 'iconventus-api'             # Replace with your Azure App Service name
+  appName: 'conventus-api'             # Replace with your Azure App Service name
   resourceGroupName: 'iis-conventus'     # Replace with your resource group name
   deployToSlotOrASE: false                     # Set to true if deploying to a deployment slot
   slotName: 'production'                       # Change if deploying to a different slot
