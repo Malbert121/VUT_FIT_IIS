@@ -33,10 +33,11 @@ const AuthorizationWindow: React.FC<Props> = ({actionToClose}) => {
         const registerData: RegisterData = { username, email, password };
         try{
             await postSignUp(registerData);
-            alert("Registration successful!");
+            await postSignIn(registerData.username, registerData.password);
+            alert("Registration and Authorization successful!");
         }
         catch(err){
-            setError("Registration failed. Please try again.");
+            setError("Registration and Authorization failed. Please try again.");
         }
     };
 
@@ -49,7 +50,7 @@ const AuthorizationWindow: React.FC<Props> = ({actionToClose}) => {
             >
                 ✕
             </button>
-                {/*<h2 className="text-2xl font-bold text-center mb-6">{isSignIn?'SignIn':"SignUp"}</h2>*/}
+                <h2 className="text-2xl font-bold text-center mb-6">{isSignIn?'SignIn':"SignUp"}</h2>
                 <form onSubmit={isSignIn?handleSignIn:handleSignUp}>
                     <div className="mb-4">
                         <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
