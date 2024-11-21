@@ -20,7 +20,16 @@ namespace Conventus.API
             // Read configuration from appsettings.json
             var configuration = builder.Configuration;
             // Add DbContext and Repositories
-            var connectionString = configuration.GetConnectionString("Conventus");
+            string? connectionString;
+            if (builder.Environment.IsDevelopment())
+            {
+                connectionString = configuration.GetConnectionString("Conventus");
+            }
+            else
+            {
+                connectionString = configuration.GetConnectionString("ConventusProd");
+            }
+
             builder.Services.AddDbContextPool<ConventusDbContext>(
                 options => options.UseSqlServer(connectionString,
                 sqlOptions => sqlOptions.EnableRetryOnFailure()).UseLazyLoadingProxies());
@@ -73,6 +82,7 @@ namespace Conventus.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
 
             // Configure the HTTP request pipeline.
 
