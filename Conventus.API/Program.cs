@@ -61,7 +61,7 @@ namespace Conventus.API
         options.JsonSerializerOptions.WriteIndented = true;
 
     });
-//            var app = builder.Build();
+            var app = builder.Build();
 //            if (app.Environment.IsDevelopment())
 //            {
                 if (configuration.GetValue<bool>("RebuildDataBase"))
