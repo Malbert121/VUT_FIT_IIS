@@ -118,7 +118,7 @@ const NewLecturePage: React.FC = () => {
     };
     console.log(presentationToCreate);
     try {
-      await createPresentation(presentationToCreate, 1); // Assuming 1 is the user ID
+      await createPresentation(presentationToCreate, Number(user?.id)); // Assuming 1 is the user ID
       setSuccessMessage("Presentation created successfully!");
       setErrorMessage(null);
       setIsSubmitDisabled(true);
