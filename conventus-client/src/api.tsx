@@ -300,7 +300,7 @@ export const getAllRooms = async () => {
 const handleAxiosError = (error: unknown) => {
     if (axios.isAxiosError(error)) {
         console.log("Error message:", error.message);
-        throw new Error(error.message); // Rethrow error for handling in component
+        throw new Error(error.response?.data); // Rethrow data about error for handling in component
     } else {
         console.log("Unexpected error:", error);
         throw new Error("Unexpected Error");
