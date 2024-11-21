@@ -82,6 +82,15 @@ namespace Conventus.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            else
+            {
+                if (configuration.GetValue<bool>("RebuildDataBase"))
+                {
+                    SampleDataInitializer.InitializeData(new ConventusDbContext(
+                                               new DbContextOptionsBuilder<ConventusDbContext>()
+                                                                          .UseSqlServer(connectionString).Options));
+                }
+            }
 
 
             // Configure the HTTP request pipeline.
