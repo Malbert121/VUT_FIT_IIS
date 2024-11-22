@@ -101,8 +101,7 @@ namespace Conventus.DAL.Migrations
 
                     b.Property<string>("PhotoUrl")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
@@ -115,8 +114,7 @@ namespace Conventus.DAL.Migrations
 
                     b.Property<string>("Tags")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -235,7 +233,7 @@ namespace Conventus.DAL.Migrations
                     b.HasOne("Conventus.Models.Entities.User", "Organizer")
                         .WithMany("OrganizedConferences")
                         .HasForeignKey("OrganizerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Organizer");
@@ -258,7 +256,7 @@ namespace Conventus.DAL.Migrations
                     b.HasOne("Conventus.Models.Entities.User", "Speaker")
                         .WithMany("Presentations")
                         .HasForeignKey("SpeakerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Conference");

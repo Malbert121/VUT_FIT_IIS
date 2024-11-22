@@ -1,6 +1,8 @@
 ﻿using Conventus.DAL.EfStructures;
 using Conventus.Models.Entities.Base;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using System.Linq.Expressions;
 
 namespace Conventus.DAL.Repositories.Base
 {
@@ -54,6 +56,19 @@ namespace Conventus.DAL.Repositories.Base
         }
 
         public virtual T? Find(int? id) => Table.Find(id);
+        public virtual T? FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges,
+                params Expression<Func<T, object>>[]? includes){
+            var query = !trackChanges ?
+            Table.Where(expression).AsNoTracking() : Table.Where(expression);
+
+            if (includes != null && includes.Any())
+            {
+                query = includes.Aggregate(query, (current, include) => current.Include(include));
+            }
+
+            return query.SingleOrDefault();            
+            }
+
         public virtual T? FindAsNoTracking(int id)
             => Table.AsNoTrackingWithIdentityResolution().FirstOrDefault(x => x.Id == id);
 
@@ -62,8 +77,6 @@ namespace Conventus.DAL.Repositories.Base
 
         public virtual IEnumerable<T> GetAll() => Table;
         public virtual IEnumerable<T> GetAllIgnoreQueryFilters() => Table.IgnoreQueryFilters();
-
-        public virtual IEnumerable<T> GetRange(List<int> ids) => Table.Where(r => ids.Contains(r.Id));
 
         public void ExecuteQuery(string sql, object[] sqlParametersObjects)
             => Context.Database.ExecuteSqlRaw(sql, sqlParametersObjects);

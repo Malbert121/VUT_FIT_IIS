@@ -15,8 +15,8 @@ const LoginPage: React.FC = () => {
                 password,
             });
             localStorage.setItem('token', response.data.token);
-            window.location.reload();
             alert("Logged in successfully!");
+            window.location.reload();
         } catch (err) {
             setError("Login failed");
         }

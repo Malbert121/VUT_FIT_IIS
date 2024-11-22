@@ -2,29 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { useParams , Link} from 'react-router-dom';
 import { Reservation } from '../../data';
 import { getReservation } from '../../api';
+import { pathConferences } from '../../Routes/Routes';
 import ReservationDetailCard from '../../Components/ReservationDetailCard/ReservationDetailCard';
-import { useUser } from '../../context/UserContext'
 interface Props{}
 
 const ReservationDetailPage: React.FC<Props> = () => {
-    const user = useUser();
     const { reservationId } = useParams<{ reservationId: string }>();
     const [reservation, setReservation] = useState<Reservation | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    
- 
     useEffect(()=>{
         const fetchReservation = async ()=>
         {
-            if(!user)
-            {
-                return;
-            }
-            console.log("Fetching reservation with ID:", reservationId);
+            console.log("Fetching conference with ID:", reservationId);
             try
             {
-                const data = await getReservation(Number(reservationId), Number(user.id));
+                const data = await getReservation(Number(reservationId));
                 setReservation(data);
             }
             catch(error)
@@ -38,7 +31,7 @@ const ReservationDetailPage: React.FC<Props> = () => {
             }
         };
         fetchReservation();
-    }, [reservationId, user])
+    }, [reservationId])
     
     if (loading) {
         return <div className="loading">Loading reservation details...</div>;

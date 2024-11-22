@@ -1,5 +1,7 @@
-﻿using Conventus.Models.Entities;
+﻿using Azure.Core;
+using Conventus.Models.Entities;
 using Conventus.Models.Enums;
+using System.Text;
 
 namespace Conventus.DAL.Initialization
 {
@@ -13,7 +15,7 @@ namespace Conventus.DAL.Initialization
                 Id = 1,
                 UserName = "xmalas04",
                 Email = "xmalas04@vutb.cz",
-                PasswordHash = "xmalas04@password".GetHashCode().ToString(), // Use proper password hashing in production
+                PasswordHash = Convert.ToBase64String(Encoding.UTF8.GetBytes("xmalas04@password")), // Use proper password hashing in production
                 Role = Role.Admin,
                 OrganizedConferences = new List<Conference>(),
                 Presentations = new List<Presentation>(),
@@ -24,7 +26,7 @@ namespace Conventus.DAL.Initialization
                 Id = 2,
                 UserName = "jdoe",
                 Email = "jdoe@example.com",
-                PasswordHash = "jdoe@password".GetHashCode().ToString(), // Use proper password hashing in production
+                PasswordHash = Convert.ToBase64String(Encoding.UTF8.GetBytes("jdoe@password")), // Use proper password hashing in production
                 Role = Role.User,
                 OrganizedConferences = new List<Conference>(),
                 Presentations = new List<Presentation>(),
@@ -35,7 +37,7 @@ namespace Conventus.DAL.Initialization
                 Id = 3,
                 UserName = "asmith",
                 Email = "asmith@example.com",
-                PasswordHash = "asmith@password".GetHashCode().ToString(), // Use proper password hashing in production
+                PasswordHash = Convert.ToBase64String(Encoding.UTF8.GetBytes("asmith@password")), // Use proper password hashing in production
                 Role = Role.User,
                 OrganizedConferences = new List<Conference>(),
                 Presentations = new List<Presentation>(),
@@ -57,7 +59,7 @@ namespace Conventus.DAL.Initialization
                 EndDate = new DateTime(2024, 5, 22),
                 Price = 299.99m,
                 Capacity = 200,
-                Occupancy = 6,
+                Occupancy = 0,
                 PhotoUrl = "path/to/location",
                 Presentations = new List<Presentation>(),
                 Reservations = new List<Reservation>(),
@@ -75,7 +77,7 @@ namespace Conventus.DAL.Initialization
                 EndDate = new DateTime(2024, 6, 17),
                 Price = 199.99m,
                 Capacity = 150,
-                Occupancy = 4,
+                Occupancy = 0,
                 PhotoUrl = "path/to/location",
                 Presentations = new List<Presentation>(),
                 Reservations = new List<Reservation>(),
@@ -93,7 +95,7 @@ namespace Conventus.DAL.Initialization
                 EndDate = new DateTime(2024, 7, 12),
                 Price = 249.99m,
                 Capacity = 300,
-                Occupancy = 6,
+                Occupancy = 0,
                 PhotoUrl = "path/to/location",
                 Presentations = new List<Presentation>(),
                 Reservations = new List<Reservation>(),

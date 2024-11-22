@@ -1,5 +1,6 @@
 ﻿using Conventus.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Conventus.DAL.EfStructures
 {
@@ -81,50 +82,42 @@ namespace Conventus.DAL.EfStructures
                 builder.HasOne(c => c.Organizer)
                       .WithMany()
                       .HasForeignKey(c => c.OrganizerId)
-                      .OnDelete(DeleteBehavior.Restrict); // Maybe Cascade
+                      .OnDelete(DeleteBehavior.Cascade); 
             });
+            // Configuration for Presentation entity
             // Configuration for Presentation entity
             modelBuilder.Entity<Presentation>(builder =>
             {
                 // Primary Key
-                builder.HasKey(p => p.Id); // Assuming Id is defined in BaseEntity
+                builder.HasKey(p => p.Id);
 
                 // Properties configuration
                 builder.Property(p => p.Title)
                     .IsRequired()
-                    .HasMaxLength(100); // Adjust length as necessary
+                    .HasMaxLength(100);
 
                 builder.Property(p => p.Description)
-                    .HasMaxLength(500); // Adjust length as necessary
+                    .HasMaxLength(500);
 
-                builder.Property(p => p.Tags)
-                    .HasMaxLength(250); // Adjust length as necessary
-
-                builder.Property(p => p.PhotoUrl)
-                    .HasMaxLength(500); // Adjust length as necessary
-
-                builder.Property(p => p.StartTime)
-                    .IsRequired();
-
-                builder.Property(p => p.EndTime)
-                    .IsRequired();
+                // ... other property configurations ...
 
                 // Relationships configuration
                 builder.HasOne(p => p.Room)
-                    .WithMany(r => r.Presentations) // Assuming Room has a collection of Presentations
+                    .WithMany(r => r.Presentations)
                     .HasForeignKey(p => p.RoomId)
                     .OnDelete(DeleteBehavior.Restrict);
 
-                builder.HasOne(p => p.Speaker)
-                    .WithMany(u => u.Presentations) // Assuming User has a collection of Presentations
-                    .HasForeignKey(p => p.SpeakerId)
-                    .OnDelete(DeleteBehavior.Restrict); // Adjust behavior as needed
+                builder.HasOne(p => p.Speaker) // Assuming 'Speaker' refers to the related User
+                    .WithMany(u => u.Presentations) // Assuming 'Presentations' is a collection in User
+                    .HasForeignKey(p => p.SpeakerId) // The foreign key property
+                    .OnDelete(DeleteBehavior.Cascade); 
 
                 builder.HasOne(p => p.Conference)
-                    .WithMany(c => c.Presentations) // Assuming Conference has a collection of Presentations
+                    .WithMany(c => c.Presentations)
                     .HasForeignKey(p => p.ConferenceId)
-                    .OnDelete(DeleteBehavior.Cascade); // Adjust behavior as needed
+                    .OnDelete(DeleteBehavior.Cascade);
             });
+
             // Configuration for Reservation entity
             modelBuilder.Entity<Reservation>(builder =>
             {
@@ -233,29 +226,33 @@ namespace Conventus.DAL.EfStructures
                 builder.ToTable("Users");
 
                 // Set properties
-                builder.HasKey(u => u.Id); // Assuming Id is the primary key from BaseEntity
+                builder.HasKey(u => u.Id);
                 builder.Property(u => u.UserName)
                     .IsRequired()
-                    .HasMaxLength(50); // Set max length according to your requirements
+                    .HasMaxLength(50);
                 builder.Property(u => u.Email)
                     .IsRequired()
-                    .HasMaxLength(100); // Adjust length as necessary
+                    .HasMaxLength(100);
                 builder.Property(u => u.PasswordHash)
                     .IsRequired();
 
                 // Configure relationships
                 builder.HasMany(u => u.OrganizedConferences)
-                    .WithOne(c => c.Organizer) // Assuming Conference has an Organizer property of type User
+                    .WithOne(c => c.Organizer)
                     .HasForeignKey(c => c.OrganizerId);
 
+
                 builder.HasMany(u => u.Presentations)
-                    .WithOne(p => p.Speaker) // Assuming Presentation has a Speaker property of type User
+                    .WithOne(p => p.Speaker)
                     .HasForeignKey(p => p.SpeakerId);
 
+
                 builder.HasMany(u => u.Reservations)
-                    .WithOne(r => r.User) // Assuming Reservation has a User property of type User
+                    .WithOne(r => r.User)
                     .HasForeignKey(r => r.UserId);
+
             });
+
 
             // Additional Fluent API configurations can be added here for other entities
         }

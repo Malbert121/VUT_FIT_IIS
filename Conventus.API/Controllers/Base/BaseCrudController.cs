@@ -157,16 +157,16 @@ namespace Conventus.API.Controllers.Base
         /// </remarks>
         /// <returns>Nothing</returns>
         /// <response code="200">Found and deleted the record</response>
-        /// <response code="400">Bad request</response>
-        [Produces("application/json")]
+        /// <response code="400">Bad request</response
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(200, "The execution was successful")]
         [SwaggerResponse(400, "The request was invalid")]
         [HttpDelete("{id}")]
-        public ActionResult<T> DeleteOne(int id, T entity)
+        public ActionResult DeleteOne(int id)
         {
-            if (id != entity.Id)
+            var entity = MainRepo.Find(id);
+            if (entity is null || id != entity.Id)
             {
                 return BadRequest();
             }

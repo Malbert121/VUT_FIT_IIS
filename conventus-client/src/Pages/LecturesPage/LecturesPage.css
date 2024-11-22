@@ -21,37 +21,38 @@
     margin-bottom: 20px; /* Add margin below */
 }
 
-.presentation-list {
+.lecture-list {
     display: grid; /* Use grid layout for lectures */
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive columns */
     gap: 20px; /* Space between cards */
 }
 
-.presentation-card {
+.lecture-card {
     background-color: white; /* White background for cards */
     border-radius: 8px; /* Rounded corners */
     padding: 15px; /* Padding inside cards */
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for cards */
     transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition for hover effects */
+    padding-left: 10px;
 }
 
-.presentation-card:hover {
+.lecture-card:hover {
     transform: translateY(-5px); /* Lift effect on hover */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
 }
 
-.presentation-title {
+.lecture-title {
     font-size: 1.5rem; /* Font size for lecture title */
     font-weight: bold; /* Bold font */
     color: #2c5282; /* Darker blue color */
 }
 
-.presentation-description {
+.lecture-description {
     color: #4a5568; /* Medium gray text color */
     margin: 10px 0; /* Add margin for spacing */
 }
 
-.presentation-dates {
+.lecture-dates {
     color: #4a5568; /* Medium gray text color */
     margin: 5px 0; /* Add margin for spacing */
 }
@@ -60,77 +61,4 @@
     text-align: center; /* Center align loading and error messages */
     font-size: 1.2rem; /* Increase font size */
     color: #cbd5e0; /* Light gray color */
-}
-
-.filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    max-width: 1000px;
-    margin: 30px auto 40px;
-    padding: 15px 20px;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #edf2f7;
-    border: 1px solid #cbd5e0;
-    border-radius: 8px;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-}
-
-.filters input[type="text"],
-.filters select,
-.filters input[type="date"] {
-    padding: 10px;
-    border: 1px solid #a0aec0;
-    border-radius: 5px;
-    font-size: 0.95rem;
-    width: 180px;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.filters input[type="text"]::placeholder {
-    color: #718096;
-}
-
-.filters select,
-.filters input[type="text"]:focus,
-.filters input[type="date"]:focus {
-    border-color: #3182ce;
-    box-shadow: 0 0 5px rgba(49, 130, 206, 0.3);
-}
-
-/* Responsive Design for Filters */
-@media (max-width: 768px) {
-    .filters {
-        flex-direction: column;
-        gap: 20px;
-    }
-}
-
-/* Adjustments for Smaller Screen Sizes */
-@media (max-width: 480px) {
-    .filters input[type="text"],
-    .filters select,
-    .filters input[type="date"] {
-        width: 100%;
-    }
-
-    .title {
-        font-size: 2.2rem;
-    }
-
-    .description {
-        font-size: 1.1rem;
-    }
-}
-.additional-filters {
-    margin-top: 10px; /* Adds space above the additional filters */
-}
-
-.filters {
-    margin-bottom: 20px; /* Space below the filters */
-}
-
-.toggle-filters {
-    margin-top: 10px; /* Space above the toggle button */
 }

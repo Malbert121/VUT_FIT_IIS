@@ -1,5 +1,5 @@
-.vscode
 .vs
 bin
 obj
-key_db.txt
+
+Conventus.API/appsettings.json
