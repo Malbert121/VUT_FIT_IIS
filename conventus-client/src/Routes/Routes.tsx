@@ -18,6 +18,7 @@ import ConferenceEditPage from "../Pages/ConferencesEditPage/ConferenceEditPage"
 import MyLecturesPage from "../Pages/MyLecturesPage/MyLecturesPage";
 import EditLecturePage from "../Pages/EditLecturePage/EditLecturePage";
 import NewLecturePage from "../Pages/NewLecturePage/NewLecturePage";
+import UserEditPage from "../Pages/UserEditPage/UserEditPage";
 
 export const pathConferences = "/conferences";
 export const pathMyConferences = "/myconferences";
@@ -103,8 +104,16 @@ export const router = createBrowserRouter([
                 ),
             },
             {
-                path: pathAdmin,
+                path:`${pathAdmin}/:showShow`,
                 element: <PageContainer WrapperPage={AdminPanelPage} sideBarFlag={false} />,
+            },
+            {
+                path: `${pathAdmin}/Users/edit/:id`,
+                element: <PageContainer WrapperPage={UserEditPage} sideBarFlag={false} />,
+            },
+            {
+                path: `${pathAdmin}/Users/create`,
+                element: <PageContainer WrapperPage={UserEditPage} sideBarFlag={false} />,
             },
         ]
     }
