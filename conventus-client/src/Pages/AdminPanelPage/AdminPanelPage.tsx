@@ -46,13 +46,6 @@ const AdminPanelPage: React.FC = () => {
 
     const closeToast = () => setToastMessage(null);
 
-    const handleQuantityChange = (id: number, quantity: number) => {
-        setTicketQuantity({ ...ticketQuantity, [id]: quantity });
-    };
-
-    function delay(ms: number): Promise<void> {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
 
     const handleDelete = async (id: number, model: string) => {
         try { 
@@ -73,46 +66,12 @@ const AdminPanelPage: React.FC = () => {
         navigate(`./create`);
     }
 
-    const handleNavigate = (model: string) => {
-        navigate(`../admin/${model}`);
+    const handleNavigate = () => {
+        navigate(`../admin/Users`);
     }
 
-
-    const handleSelectReservation = (reservationId: number, amount: number) => {
-        setSelectedReservations((prevSelected) => {
-            const isSelected = prevSelected.includes(reservationId);
-            if (isSelected) {
-                return prevSelected.filter(id => id !== reservationId);
-            } else {
-                return [...prevSelected, reservationId];
-            }
-        });
-    }
         useEffect(() => {
             try {
-                if (showShow === "Conferences") {
-                    const fetchConferences = async () => {
-                        const data = await getAllConferences();
-                        console.log("Conferences data:", data);
-                        setConferences(data);
-                        setFilteredConferences(data);
-                    };
-                    fetchConferences();
-                }
-                if (showShow === "Presentations") {
-                    const fetchLectures = async () => {
-                        const data = await getAllPresentations();
-                        setLectures(data);
-                    };
-                    fetchLectures();
-                }
-                if (showShow === "Reservations") {
-                    const fetchLectures = async () => {
-                        const data = await getAllReservations();
-                        setReservations(data);
-                    };
-                    fetchLectures();
-                }
                 if (showShow === "Users") {
                     const fetchUsers = async () => {
                         const data = await getAllUsers();
@@ -137,82 +96,7 @@ const AdminPanelPage: React.FC = () => {
             }
         }, [showShow]);
 
-        useEffect(() => {
 
-            let filtered = [...conferences];
-
-            // Genre and location filters
-            if (genreFilter) filtered = filtered.filter(conference => conference.Genre === genreFilter);
-            if (locationFilter) filtered = filtered.filter(conference => conference.Location === locationFilter);
-
-            // Title or description search
-            if (searchTerm) {
-                filtered = filtered.filter(conference =>
-                    conference.Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    conference.Description?.toLowerCase().includes(searchTerm.toLowerCase())
-                );
-            }
-
-            // Date range filter
-            if (dateRange.from) filtered = filtered.filter(conference => new Date(conference.StartDate) >= new Date(dateRange.from));
-            if (dateRange.to) filtered = filtered.filter(conference => new Date(conference.EndDate) <= new Date(dateRange.to));
-
-            // Apply sorting
-            filtered.sort((a, b) => {
-                if (sortOption === 'Name') return a.Name.localeCompare(b.Name);
-                if (sortOption === 'StartDate') return new Date(a.StartDate).getTime() - new Date(b.StartDate).getTime();
-                if (sortOption === 'Price') return a.Price - b.Price;
-                return 0;
-            });
-
-            setFilteredConferences(filtered);
-        }, [genreFilter, locationFilter, sortOption, searchTerm, dateRange, conferences]);
-
-
-
-  useEffect(()=>{
-    let filtered = [...reservations];
-    if(conferenceNameFilter)
-    {
-      filtered = filtered.filter(reservation=>
-        reservation.Conference.Name.toLowerCase().includes(conferenceNameFilter.toLowerCase())
-      );
-    }
-    
-    if(statusFilter==='Confirmed')
-    {
-      filtered=filtered.filter(reservation=>reservation.IsConfirmed && reservation.IsPaid);
-    }
-    else if(statusFilter==='Unconfirmed')
-    {
-      filtered=filtered.filter(reservation=>!reservation.IsConfirmed && reservation.IsPaid);
-    }
-    else if (statusFilter === 'Unpaid')
-    {
-        filtered = filtered.filter(reservation => !reservation.IsPaid);
-    }
-
-    if(dateFilter.from)
-    {
-      filtered = filtered.filter(reservation => new Date(reservation.Conference.StartDate) >= new Date(dateFilter.from));
-    }
-    if(dateFilter.to)
-    {
-      filtered = filtered.filter(reservation => new Date(reservation.Conference.EndDate) <= new Date(dateFilter.to));
-    }
-    
-    if(groupFilter === 'Single')
-    {
-      filtered = filtered.filter(reservation => reservation.NumberOfTickets === 1);
-    }
-    else if(groupFilter === 'Group')
-    {
-      filtered = filtered.filter(reservation => reservation.NumberOfTickets > 1);
-    }
-
-    setReservationsFiltered(filtered);
-
-  }, [conferenceNameFilter, statusFilter, dateFilter, groupFilter, reservations]);
     if (loading) {
         return <div className="loading">Loading...</div>;
     }
@@ -221,304 +105,47 @@ const AdminPanelPage: React.FC = () => {
         return <div className="error">Error: {error}</div>;
     }
 
-        if (showShow === "Conferences") {
-
-            return (
-                <div className="ConferencesPage">
-                    {toastMessage && (
-                        <Toast message={toastMessage} onClose={closeToast} type={toastType} />
-                    )}
-                    <h1 className="title">Upcoming Conferences</h1>
-                    <div className="filters">
-                        {/* Search bar for title and description */}
-                        <input
-                            type="text"
-                            placeholder="Search by title or description"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-
-                        {/* Genre filter */}
-                        <select onChange={(e) => setGenreFilter(e.target.value || null)}>
-                            <option value="">All Genres</option>
-                            {uniqueGenres.map((genre) => (
-                                <option key={genre}>{genre}</option>
-                            ))}
-                        </select>
-
-                        {/* Location filter */}
-                        <select onChange={(e) => setLocationFilter(e.target.value || null)}>
-                            <option value="">All Locations</option>
-                            {uniqueLocations.map((location) => (
-                                <option key={location}>{location}</option>
-                            ))}
-                        </select>
-
-                        {/* Toggle for additional filters */}
-                        <button
-                            onClick={() => setShowAdditionalFilters(!showAdditionalFilters)}
-                            className="toggle-filters bg-blue-600 text-white py-1 px-3 rounded"
-                        >
-                            {showAdditionalFilters ? 'Hide Additional Filters' : 'Show Additional Filters'}
-                        </button>
-
-                        {/* Additional Filters Section */}
-                        {showAdditionalFilters && (
-                            <div className="additional-filters">
-                                {/* Date range filter */}
-                                <div className="flex space-x-4">
-                                    <input
-                                        type="date"
-                                        value={dateRange.from}
-                                        onChange={(e) => setDateRange({ ...dateRange, from: e.target.value })}
-                                        placeholder="From date"
-                                    />
-                                    <input
-                                        type="date"
-                                        value={dateRange.to}
-                                        onChange={(e) => setDateRange({ ...dateRange, to: e.target.value })}
-                                        placeholder="To date"
-                                    />
-                                </div>
-
-                                {/* Sorting options */}
-                                <select onChange={(e) => setSortOption(e.target.value)}>
-                                    <option value="Name">Sort by Name</option>
-                                    <option value="StartDate">Sort by Start Date</option>
-                                    <option value="EndDate">Sort by End Date</option>
-                                    <option value="Price">Sort by Price (Low to High)</option>
-                                    <option value="PriceDesc">Sort by Price (High to Low)</option>
-                                    <option value="TicketsAvailable">Sort by Tickets Available</option>
-                                    <option value="Popularity">Sort by Popularity</option>
-                                </select>
-                            </div>
-                        )}
-                    </div>
-
-                    <div className="conference-list">
-                        {filteredConferences.map((conference) => (
-                            <div key={conference.Id} className="conference-card">
-                                <Link to={`./${conference.Id}`}>
-                                    <h2 className="conference-name">{conference.Name || 'Unnamed Conference'}</h2>
-                                </Link>
-                                <p className="conference-description">{conference.Description || 'No description available.'}</p>
-                                <p className="conference-location"><strong>Location:</strong> {conference.Location || 'Not specified'}</p>
-                                <p className="conference-dates">
-                                    <strong>Start Date:</strong> {conference.StartDate} <br />
-                                    <strong>End Date:</strong> {conference.EndDate}
-                                </p>
-
-                                <div className="ticket-section">
-                                    <p className="conference-price"><strong>Price:</strong> ${conference.Price}</p>
-                                    <button className="ticket-button bg-red-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-700 transition-colors duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
-                                        onClick={() => handleDelete(conference.Id, showShow)}
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-
-                            </div>
-                        ))}
-                    </div>
+    else {
+        return (
+            <div>
+                <div>
+                    <button className="ticket-button bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+                        onClick={() => handleCreate()}
+                    >
+                        Add new User
+                    </button>
                 </div>
-            );
-        }
-        if (showShow === "Reservations") {
-            return (
-                <div className="container mx-auto p-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                     {toastMessage && (
                         <Toast message={toastMessage} onClose={closeToast} type={toastType} />
                     )}
-                    <h1 className="flex text-5xl justify-center font-bold mb-10">Available Reservations</h1>
+                    {users.map((user) => (
 
-                    <div className='filters'>
-                        <input
-                            type="text"
-                            placeholder="Conference Name"
-                            value={conferenceNameFilter}
-                            onChange={(e) => setConferenceNameFiler(e.target.value)}
-                        />
-
-                        <select onChange={(e) => setStatusFilter(e.target.value)}>
-                            <option value="">All Statuses</option>
-                            {reservationStatusList.map((status) => (
-                                <option key={status}>{status}</option>
-                            ))}
-                        </select>
-
-                        <select onChange={(e) => setGroupFilter(e.target.value)}>
-                            <option value="">All Groups</option>
-                            {groupList.map((status) => (
-                                <option key={status}>{status}</option>
-                            ))}
-                        </select>
-
-                        <div className="flex space-x-4">
-                            <input
-                                type="date"
-                                value={dateFilter.from}
-                                onChange={(e) => setDateFilter({ ...dateFilter, from: e.target.value })}
-                                placeholder="From date"
-                            />
-                            <input
-                                type="date"
-                                value={dateFilter.to}
-                                onChange={(e) => setDateFilter({ ...dateFilter, to: e.target.value })}
-                                placeholder="To date"
-                            />
-                        </div>
-
-                    </div>
-
-                    <div className="flex flex-row items-center justify-between mb-4">
-                        <div className="flex flex-row space-x-2">
-                            <button className="bg-red-500 text-white w-32 flex-1 py-2 px-4 rounded hover:bg-red-600 transition-colors duration-150">
+                        <div key={user.Id} className="lecture-card">
+                            <h2 className="lecture-title">Username: {user.UserName || 'Untitled'}</h2>
+                            <p className="lecture-description">Email: {user.Email || 'No description available.'}</p>
+                            <p className="lecture-description">User ID: {user.Id || 'No description available.'}</p>
+                            <p className="lecture-description">Role: {user.Role === 1 ? 'Basic' : 'Admin'}</p>
+                            <button
+                                className={`px-4 py-2 rounded text-white bg-red-500 hover:bg-red-600`}
+                                onClick={() => handleDelete(user.Id, "Users")}
+                            >
                                 Delete
                             </button>
+                            <button
+                                className={`px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600 mx-2`}
+                                onClick={() => handleEdit(user.Id)}
+                            >
+                                Edit
+                            </button>
                         </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {reservationsFiltered.map((reservation) => (
-                            <ReservationCard
-                                reservation={reservation}
-                                onSelect={() => handleSelectReservation(reservation.Id, reservation.Ammount)}
-                                isSelected={selectedReservations.includes(reservation.Id)}
-                                pathToDetails={`${pathAdmin}/Reservations`} />
-                        ))}
-                    </div>
+                    ))}
                 </div>
-            );
-        }
-        if (showShow === "Presentations") {
-            return (<div className="lecture-list">
-                {toastMessage && (
-                    <Toast message={toastMessage} onClose={closeToast} type={toastType} />
-                )}
-                {lectures.map((lecture) => (
-                    <div key={lecture.Id} className="lecture-card">
-                        <h2 className="lecture-title">{lecture.Title || 'Untitled'}</h2>
-                        <p className="lecture-description">{lecture.Description || 'No description available.'}</p>
-                        <p className="lecture-dates">
-                            <strong>Start Time:</strong> {lecture.StartTime} <br />
-                            <strong>End Time:</strong> {lecture.EndTime}
-                        </p>
+            </div>);
+    }
 
-                        <button
-                            className={`px-4 py-2 rounded text-white bg-red-500 hover:bg-red-600`}
-                            onClick={() => handleDelete(lecture.Id, showShow)}
-                        >
-                            Delete
-                        </button>
-                        <button
-                            className={`px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600`}
-                            onClick={() => handleEdit(lecture.Id)}
-                        >
-                            Edit
-                        </button>
 
-                    </div>
-                ))}
-            </div>)
-        }
-        if (showShow === "Users") {
-            return (
-                <div>
-                    <div>
-                        <button className="ticket-button bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
-                            onClick={() => handleCreate()}
-                        >
-                            Add new User
-                        </button>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                        {toastMessage && (
-                            <Toast message={toastMessage} onClose={closeToast} type={toastType} />
-                        )}
-                        {users.map((user) => (
 
-                            <div key={user.Id} className="lecture-card">
-                                <h2 className="lecture-title">Username: {user.UserName || 'Untitled'}</h2>
-                                <p className="lecture-description">Email: {user.Email || 'No description available.'}</p>
-                                <p className="lecture-description">User ID: {user.Id || 'No description available.'}</p>
-                                <p className="lecture-description">Role: {user.Role === 1 ? 'Basic' : 'Admin'}</p>
-                                <button
-                                    className={`px-4 py-2 rounded text-white bg-red-500 hover:bg-red-600`}
-                                    onClick={() => handleDelete(user.Id, showShow)}
-                                >
-                                    Delete
-                                </button>
-                                <button
-                                    className={`px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600 mx-2`}
-                                    onClick={() => handleEdit(user.Id)}
-                                >
-                                    Edit
-                                </button>
-                            </div>
-                        ))}
-                    </div>
-                </div>);
-        }
-        if (showShow === "Rooms") {
-            return (<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                {toastMessage && (
-                    <Toast message={toastMessage} onClose={closeToast} type={toastType} />
-                )}
-                {rooms.map((room) => (
-                    <div key={room.Id} className="lecture-card">
-                        <h2 className="lecture-title">{room.Name || 'Untitled'}</h2>
-                        <p className="lecture-description">Capacity: {room.Capacity || 'No description available.'}</p>
-                        <p className="lecture-description">Room ID: {room.Id || 'No description available.'}</p>
-                        <p className="lecture-description">Conference ID: {room.ConferenceId || 'No description available.'}</p>
-                        <button
-                            className={`px-4 py-2 rounded text-white bg-red-500 hover:bg-red-600`}
-                            onClick={() => handleDelete(room.Id, showShow)}
-                        >
-                            Delete
-                        </button>
-                        <button
-                            className={`px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600`}
-                        >
-                            Edit
-                        </button>
-
-                    </div>
-                ))}
-            </div>)
-        }
-
-        else {
-            return (
-                <div className="ConferencesPage">
-                    <h2 className="lecture-title">Admin Panel</h2>
-                    <p className="conference-description" >Welcome to the Admin Panel. Here you can manage conferences, lectures, and users.</p>
-                    <h1>Manage:</h1>
-                    <div>
-                        <button className="w-full px-8 py-4 rounded text-white bg-blue-500 hover:bg-blue-600 my-2"
-                            onClick={() => handleNavigate("Conferences")}
-                        >Conferences</button>
-                        <br />
-                        <button className="w-full px-8 py-4 rounded text-white bg-blue-500 hover:bg-blue-600 my-2"
-                            onClick={() => handleNavigate("Reservations")}
-                        >Reservations</button>
-                        <br />
-                        <button className="w-full px-8 py-4 rounded text-white bg-blue-500 hover:bg-blue-600 my-2"
-                            onClick={() => handleNavigate("Presentations")}
-                        >Lectures</button>
-                        <br />
-                        <button className="w-full px-8 py-4 rounded text-white bg-blue-500 hover:bg-blue-600 my-2"
-                            onClick={() => handleNavigate("Rooms")}
-                        >Rooms</button>
-                        <br />
-                        <button className="w-full px-8 py-4 rounded text-white bg-blue-500 hover:bg-blue-600 my-2"
-                            onClick={() => handleNavigate("Users")}
-                        >User</button>
-                        <br />
-                    </div>
-                </div>
-
-            );
-        };
     }
   
 

@@ -31,8 +31,8 @@ const Navbar: React.FC<Props> = ({ updateSideBar }) => {
             <Link to={`../${pathLectures}`} className="text-black hover:text-darkBlue">
               Lectures
             </Link>
-            <Link to={`../${pathAdmin}/none`} className="text-black hover:text-darkBlue">
-              Admin
+            <Link to={`../${pathAdmin}/Users`} className="text-black hover:text-darkBlue">
+              Users(Admin)
             </Link>
           </div>
         </div>
