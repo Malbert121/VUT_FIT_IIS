@@ -131,7 +131,7 @@ namespace Conventus.DAL.Migrations
 
                     b.HasIndex("SpeakerId");
 
-                    b.ToTable("Presentations", (string)null);
+                    b.ToTable("Presentations");
                 });
 
             modelBuilder.Entity("Conventus.Models.Entities.Reservation", b =>
@@ -171,7 +171,7 @@ namespace Conventus.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reservations", (string)null);
+                    b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("Conventus.Models.Entities.Room", b =>
@@ -194,7 +194,7 @@ namespace Conventus.DAL.Migrations
 
                     b.HasIndex("ConferenceId");
 
-                    b.ToTable("Rooms", (string)null);
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("Conventus.Models.Entities.User", b =>
@@ -232,7 +232,7 @@ namespace Conventus.DAL.Migrations
                     b.HasOne("Conventus.Models.Entities.User", "Organizer")
                         .WithMany("OrganizedConferences")
                         .HasForeignKey("OrganizerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Organizer");
@@ -255,7 +255,7 @@ namespace Conventus.DAL.Migrations
                     b.HasOne("Conventus.Models.Entities.User", "Speaker")
                         .WithMany("Presentations")
                         .HasForeignKey("SpeakerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Conference");
@@ -276,7 +276,7 @@ namespace Conventus.DAL.Migrations
                     b.HasOne("Conventus.Models.Entities.User", "User")
                         .WithMany("Reservations")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Conference");

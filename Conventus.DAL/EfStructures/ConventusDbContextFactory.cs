@@ -10,7 +10,7 @@ namespace Conventus.DAL.EfStructures
         {
             var optionsBuilder = new DbContextOptionsBuilder<ConventusDbContext>();
             // Change To Your Server Name (I use my local custom)
-            var connectionString = "Server=DESKTOP-MDHCS51\\MSSQLSERVER01;Database=Conventus;Trusted_Connection=True;TrustServerCertificate=True";
+            var connectionString = "Server=tcp:sqldb-conventus.database.windows.net,1433;Initial Catalog=db-conventus;Persist Security Info=False;User ID=xpopov10;Password=*Evergreen567+;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=100;";
             optionsBuilder.UseSqlServer(connectionString);
             Console.WriteLine(connectionString);
             return new ConventusDbContext(optionsBuilder.Options);
