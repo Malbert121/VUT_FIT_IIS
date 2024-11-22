@@ -81,7 +81,7 @@ namespace Conventus.DAL.EfStructures
                 builder.HasOne(c => c.Organizer)
                       .WithMany()
                       .HasForeignKey(c => c.OrganizerId)
-                      .OnDelete(DeleteBehavior.Restrict); // Maybe Cascade
+                      .OnDelete(DeleteBehavior.Cascade); // Maybe Cascade
             });
             // Configuration for Presentation entity
             modelBuilder.Entity<Presentation>(builder =>
@@ -118,7 +118,7 @@ namespace Conventus.DAL.EfStructures
                 builder.HasOne(p => p.Speaker)
                     .WithMany(u => u.Presentations) // Assuming User has a collection of Presentations
                     .HasForeignKey(p => p.SpeakerId)
-                    .OnDelete(DeleteBehavior.Restrict); // Adjust behavior as needed
+                    .OnDelete(DeleteBehavior.Cascade); // Adjust behavior as needed
 
                 builder.HasOne(p => p.Conference)
                     .WithMany(c => c.Presentations) // Assuming Conference has a collection of Presentations
@@ -217,7 +217,7 @@ namespace Conventus.DAL.EfStructures
                 builder.HasOne(r => r.User)
                     .WithMany(u => u.Reservations)
                     .HasForeignKey(r => r.UserId)
-                    .OnDelete(DeleteBehavior.Restrict); // Changed to Restrict
+                    .OnDelete(DeleteBehavior.Cascade); // Changed to Restrict
 
                 builder.HasOne(r => r.Conference)
                     .WithMany(c => c.Reservations)

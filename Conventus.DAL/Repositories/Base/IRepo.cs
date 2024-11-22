@@ -1,4 +1,6 @@
-﻿namespace Conventus.DAL.Repositories.Base
+﻿using System.Linq.Expressions;
+
+namespace Conventus.DAL.Repositories.Base
 {
     public interface IRepo<T> : IDisposable
     {
@@ -10,6 +12,8 @@
         int Delete(T entity, bool persist = true);
         int DeleteRange(IEnumerable<T> entities, bool persist = true);
         T? Find(int? id);
+        T? FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges,
+                params Expression<Func<T, object>>[]? includes);
         T? FindAsNoTracking(int id);
         T? FindIgnoreQueryFilters(int id);
         IEnumerable<T> GetAll();
