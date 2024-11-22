@@ -30,7 +30,27 @@ const NewLecturePage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(false); // State to control submit button
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]); // Filtered users for dropdown
+  const [searchTerm, setSearchTerm] = useState<string | null>(''); // Allow null
+  const [showSuggestions, setShowSuggestions] = useState<boolean>(false); // Toggle suggestions dropdown
+  const handleSelectUser = (selectedUser: User) => {
+    setEditedPresentation({
+      ...editedPresentation,
+      SpeakerId: selectedUser.Id,
+      Speaker: selectedUser,
+    });
+    setSearchTerm(selectedUser.UserName); // Update input with selected user's login
+    setShowSuggestions(false); // Hide suggestions
+  };
   
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const term = e.target.value.toLowerCase();
+  setSearchTerm(term); // Обновляем состояние для ввода
+  setFilteredUsers(
+    users.filter(user => user.UserName?.toLowerCase().includes(term)) // Фильтруем список
+  );
+};
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -161,28 +181,42 @@ const NewLecturePage: React.FC = () => {
             required
           />
         </div>
-        {user?.id === state?.OrganizerId || user?.role === 'Admin'?
-        <div className="input-container">
-            <label>Speaker:</label>
-            <select
-              className="input-field"
-              value={editedPresentation.Speaker?.Id.toString() || ''}
-              onChange={(e) => handleSpeakerChange(Number(e.target.value))}
+        {user?.id === state?.OrganizerId || user?.role === 'Admin' ? (
+  <div className="input-container">
+    <label>Speaker:</label>
+    <div className="relative">
+      {/* Input field for search and selection */}
+      <input
+        type="text"
+        placeholder="Type to search by login"
+        className="input-field"
+        value={searchTerm!} 
+        onChange={handleSearchChange}
+        onFocus={() => setShowSuggestions(true)} 
+        required
+      />
+      {/* Suggestions dropdown */}
+      {showSuggestions && filteredUsers.length > 0 && (
+        <ul className="absolute bg-white border rounded shadow max-h-40 overflow-y-auto z-10 w-full">
+          {filteredUsers.map(user => (
+            <li
+              key={user.Id}
+              className="cursor-pointer p-2 hover:bg-gray-200"
+              onClick={() => handleSelectUser(user)}
             >
-              <option value="">Select User</option>
-              {users.map((user) => (
-                <option key={user.Id} value={user.Id}>
-                  {user.UserName}
-                </option>
-              ))}
-            </select>
-          </div>
-          :
-          <div className="input-container">
-          <label className="font-bold text-gray-800">Speaker:</label>
-          <span className="text-gray-800">{user?.username || ''}</span>
-          </div>
-        }
+              {user.UserName}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </div>
+) : (
+  <div className="input-container">
+    <label className="font-bold text-gray-800">Speaker:</label>
+    <span className="text-gray-800">{user?.username || ''}</span>
+  </div>
+)}
         {/* Description Input */}
         <div className="input-container">
           <label>Description:</label>
