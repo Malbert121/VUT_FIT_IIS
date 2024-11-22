@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Conventus.DAL.Migrations
 {
     [DbContext(typeof(ConventusDbContext))]
-    [Migration("20241122161619_FixCascade")]
-    partial class FixCascade
+    [Migration("20241122175201_fixCascade")]
+    partial class fixCascade
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
