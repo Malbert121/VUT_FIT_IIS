@@ -131,7 +131,7 @@ const UserEditPage = () => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
+        <div className="flex flex-col items-center justify-center h-screen w-screen bg-gray-100 p-6">
             {toastMessage && (
                 <Toast message={toastMessage} onClose={closeToast} type={toastType} />
             )}
@@ -211,6 +211,7 @@ const UserEditPage = () => {
                 </form>
             </div>
         </div>
+
 
     );
 };

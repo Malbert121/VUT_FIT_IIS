@@ -4,6 +4,8 @@ import ReservationCard from '../../Components/ReservationCard/ReservationCard';
 import { pathAdmin, pathAvailableReservations } from '../../Routes/Routes';
 import { Presentation, Conference, User, Room, Reservation} from '../../data'; // Adjust based on your structure
 import { Link, useParams, useNavigate } from "react-router-dom";
+import Toast from '../../Components/Toast/Toast';
+import "../AdminPanelPage/AdminPanelPage.css";
 
 const AdminPanelPage: React.FC = () => {
     const { showShow } = useParams<{ showShow: string }>();
@@ -39,15 +41,28 @@ const AdminPanelPage: React.FC = () => {
 
     const reservationStatusList: string[] = ['Confirmed', 'Unconfirmed', 'Unpaid']
     const groupList: string[] = ['Single', 'Group']
+    const [toastMessage, setToastMessage] = useState<string | null>(null);
+    const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('info');
 
+    const closeToast = () => setToastMessage(null);
 
     const handleQuantityChange = (id: number, quantity: number) => {
         setTicketQuantity({ ...ticketQuantity, [id]: quantity });
     };
 
-    const handleDelete = (id: number, model: string) => {
-        deleteUser(id, model);
-        window.location.reload();
+    function delay(ms: number): Promise<void> {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    const handleDelete = async (id: number, model: string) => {
+        try { 
+            await deleteUser(id, model);
+            window.location.reload();
+        }
+        catch (error) {
+            setToastType('error');
+            setToastMessage('Error occured while deleting user (error 500).');
+        }
     }
 
     const handleEdit = (id: number) => {
@@ -57,6 +72,11 @@ const AdminPanelPage: React.FC = () => {
     const handleCreate = () => {
         navigate(`./create`);
     }
+
+    const handleNavigate = (model: string) => {
+        navigate(`../admin/${model}`);
+    }
+
 
     const handleSelectReservation = (reservationId: number, amount: number) => {
         setSelectedReservations((prevSelected) => {
@@ -205,6 +225,9 @@ const AdminPanelPage: React.FC = () => {
 
             return (
                 <div className="ConferencesPage">
+                    {toastMessage && (
+                        <Toast message={toastMessage} onClose={closeToast} type={toastType} />
+                    )}
                     <h1 className="title">Upcoming Conferences</h1>
                     <div className="filters">
                         {/* Search bar for title and description */}
@@ -303,6 +326,9 @@ const AdminPanelPage: React.FC = () => {
         if (showShow === "Reservations") {
             return (
                 <div className="container mx-auto p-6">
+                    {toastMessage && (
+                        <Toast message={toastMessage} onClose={closeToast} type={toastType} />
+                    )}
                     <h1 className="flex text-5xl justify-center font-bold mb-10">Available Reservations</h1>
 
                     <div className='filters'>
@@ -366,6 +392,9 @@ const AdminPanelPage: React.FC = () => {
         }
         if (showShow === "Presentations") {
             return (<div className="lecture-list">
+                {toastMessage && (
+                    <Toast message={toastMessage} onClose={closeToast} type={toastType} />
+                )}
                 {lectures.map((lecture) => (
                     <div key={lecture.Id} className="lecture-card">
                         <h2 className="lecture-title">{lecture.Title || 'Untitled'}</h2>
@@ -403,6 +432,9 @@ const AdminPanelPage: React.FC = () => {
                         </button>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                        {toastMessage && (
+                            <Toast message={toastMessage} onClose={closeToast} type={toastType} />
+                        )}
                         {users.map((user) => (
 
                             <div key={user.Id} className="lecture-card">
@@ -417,7 +449,7 @@ const AdminPanelPage: React.FC = () => {
                                     Delete
                                 </button>
                                 <button
-                                    className={`px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600`}
+                                    className={`px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600 mx-2`}
                                     onClick={() => handleEdit(user.Id)}
                                 >
                                     Edit
@@ -429,6 +461,9 @@ const AdminPanelPage: React.FC = () => {
         }
         if (showShow === "Rooms") {
             return (<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                {toastMessage && (
+                    <Toast message={toastMessage} onClose={closeToast} type={toastType} />
+                )}
                 {rooms.map((room) => (
                     <div key={room.Id} className="lecture-card">
                         <h2 className="lecture-title">{room.Name || 'Untitled'}</h2>
@@ -454,37 +489,34 @@ const AdminPanelPage: React.FC = () => {
 
         else {
             return (
-                <div>
-                    <h1>Admin Panel</h1>
-                    <p>Welcome to the Admin Panel. Here you can manage conferences, lectures, and users.</p>
-
-                    <section>
-                        <h2>Manage Conferences</h2>
-                        <button>Add New Conference</button>
-                        <br></br>
-                        <button>Edit Existing Conferences</button>
-                        <br></br>
-                        <button>Delete Conferences</button>
-                        <br></br>
-                    </section>
-
-                    <section>
-                        <h2>Manage Lectures</h2>
-                        <button>Add New Lecture</button>
-                        <br></br>
-                        <button>Edit Existing Lectures</button>
-                        <br></br>
-                        <button>Delete Lectures</button>
-                        <br></br>
-                    </section>
-
-                    <section>
-                        <h2>Manage Users</h2>
-                        <button>View Users</button>
-                        <button>Edit User Roles</button>
-                        <button>Delete Users</button>
-                    </section>
+                <div className="ConferencesPage">
+                    <h2 className="lecture-title">Admin Panel</h2>
+                    <p className="conference-description" >Welcome to the Admin Panel. Here you can manage conferences, lectures, and users.</p>
+                    <h1>Manage:</h1>
+                    <div>
+                        <button className="w-full px-8 py-4 rounded text-white bg-blue-500 hover:bg-blue-600 my-2"
+                            onClick={() => handleNavigate("Conferences")}
+                        >Conferences</button>
+                        <br />
+                        <button className="w-full px-8 py-4 rounded text-white bg-blue-500 hover:bg-blue-600 my-2"
+                            onClick={() => handleNavigate("Reservations")}
+                        >Reservations</button>
+                        <br />
+                        <button className="w-full px-8 py-4 rounded text-white bg-blue-500 hover:bg-blue-600 my-2"
+                            onClick={() => handleNavigate("Presentations")}
+                        >Lectures</button>
+                        <br />
+                        <button className="w-full px-8 py-4 rounded text-white bg-blue-500 hover:bg-blue-600 my-2"
+                            onClick={() => handleNavigate("Rooms")}
+                        >Rooms</button>
+                        <br />
+                        <button className="w-full px-8 py-4 rounded text-white bg-blue-500 hover:bg-blue-600 my-2"
+                            onClick={() => handleNavigate("Users")}
+                        >User</button>
+                        <br />
+                    </div>
                 </div>
+
             );
         };
     }
