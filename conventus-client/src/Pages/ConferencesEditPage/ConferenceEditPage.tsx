@@ -23,14 +23,14 @@ const ConferenceEditPage = () => {
     const fetchConference = async () => {
       try {
         const data = await getConference(Number(id));
-        if (data?.OrganizerId !== Number(user?.id)) {
+        if ((data?.OrganizerId !== Number(user?.id)) && (user?.role!=="Admin")) {
           setError('You are not authorized to edit this conference.');
           navigate('/'); // Redirect unauthorized users
           return;
         }
         setConference(data);
         setFormData(data);
-        setRooms(data.Rooms || []); // Initialize rooms with API response
+        setRooms(data?.Rooms || []); // Initialize rooms with API response
       } catch (error) {
         setError('Failed to fetch conference details.');
       } finally {
@@ -126,6 +126,29 @@ const ConferenceEditPage = () => {
       <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">Edit Conference</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {formData?.PhotoUrl && (
+            <div className="flex justify-center mt-4">
+              <img
+                src={formData.PhotoUrl}
+                alt="URL is not correct!"
+                className="max-h-64 rounded-lg shadow-lg"
+              />
+            </div>
+          )}
+
+          <div>
+
+            <label className="block text-gray-700 font-medium">Photo URL</label>
+            <input
+              type="url"
+              name="PhotoUrl"
+              value={formData?.PhotoUrl || ''}
+              onChange={handleInputChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="https://example.com/photo.jpg"
+            />
+          </div>
+
           <div>
             <label className="block text-gray-700 font-medium">Conference Name</label>
             <input

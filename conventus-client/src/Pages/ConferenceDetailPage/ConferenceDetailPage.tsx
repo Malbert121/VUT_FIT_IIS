@@ -132,6 +132,17 @@ const ConferenceDetailPage = () => {
       {toastMessage && (
         <Toast message={toastMessage} onClose={closeToast} type={toastType} />
       )}
+      {/* Отображение фото конференции */}
+  {conference.PhotoUrl && (
+    <div className="conference-photo-container">
+      <img
+        src={conference.PhotoUrl}
+        alt="Conference dont have proho )="
+        className="conference-photo"
+      />
+    </div>
+  )}
+
       <h1 className="conference-title">{conference.Name}</h1>
       <div className="description-container">
         <p className="conference-description">{conference.Description}</p>

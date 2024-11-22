@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { getMyConferences, postReservations } from '../../api';
+import { getMyConferences, getAllConferences, postReservations, deleteConference } from '../../api';
 import { Conference } from '../../data';
 import { Link } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
-import { Reservation } from '../../data';
 import Toast from '../../Components/Toast/Toast';
-import { deleteConference } from '../../api'; // Ensure you have this function in your API file
 
 function MyConferencesPage() {
   const user = useUser();
@@ -23,22 +21,32 @@ function MyConferencesPage() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showFilters, setShowFilters] = useState<boolean>(false);
 
-  const uniqueGenres = Array.from(new Set(conferences.map(conference => conference.Genre).filter(Boolean)));
-  const uniqueLocations = Array.from(new Set(conferences.map(conference => conference.Location).filter(Boolean)));
+  // Admin view toggle
+  const [viewMode, setViewMode] = useState<'my' | 'admin'>('my'); // "my" for user's conferences, "admin" for all conferences
+
+  const uniqueGenres = Array.from(new Set(conferences.map((conference) => conference.Genre).filter(Boolean)));
+  const uniqueLocations = Array.from(new Set(conferences.map((conference) => conference.Location).filter(Boolean)));
 
   const closeToast = () => setToastMessage(null);
 
   const fetchConferences = useCallback(async () => {
+    setLoading(true);
     try {
-      const data = await getMyConferences(Number(user?.id));
-      setConferences(data);
-      setFilteredConferences(data);
+      if (viewMode === 'admin' && user?.role==="Admin") {
+        const data = await getAllConferences();
+        setConferences(data);
+        setFilteredConferences(data);
+      } else {
+        const data = await getMyConferences(Number(user?.id));
+        setConferences(data);
+        setFilteredConferences(data);
+      }
     } catch (error) {
       setError('Failed to fetch conferences.');
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [user, viewMode]);
 
   useEffect(() => {
     fetchConferences();
@@ -49,10 +57,10 @@ function MyConferencesPage() {
     let filtered = [...conferences];
 
     // Apply filters
-    if (genreFilter) filtered = filtered.filter(conference => conference.Genre === genreFilter);
-    if (locationFilter) filtered = filtered.filter(conference => conference.Location === locationFilter);
+    if (genreFilter) filtered = filtered.filter((conference) => conference.Genre === genreFilter);
+    if (locationFilter) filtered = filtered.filter((conference) => conference.Location === locationFilter);
     if (searchTerm) {
-      filtered = filtered.filter(conference =>
+      filtered = filtered.filter((conference) =>
         conference.Name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
@@ -71,10 +79,10 @@ function MyConferencesPage() {
   const handleDelete = async (conferenceId: number) => {
     if (window.confirm('Are you sure you want to delete this conference?')) {
       try {
-        await deleteConference(conferenceId); // Call the API to delete the conference
+        await deleteConference(conferenceId);
         setToastType('success');
         setToastMessage('Conference deleted successfully.');
-        await fetchConferences(); // Refresh the list after deletion
+        await fetchConferences();
       } catch (error) {
         setToastType('error');
         setToastMessage('Failed to delete conference.');
@@ -91,13 +99,25 @@ function MyConferencesPage() {
       {toastMessage && <Toast message={toastMessage} onClose={closeToast} type={toastType} />}
 
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">My Conferences</h1>
-        <Link
-          to="/myconferences/create"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-        >
-          Create New Conference
-        </Link>
+        <h1 className="text-2xl font-bold">
+          {viewMode === 'my' ? 'My Conferences' : 'All Conferences (Admin)'}
+        </h1>
+        <div className="flex items-center space-x-4">
+          {user?.role==="Admin" && (
+            <button
+              onClick={() => setViewMode((prev) => (prev === 'my' ? 'admin' : 'my'))}
+              className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 transition"
+            >
+              {viewMode === 'my' ? 'Switch to Admin View' : 'Switch to My Conferences'}
+            </button>
+          )}
+          <Link
+            to="/myconferences/create"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          >
+            Create New Conference
+          </Link>
+        </div>
       </div>
 
       {/* Filters */}
