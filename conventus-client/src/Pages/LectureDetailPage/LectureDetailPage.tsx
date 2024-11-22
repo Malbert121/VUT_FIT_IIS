@@ -75,6 +75,16 @@ const LectureDetailPage: React.FC = () => {
       {toastMessage && (
         <Toast message={toastMessage} onClose={closeToast} type={toastType} />
       )}
+      {/* Отображение фото конференции */}
+  {presentation.PhotoUrl && (
+    <div className="conference-photo-container">
+      <img
+        src={presentation.PhotoUrl}
+        alt="Conference dont have proho )="
+        className="conference-photo"
+      />
+    </div>
+  )}
       <h1 className="presentation-title">{presentation.Title}</h1>
         <Link to={`/conferences/${presentation.ConferenceId}`}>
           <h2 className="text-center text-2xl underline underline-offset-2 text-blue-500 mb-10">{presentation.Conference?.Name}</h2>
