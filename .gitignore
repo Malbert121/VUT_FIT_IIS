@@ -3,3 +3,5 @@
 bin
 obj
 key_db.txt
+Conventus.API/appsettings.json
+Conventus.DAL/EfStructures/ConventusDbContextFactory.cs
