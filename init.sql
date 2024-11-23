@@ -219,6 +219,17 @@ GO
 COMMIT;
 GO
 
+BEGIN TRANSACTION;
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20241122175201_fixCascade', N'8.0.8');
+GO
+
+COMMIT;
+GO
+
+
 -- TEST DATA --
 
 BEGIN TRANSACTION
