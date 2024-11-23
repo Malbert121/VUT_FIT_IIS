@@ -36,5 +36,5 @@ steps:
   inputs:
     azureSubscription: $(azureSubscription)
     appName: $(appName)
-    package: '$(System.DefaultWorkingDirectory)/$(outputFolder)'
+    package: '$(System.DefaultWorkingDirectory)/$(appDirectory)/build'
     appType: webApp
