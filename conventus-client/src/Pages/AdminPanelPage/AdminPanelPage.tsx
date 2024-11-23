@@ -17,6 +17,7 @@ const AdminPanelPage: React.FC = () => {
     const [filteredConferences, setFilteredConferences] = useState<Conference[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
     const navigate = useNavigate();
 
 
@@ -68,19 +69,18 @@ const AdminPanelPage: React.FC = () => {
 
     useEffect(() => {
         try {
-            if (showShow === "Users") {
-                const fetchUsers = async () => {
-                    const data = await getAllUsers();
-                    setUsers(data);
-                };
-                fetchUsers();
+            if (!user || user.role !== "Admin") {
+                return;
             }
-            if (showShow === "Rooms") {
-                const fetchRooms = async () => {
-                    const data = await getAllRooms();
-                    setRooms(data);
-                };
-                fetchRooms();
+            else {
+                if (showShow === "Users") {
+                    const fetchUsers = async () => {
+                        const data = await getAllUsers();
+                        setUsers(data);
+                    };
+                    setIsAuthorized(true);
+                    fetchUsers();
+                }
             }
         }
         catch (error) {
@@ -90,7 +90,7 @@ const AdminPanelPage: React.FC = () => {
         finally {
             setLoading(false);
         }
-    }, [showShow]);
+    }, [showShow, user]);
 
 
     if (loading) {
@@ -99,6 +99,10 @@ const AdminPanelPage: React.FC = () => {
 
     if (error) {
         return <div className="error">Error: {error}</div>;
+    }
+
+    if (!isAuthorized) {
+        return <div className="error">User should be authorized for interaction with presentation.</div>;
     }
 
     else {
