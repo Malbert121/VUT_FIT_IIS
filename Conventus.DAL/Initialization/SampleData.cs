@@ -73,12 +73,12 @@ namespace Conventus.DAL.Initialization
             new Conference
             {
                 Id = 1,
-                Name = "Tech Innovations 2024",
+                Name = "Tech Innovations 2025",
                 Description = "A conference focusing on the latest trends and innovations in technology.",
                 Genre = "Technology",
                 Location = "Silicon Valley, CA",
-                StartDate = new DateTime(2024, 5, 20),
-                EndDate = new DateTime(2024, 5, 22),
+                StartDate = new DateTime(2025, 5, 20),
+                EndDate = new DateTime(2025, 5, 22),
                 Price = 100.00m,
                 Capacity = 200,
                 Occupancy = 12,
@@ -95,8 +95,8 @@ namespace Conventus.DAL.Initialization
                 Description = "A summit dedicated to health and wellness professionals.",
                 Genre = "Health",
                 Location = "New York City, NY",
-                StartDate = new DateTime(2024, 6, 15),
-                EndDate = new DateTime(2024, 6, 17),
+                StartDate = new DateTime(2025, 6, 15),
+                EndDate = new DateTime(2025, 6, 17),
                 Price = 50.00m,
                 Capacity = 150,
                 Occupancy = 12,
@@ -152,8 +152,8 @@ namespace Conventus.DAL.Initialization
                 Description = "Exploring the Cosmos: New Discoveries in Astronomy.",
                 Tags = "Сosmos, Astronomy, Future",
                 PhotoUrl = "https://example.com/photo1.jpg",
-                StartTime = new DateTime(2024, 5, 20, 10, 0, 0),
-                EndTime = new DateTime(2024, 5, 20, 12, 0, 0),
+                StartTime = new DateTime(2025, 5, 20, 10, 0, 0),
+                EndTime = new DateTime(2025, 5, 20, 12, 0, 0),
                 RoomId = 1, // Assuming RoomId matches a Room entity
                 SpeakerId = 1, // Linking to the third user as the speaker
                 ConferenceId = 1, // Linking to the first conference
@@ -165,8 +165,8 @@ namespace Conventus.DAL.Initialization
                 Description = "The Ethics of Genetic Engineering: Opportunities and Challenges.",
                 Tags = "Science,Biology, Genetic, Future",
                 PhotoUrl = "https://example.com/photo1.jpg",
-                StartTime = new DateTime(2024, 5, 20, 10, 0, 0),
-                EndTime = new DateTime(2024, 5, 20, 12, 0, 0),
+                StartTime = new DateTime(2025, 5, 20, 10, 0, 0),
+                EndTime = new DateTime(2025, 5, 20, 12, 0, 0),
                 RoomId = 2, // Assuming RoomId matches a Room entity
                 SpeakerId = 2, // Linking to the third user as the speaker
                 ConferenceId = 1, // Linking to the first conference
@@ -178,8 +178,8 @@ namespace Conventus.DAL.Initialization
                 Description = "Climate Change and the Role of Science in Mitigating Its Effects.",
                 Tags = "Сlimat, Warm, Water, Science, Future",
                 PhotoUrl = "https://example.com/photo1.jpg",
-                StartTime = new DateTime(2024, 5, 21, 10, 0, 0),
-                EndTime = new DateTime(2024, 5, 21, 12, 0, 0),
+                StartTime = new DateTime(2025, 5, 21, 10, 0, 0),
+                EndTime = new DateTime(2025, 5, 21, 12, 0, 0),
                 RoomId = 1, // Assuming RoomId matches a Room entity
                 SpeakerId = 1, // Linking to the third user as the speaker
                 ConferenceId = 1, // Linking to the first conference
@@ -191,8 +191,8 @@ namespace Conventus.DAL.Initialization
                 Description = "Artificial Intelligence: Transforming Science and Society.",
                 Tags = "IT, AI, Science, Society",
                 PhotoUrl = "https://example.com/photo1.jpg",
-                StartTime = new DateTime(2024, 5, 21, 10, 0, 0),
-                EndTime = new DateTime(2024, 5, 21, 12, 0, 0),
+                StartTime = new DateTime(2025, 5, 21, 10, 0, 0),
+                EndTime = new DateTime(2025, 5, 21, 12, 0, 0),
                 RoomId = 2, // Assuming RoomId matches a Room entity
                 SpeakerId = 2, // Linking to the third user as the speaker
                 ConferenceId = 1, // Linking to the first conference
@@ -204,8 +204,8 @@ namespace Conventus.DAL.Initialization
                 Description = "Quantum Computing: Unlocking the Next Frontier.",
                 Tags = "IT, Quantum",
                 PhotoUrl = "https://example.com/photo1.jpg",
-                StartTime = new DateTime(2024, 5, 21, 17, 0, 0),
-                EndTime = new DateTime(2024, 5, 21, 19, 0, 0),
+                StartTime = new DateTime(2025, 5, 21, 17, 0, 0),
+                EndTime = new DateTime(2025, 5, 21, 19, 0, 0),
                 RoomId = 1, // Assuming RoomId matches a Room entity
                 SpeakerId = 1, // Linking to the third user as the speaker
                 ConferenceId = 1, // Linking to the first conference
@@ -219,8 +219,8 @@ namespace Conventus.DAL.Initialization
                 Description = "The Science of Nutrition: Eating for a Better Tomorrow",
                 Tags = "Science, Nutrition, Health, Food",
                 PhotoUrl = "https://example.com/photo1.jpg",
-                StartTime = new DateTime(2024, 6, 15, 10, 0, 0),
-                EndTime = new DateTime(2024, 6, 15, 12, 0, 0),
+                StartTime = new DateTime(2025, 6, 15, 10, 0, 0),
+                EndTime = new DateTime(2025, 6, 15, 12, 0, 0),
                 RoomId = 3, // Assuming RoomId matches a Room entity
                 SpeakerId = 3, // Linking to the third user as the speaker
                 ConferenceId = 2, // Linking to the first conference
@@ -232,8 +232,8 @@ namespace Conventus.DAL.Initialization
                 Description = "Mental Health Matters: Reducing the Stigma and Improving Care.",
                 Tags = "Mental, Health",
                 PhotoUrl = "https://example.com/photo1.jpg",
-                StartTime = new DateTime(2024, 6, 15, 10, 0, 0),
-                EndTime = new DateTime(2024, 6, 15, 12, 0, 0),
+                StartTime = new DateTime(2025, 6, 15, 10, 0, 0),
+                EndTime = new DateTime(2025, 6, 15, 12, 0, 0),
                 RoomId = 4, // Assuming RoomId matches a Room entity
                 SpeakerId = 4, // Linking to the third user as the speaker
                 ConferenceId = 2, // Linking to the first conference
@@ -245,8 +245,8 @@ namespace Conventus.DAL.Initialization
                 Description = "Preventive Healthcare: A Pathway to Longevity.",
                 Tags = "Health",
                 PhotoUrl = "https://example.com/photo1.jpg",
-                StartTime = new DateTime(2024, 6, 16, 10, 0, 0),
-                EndTime = new DateTime(2024, 6, 16, 12, 0, 0),
+                StartTime = new DateTime(2025, 6, 16, 10, 0, 0),
+                EndTime = new DateTime(2025, 6, 16, 12, 0, 0),
                 RoomId = 3, // Assuming RoomId matches a Room entity
                 SpeakerId = 3, // Linking to the third user as the speaker
                 ConferenceId = 2, // Linking to the first conference
@@ -258,8 +258,8 @@ namespace Conventus.DAL.Initialization
                 Description = "Fitness in the 21st Century: Balancing Technology and Physical Activity.",
                 Tags = "Technology, Health, Activity, Fitness",
                 PhotoUrl = "https://example.com/photo1.jpg",
-                StartTime = new DateTime(2024, 6, 16, 10, 0, 0),
-                EndTime = new DateTime(2024, 6, 16, 12, 0, 0),
+                StartTime = new DateTime(2025, 6, 16, 10, 0, 0),
+                EndTime = new DateTime(2025, 6, 16, 12, 0, 0),
                 RoomId = 4, // Assuming RoomId matches a Room entity
                 SpeakerId = 4, // Linking to the third user as the speaker
                 ConferenceId = 2, // Linking to the first conference
@@ -271,8 +271,8 @@ namespace Conventus.DAL.Initialization
                 Description = "The Future of Medicine: Personalized Healthcare Solutions.",
                 Tags = "Health, Medicine",
                 PhotoUrl = "https://example.com/photo1.jpg",
-                StartTime = new DateTime(2024, 6, 16, 17, 0, 0),
-                EndTime = new DateTime(2024, 6, 16, 19, 0, 0),
+                StartTime = new DateTime(2025, 6, 16, 17, 0, 0),
+                EndTime = new DateTime(2025, 6, 16, 19, 0, 0),
                 RoomId = 4, // Assuming RoomId matches a Room entity
                 SpeakerId = 3, // Linking to the third user as the speaker
                 ConferenceId = 2, // Linking to the first conference
