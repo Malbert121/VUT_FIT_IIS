@@ -226,11 +226,11 @@ BEGIN TRANSACTION
 SET IDENTITY_INSERT Users ON;
 INSERT INTO Users (Id, UserName, Email, PasswordHash, Role)
 VALUES 
-(1, 'xmalas04', 'xmalas04@vutb.cz', '9ad74297c7f6074050b9908f3b4dd3b09567c0c1c0c30757c10763d4e43d6307', 0),
-(2, 'science2', 'science1@example.com', 'd4d3e3928cb39759dfddb4b58a90ce66cedf59c37bb0297dda402086cd7237a9', 1),
-(3, 'education1', 'education1@example.com', '7d8a2dec7890fb50922ea58fa3016c509bd0871eec0c91966160331b00e492f9', 1),
-(4, 'education2', 'education2@example.com', 'ef1b0e7c07a928d8ee04ffc5776969a8c4396f8e301183a6b56b89c69eb71a2e', 1),
-(5, 'myron', 'myron@gmail.com', '8fd5d855fa4ee7f93454b733a01244c8e564bb324b334f874860af9cee530cd7', 1);
+(1, 'xmalas04', 'xmalas04@vutb.cz', 'eG1hbGFzMDRAcGFzc3dvcmQ=', 0),
+(2, 'science2', 'science1@example.com', 'c2NpZW5jZTFAcGFzc3dvcmQ=', 1),
+(3, 'education1', 'education1@example.com', 'ZWR1Y2F0aW9uMUBleGFtcGxlLmNvbQ==', 1),
+(4, 'education2', 'education2@example.com', 'ZWR1Y2F0aW9uMkBleGFtcGxlLmNvbQ==', 1),
+(5, 'myron', 'myron@gmail.com', 'bXlyb25AZ21haWwuY29t', 1);
 SET IDENTITY_INSERT Users OFF;
 
 
