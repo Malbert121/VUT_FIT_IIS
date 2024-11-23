@@ -5,6 +5,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
+  appDirectory: 'conventus-client'  # Replace with the folder where your React app is located
   azureSubscription: 'AzureServiceConnection'
   appName: 'conventus'
   resourceGroup: 'iis-conventus'
@@ -17,13 +18,15 @@ steps:
   inputs:
     versionSpec: '20.x'  # Replace with the version used in your project
 
-# Step 2: Install dependencies
+# Step 2: Navigate to the app directory and install dependencies
 - script: |
+    cd $(appDirectory)
     npm install
   displayName: 'Install dependencies'
 
 # Step 3: Build the React app
 - script: |
+    cd $(appDirectory)
     npm run build
   displayName: 'Build React app'
 
