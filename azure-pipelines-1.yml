@@ -1,0 +1,37 @@
+trigger:
+- main  # Replace with your branch name
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  azureSubscription: 'AzureServiceConnection'
+  appName: 'conventus'
+  resourceGroup: 'iis-conventus'
+  outputFolder: 'build'  # Default React build folder
+
+steps:
+# Step 1: Install Node.js
+- task: NodeTool@0
+  displayName: 'Use Node.js'
+  inputs:
+    versionSpec: '20.x'  # Replace with the version used in your project
+
+# Step 2: Install dependencies
+- script: |
+    npm install
+  displayName: 'Install dependencies'
+
+# Step 3: Build the React app
+- script: |
+    npm run build
+  displayName: 'Build React app'
+
+# Step 4: Deploy to Azure Web App
+- task: AzureWebApp@1
+  displayName: 'Deploy to Azure Web App'
+  inputs:
+    azureSubscription: $(azureSubscription)
+    appName: $(appName)
+    package: '$(System.DefaultWorkingDirectory)/$(outputFolder)'
+    appType: webApp
