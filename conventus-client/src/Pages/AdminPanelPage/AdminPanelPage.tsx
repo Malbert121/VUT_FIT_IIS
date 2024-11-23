@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { getAllUsers, getAllRooms, deleteUser } from '../../api';
-import ReservationCard from '../../Components/ReservationCard/ReservationCard';
-import { pathAdmin} from '../../Routes/Routes';
 import { Presentation, Conference, User, Room, Reservation } from '../../data'; // Adjust based on your structure
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Toast from '../../Components/Toast/Toast';
 import "../AdminPanelPage/AdminPanelPage.css";
+import { useUser } from '../../context/UserContext';
 
 const AdminPanelPage: React.FC = () => {
     const { showShow } = useParams<{ showShow: string }>();
+    const user = useUser(); // Get the user data
     const [conferences, setConferences] = useState<Conference[]>([]);
     const [lectures, setLectures] = useState<Presentation[]>([]);
     const [users, setUsers] = useState<User[] | undefined>([]);
@@ -35,13 +35,22 @@ const AdminPanelPage: React.FC = () => {
 
 
     const handleDelete = async (id: number, model: string) => {
-        try {
-            await deleteUser(id, model);
-            window.location.reload();
+        if (user) {
+            if (user.id === id.toString()) {
+                setToastType('error');
+                setToastMessage('You can\'t delete yourself!!!');
+                return;
+            }
         }
-        catch (error) {
-            setToastType('error');
-            setToastMessage('Error occured while deleting user (error 500).');
+        else {
+            try {
+                await deleteUser(id, model);
+                window.location.reload();
+            }
+            catch (error) {
+                setToastType('error');
+                setToastMessage('Error occured while deleting user (error 500).');
+            }
         }
     }
 
