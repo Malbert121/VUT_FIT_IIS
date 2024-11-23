@@ -13,7 +13,7 @@ namespace Conventus.DAL.Initialization
                 Id = 1,
                 UserName = "xmalas04",
                 Email = "xmalas04@vutb.cz",
-                PasswordHash = "xmalas04@password".GetHashCode().ToString(), // Use proper password hashing in production
+                PasswordHash = Hasher.ComputeSHA256("xmalas04@password"), // Use proper password hashing in production
                 Role = Role.Admin,
                 OrganizedConferences = new List<Conference>(),
                 Presentations = new List<Presentation>(),
@@ -24,7 +24,7 @@ namespace Conventus.DAL.Initialization
                 Id = 2,
                 UserName = "science2",
                 Email = "science1@example.com",
-                PasswordHash = "science1@password".GetHashCode().ToString(), // Use proper password hashing in production
+                PasswordHash = Hasher.ComputeSHA256("science1@password"), // Use proper password hashing in production
                 Role = Role.User,
                 OrganizedConferences = new List<Conference>(),
                 Presentations = new List<Presentation>(),
@@ -35,7 +35,7 @@ namespace Conventus.DAL.Initialization
                 Id = 3,
                 UserName = "education1",
                 Email = "education1@example.com",
-                PasswordHash = "education1@password".GetHashCode().ToString(), // Use proper password hashing in production
+                PasswordHash = Hasher.ComputeSHA256("education1@password"), // Use proper password hashing in production
                 Role = Role.User,
                 OrganizedConferences = new List<Conference>(),
                 Presentations = new List<Presentation>(),
@@ -46,7 +46,7 @@ namespace Conventus.DAL.Initialization
                 Id = 4,
                 UserName = "education2",
                 Email = "education2@example.com",
-                PasswordHash = "education2@password".GetHashCode().ToString(), // Use proper password hashing in production
+                PasswordHash = Hasher.ComputeSHA256("education2@password"), // Use proper password hashing in production
                 Role = Role.User,
                 OrganizedConferences = new List<Conference>(),
                 Presentations = new List<Presentation>(),
@@ -57,7 +57,7 @@ namespace Conventus.DAL.Initialization
                 Id = 5,
                 UserName = "myron",
                 Email = "myron@gmail.com",
-                PasswordHash = "myron@password".GetHashCode().ToString(), // Use proper password hashing in production
+                PasswordHash = Hasher.ComputeSHA256("myron@password"), // Use proper password hashing in production
                 Role = Role.User,
                 OrganizedConferences = new List<Conference>(),
                 Presentations = new List<Presentation>(),

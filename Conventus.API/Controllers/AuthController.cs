@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Identity.Data;
 using Conventus.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using Conventus.API.Controllers.AuthModel;
+using Conventus.DAL;
+using System.Security.Cryptography;
 using Azure.Core;
 
 namespace Conventus.API.Controllers;
@@ -30,7 +32,7 @@ public class AuthController : ControllerBase
         if (_context.Users.Any(u => u.Email == request.Email))
             return BadRequest(new { message = "Username is already taken" });
 
-        var user = new User { Email = request.Email, UserName = request.Username, PasswordHash = request.Password.GetHashCode().ToString(),Role = Models.Enums.Role.User };
+        var user = new User { Email = request.Email, UserName = request.Username, PasswordHash = Hasher.ComputeSHA256(request.Password), Role = Models.Enums.Role.User };
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
@@ -41,7 +43,7 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginModel request)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == request.Username && u.PasswordHash == request.Password.GetHashCode().ToString());
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == request.Username && u.PasswordHash == Hasher.ComputeSHA256(request.Password));
         if (user == null)
             return Unauthorized(new { message = "Invalid username or password" });
 
