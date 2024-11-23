@@ -7,6 +7,30 @@ GO
 USE [Conventus];
 GO
 
+IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Users')
+BEGIN
+    DROP TABLE Users;
+END
+
+IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Rooms')
+BEGIN
+    DROP TABLE Rooms;
+END
+
+IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Conferences')
+BEGIN
+    DROP TABLE Conferences;
+END
+
+IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Presentations')
+BEGIN
+    DROP TABLE Presentations;
+END
+
+IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Reservations')
+BEGIN
+    DROP TABLE Reservations;
+END
 
 IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
 BEGIN
@@ -198,6 +222,8 @@ GO
 -- TEST DATA --
 
 BEGIN TRANSACTION
+
+SET IDENTITY_INSERT Users ON;
 INSERT INTO Users (Id, UserName, Email, PasswordHash, Role)
 VALUES 
 (1, 'xmalas04', 'xmalas04@vutb.cz', '9ad74297c7f6074050b9908f3b4dd3b09567c0c1c0c30757c10763d4e43d6307', 0),
@@ -205,19 +231,26 @@ VALUES
 (3, 'education1', 'education1@example.com', '7d8a2dec7890fb50922ea58fa3016c509bd0871eec0c91966160331b00e492f9', 1),
 (4, 'education2', 'education2@example.com', 'ef1b0e7c07a928d8ee04ffc5776969a8c4396f8e301183a6b56b89c69eb71a2e', 1),
 (5, 'myron', 'myron@gmail.com', '8fd5d855fa4ee7f93454b733a01244c8e564bb324b334f874860af9cee530cd7', 1);
+SET IDENTITY_INSERT Users OFF;
 
+
+SET IDENTITY_INSERT Conferences ON;
 INSERT INTO Conferences (Id, Name, Description, Genre, Location, StartDate, EndDate, Price, Capacity, Occupancy, PhotoUrl, OrganizerId)
 VALUES 
 (1, 'Tech Innovations 2024', 'A conference focusing on the latest trends and innovations in technology.', 'Technology', 'Silicon Valley, CA', '2024-05-20', '2024-05-22', 100.00, 200, 12, 'path/to/location', 1),
 (2, 'Health & Wellness Summit', 'A summit dedicated to health and wellness professionals.', 'Health', 'New York City, NY', '2024-06-15', '2024-06-17', 50.00, 150, 12, 'path/to/location', 3);
+SET IDENTITY_INSERT Conferences OFF;
 
+SET IDENTITY_INSERT Rooms ON;
 INSERT INTO Rooms (Id, Name, ConferenceId)
 VALUES 
 (1, 'Room A', 1),
 (2, 'Room B', 1),
 (3, 'Room C', 2),
 (4, 'Room D', 2);
+SET IDENTITY_INSERT Rooms OFF;
 
+SET IDENTITY_INSERT Presentations ON;
 INSERT INTO Presentations (Id, Title, Description, Tags, PhotoUrl, StartTime, EndTime, RoomId, SpeakerId, ConferenceId)
 VALUES 
 (1, 'Exploring the Cosmos: New Discoveries in Astronomy', 'Exploring the Cosmos: New Discoveries in Astronomy.', 'Cosmos, Astronomy, Future', 'https://example.com/photo1.jpg', '2024-05-20 10:00:00', '2024-05-20 12:00:00', 1, 1, 1),
@@ -230,7 +263,9 @@ VALUES
 (8, 'Preventive Healthcare: A Pathway to Longevity', 'Preventive Healthcare: A Pathway to Longevity.', 'Health', 'https://example.com/photo1.jpg', '2024-06-16 10:00:00', '2024-06-16 12:00:00', 3, 3, 2),
 (9, 'Fitness in the 21st Century: Balancing Technology and Physical Activity', 'Fitness in the 21st Century: Balancing Technology and Physical Activity.', 'Technology, Health, Activity, Fitness', 'https://example.com/photo1.jpg', '2024-06-16 10:00:00', '2024-06-16 12:00:00', 4, 4, 2),
 (10, 'The Future of Medicine: Personalized Healthcare Solutions', 'The Future of Medicine: Personalized Healthcare Solutions.', 'Health, Medicine', 'https://example.com/photo1.jpg', '2024-06-16 17:00:00', '2024-06-16 19:00:00', 4, 3, 2);
+SET IDENTITY_INSERT Presentations OFF;
 
+SET IDENTITY_INSERT Reservations ON;
 INSERT INTO Reservations (Id, UserId, ConferenceId, IsConfirmed, IsPaid, NumberOfTickets, Ammount, ReservationDate)
 VALUES
 (1, 1, 2, 0, 0, 1, 50.0, GETDATE()),
@@ -251,5 +286,6 @@ VALUES
 (16, 5, 2, 0, 0, 1, 50.0, GETDATE()),
 (17, 5, 2, 0, 1, 1, 50.0, GETDATE()),
 (18, 5, 2, 1, 1, 2, 100.0, GETDATE());
+SET IDENTITY_INSERT Reservations OFF;
 
 COMMIT;

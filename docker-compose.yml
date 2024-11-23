@@ -40,9 +40,6 @@ services:
       - conventus-net
     volumes:
       - sql_data:/var/opt/sqlserver
-      - type: bind
-        source: ./init.sql
-        target: /docker-entrypoint-initdb.d/init.sql
     command: /opt/mssql/bin/sqlservr
 
   sqlserver-init:
@@ -53,9 +50,11 @@ services:
     container_name: sqlserver-init
     depends_on:
       - sqlserver
-    command: /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P 'xkukht01@password' -i /docker-entrypoint-initdb.d/init.sql
+    command: /bin/bash -c "sleep 120 && /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P 'xkukht01@password' -i /docker-entrypoint-initdb.d/init.sql"
     networks:
       - conventus-net
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
   sql_data:
