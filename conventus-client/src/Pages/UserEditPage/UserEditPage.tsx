@@ -4,6 +4,7 @@ import Toast from '../../Components/Toast/Toast';
 import { getAnotherUser, postUser, putUser, registerUser } from '../../api'; // Import your API methods
 import { Role, User } from '../../data'; // Import the data structure
 import './UserEditPage.css'; // Add custom styles if needed
+import { useUser } from '../../context/UserContext';
 
 const UserEditPage = () => {
     const emptyUser: User = {
@@ -15,12 +16,14 @@ const UserEditPage = () => {
     };
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const userActual = useUser(); // Get the user data
     const [user, setUser] = useState<User | null>(emptyUser);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [toastMessage, setToastMessage] = useState<string | null>(null);
     const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('info');
+    const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
 
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
@@ -30,7 +33,7 @@ const UserEditPage = () => {
 
 
     useEffect(() => {
-        const fetchConference = async () => {
+        const fetchUser = async () => {
             try {
                 const data = await getAnotherUser(Number(id));
                 setUser(data);
@@ -40,13 +43,14 @@ const UserEditPage = () => {
                 setLoading(false);
             }
         };
-        if (id) {
-            fetchConference();
+        if (id && userActual && userActual.role === "Admin") {
+            setIsAuthorized(true);
+            fetchUser();
         }
         else {
             setLoading(false);
         }
-    }, [id]);
+    }, [id, userActual]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -127,6 +131,10 @@ const UserEditPage = () => {
 
         return <div className="error">User not found.</div>;
 
+    }
+
+    if (!isAuthorized) {
+        return <div className="error">User should be authorized for interaction with presentation.</div>;
     }
 
     return (

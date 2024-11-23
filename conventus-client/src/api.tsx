@@ -92,7 +92,7 @@ export const deleteUser = async (id: number, model: string) => {
 
 export const getAnotherUser = async (userId: number): Promise<User> => {
     try {
-        const response = await axios.get<User>(`${API_CONFIG.API_REMOTE}/Users/detail/${userId}`);
+        const response = await axios.get<User>(`${API_CONFIG.API_REMOTE}/Users/detail/admin/${userId}`);
         return response.data;
     } catch (error) {
         handleAxiosError(error);
