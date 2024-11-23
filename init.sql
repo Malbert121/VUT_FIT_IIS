@@ -248,8 +248,8 @@ SET IDENTITY_INSERT Users OFF;
 SET IDENTITY_INSERT Conferences ON;
 INSERT INTO Conferences (Id, Name, Description, Genre, Location, StartDate, EndDate, Price, Capacity, Occupancy, PhotoUrl, OrganizerId)
 VALUES 
-(1, 'Tech Innovations 2024', 'A conference focusing on the latest trends and innovations in technology.', 'Technology', 'Silicon Valley, CA', '2024-05-20', '2024-05-22', 100.00, 200, 12, 'path/to/location', 1),
-(2, 'Health & Wellness Summit', 'A summit dedicated to health and wellness professionals.', 'Health', 'New York City, NY', '2024-06-15', '2024-06-17', 50.00, 150, 12, 'path/to/location', 3);
+(1, 'Tech Innovations 2025', 'A conference focusing on the latest trends and innovations in technology.', 'Technology', 'Silicon Valley, CA', '2025-05-20', '2025-05-22', 100.00, 200, 12, 'path/to/location', 1),
+(2, 'Health & Wellness Summit', 'A summit dedicated to health and wellness professionals.', 'Health', 'New York City, NY', '2025-06-15', '2025-06-17', 50.00, 150, 12, 'path/to/location', 3);
 SET IDENTITY_INSERT Conferences OFF;
 
 SET IDENTITY_INSERT Rooms ON;
@@ -264,16 +264,16 @@ SET IDENTITY_INSERT Rooms OFF;
 SET IDENTITY_INSERT Presentations ON;
 INSERT INTO Presentations (Id, Title, Description, Tags, PhotoUrl, StartTime, EndTime, RoomId, SpeakerId, ConferenceId)
 VALUES 
-(1, 'Exploring the Cosmos: New Discoveries in Astronomy', 'Exploring the Cosmos: New Discoveries in Astronomy.', 'Cosmos, Astronomy, Future', 'https://example.com/photo1.jpg', '2024-05-20 10:00:00', '2024-05-20 12:00:00', 1, 1, 1),
-(2, 'The Ethics of Genetic Engineering: Opportunities and Challenges', 'The Ethics of Genetic Engineering: Opportunities and Challenges.', 'Science, Biology, Genetic, Future', 'https://example.com/photo1.jpg', '2024-05-20 10:00:00', '2024-05-20 12:00:00', 2, 2, 1),
-(3, 'Climate Change and the Role of Science in Mitigating Its Effects', 'Climate Change and the Role of Science in Mitigating Its Effects.', 'Climate, Warm, Water, Science, Future', 'https://example.com/photo1.jpg', '2024-05-21 10:00:00', '2024-05-21 12:00:00', 1, 1, 1),
-(4, 'Artificial Intelligence: Transforming Science and Society', 'Artificial Intelligence: Transforming Science and Society.', 'IT, AI, Science, Society', 'https://example.com/photo1.jpg', '2024-05-21 10:00:00', '2024-05-21 12:00:00', 2, 2, 1),
-(5, 'Quantum Computing: Unlocking the Next Frontier', 'Quantum Computing: Unlocking the Next Frontier.', 'IT, Quantum', 'https://example.com/photo1.jpg', '2024-05-21 17:00:00', '2024-05-21 19:00:00', 1, 1, 1),
-(6, 'The Science of Nutrition: Eating for a Better Tomorrow', 'The Science of Nutrition: Eating for a Better Tomorrow', 'Science, Nutrition, Health, Food', 'https://example.com/photo1.jpg', '2024-06-15 10:00:00', '2024-06-15 12:00:00', 3, 3, 2),
-(7, 'Mental Health Matters: Reducing the Stigma and Improving Care', 'Mental Health Matters: Reducing the Stigma and Improving Care.', 'Mental, Health', 'https://example.com/photo1.jpg', '2024-06-15 10:00:00', '2024-06-15 12:00:00', 4, 4, 2),
-(8, 'Preventive Healthcare: A Pathway to Longevity', 'Preventive Healthcare: A Pathway to Longevity.', 'Health', 'https://example.com/photo1.jpg', '2024-06-16 10:00:00', '2024-06-16 12:00:00', 3, 3, 2),
-(9, 'Fitness in the 21st Century: Balancing Technology and Physical Activity', 'Fitness in the 21st Century: Balancing Technology and Physical Activity.', 'Technology, Health, Activity, Fitness', 'https://example.com/photo1.jpg', '2024-06-16 10:00:00', '2024-06-16 12:00:00', 4, 4, 2),
-(10, 'The Future of Medicine: Personalized Healthcare Solutions', 'The Future of Medicine: Personalized Healthcare Solutions.', 'Health, Medicine', 'https://example.com/photo1.jpg', '2024-06-16 17:00:00', '2024-06-16 19:00:00', 4, 3, 2);
+(1, 'Exploring the Cosmos: New Discoveries in Astronomy', 'Exploring the Cosmos: New Discoveries in Astronomy.', 'Cosmos, Astronomy, Future', 'https://example.com/photo1.jpg', '2025-05-20 10:00:00', '2025-05-20 12:00:00', 1, 1, 1),
+(2, 'The Ethics of Genetic Engineering: Opportunities and Challenges', 'The Ethics of Genetic Engineering: Opportunities and Challenges.', 'Science, Biology, Genetic, Future', 'https://example.com/photo1.jpg', '2025-05-20 10:00:00', '2025-05-20 12:00:00', 2, 2, 1),
+(3, 'Climate Change and the Role of Science in Mitigating Its Effects', 'Climate Change and the Role of Science in Mitigating Its Effects.', 'Climate, Warm, Water, Science, Future', 'https://example.com/photo1.jpg', '2025-05-21 10:00:00', '2025-05-21 12:00:00', 1, 1, 1),
+(4, 'Artificial Intelligence: Transforming Science and Society', 'Artificial Intelligence: Transforming Science and Society.', 'IT, AI, Science, Society', 'https://example.com/photo1.jpg', '2025-05-21 10:00:00', '2025-05-21 12:00:00', 2, 2, 1),
+(5, 'Quantum Computing: Unlocking the Next Frontier', 'Quantum Computing: Unlocking the Next Frontier.', 'IT, Quantum', 'https://example.com/photo1.jpg', '2025-05-21 17:00:00', '2025-05-21 19:00:00', 1, 1, 1),
+(6, 'The Science of Nutrition: Eating for a Better Tomorrow', 'The Science of Nutrition: Eating for a Better Tomorrow', 'Science, Nutrition, Health, Food', 'https://example.com/photo1.jpg', '2025-06-15 10:00:00', '2025-06-15 12:00:00', 3, 3, 2),
+(7, 'Mental Health Matters: Reducing the Stigma and Improving Care', 'Mental Health Matters: Reducing the Stigma and Improving Care.', 'Mental, Health', 'https://example.com/photo1.jpg', '2025-06-15 10:00:00', '2025-06-15 12:00:00', 4, 4, 2),
+(8, 'Preventive Healthcare: A Pathway to Longevity', 'Preventive Healthcare: A Pathway to Longevity.', 'Health', 'https://example.com/photo1.jpg', '2025-06-16 10:00:00', '2025-06-16 12:00:00', 3, 3, 2),
+(9, 'Fitness in the 21st Century: Balancing Technology and Physical Activity', 'Fitness in the 21st Century: Balancing Technology and Physical Activity.', 'Technology, Health, Activity, Fitness', 'https://example.com/photo1.jpg', '2025-06-16 10:00:00', '2025-06-16 12:00:00', 4, 4, 2),
+(10, 'The Future of Medicine: Personalized Healthcare Solutions', 'The Future of Medicine: Personalized Healthcare Solutions.', 'Health, Medicine', 'https://example.com/photo1.jpg', '2025-06-16 17:00:00', '2025-06-16 19:00:00', 4, 3, 2);
 SET IDENTITY_INSERT Presentations OFF;
 
 SET IDENTITY_INSERT Reservations ON;
