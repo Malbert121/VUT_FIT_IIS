@@ -23,3 +23,8 @@
 - **List of Conferences**: View the list of upcoming conferences.
 - **List of Presentations**: Browse available presentations within conferences.
 - **List of Rooms**: See available rooms for each conference.
+
+# How run docker
+```
+docker-compose build
+```
