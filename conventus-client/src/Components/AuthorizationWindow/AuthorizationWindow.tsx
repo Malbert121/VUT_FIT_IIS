@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { postSignIn, postSignUp } from "../../api";
 import { RegisterData } from '../../data';
 
@@ -13,13 +14,14 @@ const AuthorizationWindow: React.FC<Props> = ({actionToClose}) => {
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
     const [isSignIn, setIsSignIn] = useState<boolean>(true);  // default sign in
-    
+    const navigate = useNavigate();
     const handleSignIn = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null); // Reset error state
         try{
             await postSignIn(username,  password);
             alert("Authorization successful!");
+            navigate('..');
         }
         catch(err){
             setError("Authorization failed. Please try again.");
@@ -35,6 +37,7 @@ const AuthorizationWindow: React.FC<Props> = ({actionToClose}) => {
             await postSignUp(registerData);
             await postSignIn(registerData.username, registerData.password);
             alert("Registration and Authorization successful!");
+            navigate('..');
         }
         catch(err){
             setError("Registration and Authorization failed. Please try again.");
