@@ -4,6 +4,7 @@ using Conventus.DAL.Repositories;
 using Conventus.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -29,10 +30,9 @@ namespace Conventus.API
             {
                 connectionString = configuration.GetConnectionString("ConventusProd");
             }
-
             builder.Services.AddDbContextPool<ConventusDbContext>(
                 options => options.UseSqlServer(connectionString,
-                sqlOptions => sqlOptions.EnableRetryOnFailure()).UseLazyLoadingProxies());
+                sqlOptions => sqlOptions.EnableRetryOnFailure()));
 
             builder.Services.AddScoped<IUserRepo, UserRepo>();
             builder.Services.AddScoped<IConferenceRepo, ConferenceRepo>();
@@ -90,14 +90,17 @@ namespace Conventus.API
                                                new DbContextOptionsBuilder<ConventusDbContext>()
                                                                           .UseSqlServer(connectionString).Options));
                 }
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
 
 
             // Configure the HTTP request pipeline.
-
             app.UseCors("AllowAll");
             app.UseHttpsRedirection();
 
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
