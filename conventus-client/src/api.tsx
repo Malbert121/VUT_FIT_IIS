@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { API_CONFIG } from './config';
+import axiosInstance from './axiosInstance';
 import { 
     User, 
     Conference, 
@@ -11,7 +12,7 @@ import {
 
 export const postSignUp = async (registerData:RegisterData) => {
     try {
-        const response = await axios.post<AuthResponse>(`${API_CONFIG.API_BASE}/Auth/register`, registerData);
+        const response = await axiosInstance.post<AuthResponse>(`${API_CONFIG.API_REMOTE}/Auth/register`, registerData);
         localStorage.setItem('token', response.data.token);
         alert("Registration successful!");
     } catch (err) {
@@ -21,7 +22,7 @@ export const postSignUp = async (registerData:RegisterData) => {
 
 export const postSignIn = async (username:string, password:string) => {
     try {
-        const response = await axios.post<AuthResponse>(`${API_CONFIG.API_BASE}/Auth/login`, {
+        const response = await axiosInstance.post<AuthResponse>(`${API_CONFIG.API_REMOTE}/Auth/login`, {
             username,
             password,
         });
@@ -40,7 +41,7 @@ export const getUser = async (userId: number): Promise<User> => {
     if (!token) throw new Error('No token found');
 
     try {
-        const response = await axios.get<User>(`${API_CONFIG.API_BASE}/User/${userId}`, {
+        const response = await axiosInstance.get<User>(`${API_CONFIG.API_REMOTE}/User/${userId}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -53,7 +54,7 @@ export const getUser = async (userId: number): Promise<User> => {
 
 export const postUser = async (model: string, data: User) => {
     try {
-        const response = await axios.post(`${API_CONFIG.API_REMOTE}/${model}/post`, data, {
+        const response = await axiosInstance.post(`${API_CONFIG.API_REMOTE}/${model}/post`, data, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -68,7 +69,7 @@ export const postUser = async (model: string, data: User) => {
 
 export const putUser = async (id: number, model: string, data: User) => {
     try {
-        const response = await axios.put(`${API_CONFIG.API_REMOTE}/${model}/update/${id}`, data, {
+        const response = await axiosInstance.put(`${API_CONFIG.API_REMOTE}/${model}/update/${id}`, data, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -83,7 +84,7 @@ export const putUser = async (id: number, model: string, data: User) => {
 
 export const deleteUser = async (id: number, model: string) => {
     try {
-        await axios.delete(`${API_CONFIG.API_REMOTE}/${model}/delete/${id}`);
+        await axiosInstance.delete(`${API_CONFIG.API_REMOTE}/${model}/delete/${id}`);
     } catch (error) {
         handleAxiosError(error);
         console.error("Error fetching rooms:", error);
@@ -92,7 +93,7 @@ export const deleteUser = async (id: number, model: string) => {
 
 export const getAnotherUser = async (userId: number): Promise<User> => {
     try {
-        const response = await axios.get<User>(`${API_CONFIG.API_REMOTE}/Users/detail/admin/${userId}`);
+        const response = await axiosInstance.get<User>(`${API_CONFIG.API_REMOTE}/Users/detail/admin/${userId}`);
         return response.data;
     } catch (error) {
         handleAxiosError(error);
@@ -102,7 +103,7 @@ export const getAnotherUser = async (userId: number): Promise<User> => {
 
 export const registerUser = async (registerData: User) => {
     try {
-        const response = await axios.post(`${API_CONFIG.API_REMOTE}/Auth/register`, registerData);
+        const response = await axiosInstance.post(`${API_CONFIG.API_REMOTE}/Auth/register`, registerData);
         alert("Registration successful!");
     } catch (error) {
         handleAxiosError(error);
@@ -113,7 +114,7 @@ export const registerUser = async (registerData: User) => {
 // Fetch all users
 export const getAllUsers = async () => {
     try {
-        const response = await axios.get<User[]>(`${API_CONFIG.API_BASE}/Users`);
+        const response = await axiosInstance.get<User[]>(`${API_CONFIG.API_REMOTE}/Users`);
         return response.data; // Assuming the API returns an array of users
     } catch (error) {
         handleAxiosError(error);
@@ -122,7 +123,7 @@ export const getAllUsers = async () => {
 
 export const getAllConferences = async (): Promise<Conference[]> => {
     try {
-        const response = await axios.get<Conference[]>(`${API_CONFIG.API_BASE}/Conferences`);
+        const response = await axiosInstance.get<Conference[]>(`${API_CONFIG.API_REMOTE}/Conferences`);
         return response.data; // Assuming this directly returns an array of Conferences
     } catch (error) {
         console.error("Error fetching conferences:", error);
@@ -132,8 +133,8 @@ export const getAllConferences = async (): Promise<Conference[]> => {
 
 export const getMyConferences = async (userId: number): Promise<Conference[]> => {
     try {
-        const response = await axios.get<Conference[]>(
-            `${API_CONFIG.API_BASE}/Conferences/myConferences`,
+        const response = await axiosInstance.get<Conference[]>(
+            `${API_CONFIG.API_REMOTE}/Conferences/myConferences`,
             { params: { user_id: userId } } // Pass the user_id as query parameter
         );
 
@@ -149,25 +150,35 @@ export const getMyConferences = async (userId: number): Promise<Conference[]> =>
     }
 };
 export const updateConference = async (id: number, conferenceData: Conference) => {
-    const response = await fetch(`${API_CONFIG.API_BASE}/Conferences/${id}`, {
-      method: 'PUT', // or 'PATCH'
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(conferenceData),
-    });
-  
-    if (!response.ok) {
-      throw new Error('Failed to update conference');
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        throw new Error('Authorization token is missing');
     }
-  
+
+    const response = await fetch(`${API_CONFIG.API_REMOTE}/Conferences/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(conferenceData),
+    });
+
+    if (!response.ok) {
+        if (response.status === 401) {
+            throw new Error('Unauthorized. Please check your token or login again.');
+        }
+        throw new Error('Failed to update conference');
+    }
+
     return await response.json();
-  };
+};
   
 // Function to fetch a specific conference by ID
 export const getConference = async (id: number): Promise<Conference | null> => {
     try {
-        const response = await axios.get<Conference>(`${API_CONFIG.API_BASE}/Conferences/${id}`);
+        const response = await axiosInstance.get<Conference>(`${API_CONFIG.API_REMOTE}/Conferences/${id}`);
         return response.data; // Return the conference object
     } catch (error) {
         console.error("Error fetching conference:", error);
@@ -177,7 +188,7 @@ export const getConference = async (id: number): Promise<Conference | null> => {
 
 export const getAllPresentations = async (): Promise<Presentation[]> => {
     try {
-        const response = await axios.get<Presentation[]>(`${API_CONFIG.API_BASE}/Presentations`);
+        const response = await axiosInstance.get<Presentation[]>(`${API_CONFIG.API_REMOTE}/Presentations`);
         return response.data; // Assuming this directly returns an array of Presentations
     } catch (error) {
         console.error("Error fetching presentations:", error);
@@ -187,7 +198,7 @@ export const getAllPresentations = async (): Promise<Presentation[]> => {
 
 export const getMyPresentations = async (user_id: number): Promise<Presentation[]> => {
     try{
-        const response = await axios.get<Presentation[]>(`${API_CONFIG.API_BASE}/Presentations/my_presentations?user_id=${user_id}`);
+        const response = await axiosInstance.get<Presentation[]>(`${API_CONFIG.API_REMOTE}/Presentations/my_presentations?user_id=${user_id}`);
         return response.data;
     }
     catch(error){
@@ -199,7 +210,7 @@ export const getMyPresentations = async (user_id: number): Promise<Presentation[
 // Function to fetch a specific presentation by ID
 export const getPresentation = async (id: number): Promise<Presentation | null> => {
     try {
-        const response = await axios.get<Presentation>(`${API_CONFIG.API_BASE}/Presentations/${id}`);
+        const response = await axiosInstance.get<Presentation>(`${API_CONFIG.API_REMOTE}/Presentations/${id}`);
         return response.data; // Return the presentation object
     } catch (error) {
         handleAxiosError(error);
@@ -211,8 +222,8 @@ export const getPresentation = async (id: number): Promise<Presentation | null> 
 export const updatePresentation = async (user_id:number, presentation: Presentation): Promise<Presentation | null> => {
     try {
         console.log(presentation);
-        const response = await axios.put<Presentation>(
-            `${API_CONFIG.API_BASE}/Presentations/update?user_id=${user_id}`, 
+        const response = await axiosInstance.put<Presentation>(
+            `${API_CONFIG.API_REMOTE}/Presentations/update?user_id=${user_id}`, 
             presentation
         )
         return response.data;
@@ -224,7 +235,7 @@ export const updatePresentation = async (user_id:number, presentation: Presentat
 // Function to delete a specific presentation by ID
 export const deletePresentation = async (id: number): Promise<void> => {
     try {
-      await axios.delete(`${API_CONFIG.API_BASE}/Presentations/${id}`);
+      await axiosInstance.delete(`${API_CONFIG.API_REMOTE}/Presentations/${id}`);
     } catch (error) {
         handleAxiosError(error);
     }
@@ -232,7 +243,7 @@ export const deletePresentation = async (id: number): Promise<void> => {
 // Function to create a new presentation
 export const createPresentation = async (presentation: Presentation, user_id: number) => {
     try {
-        await axios.post<{ message: string }>(`${API_CONFIG.API_BASE}/Presentations/create?user_id=${user_id}`, presentation);
+        await axiosInstance.post<{ message: string }>(`${API_CONFIG.API_REMOTE}/Presentations/create?user_id=${user_id}`, presentation);
     } catch (error) {
         handleAxiosError(error);
     }
@@ -241,7 +252,7 @@ export const createPresentation = async (presentation: Presentation, user_id: nu
 // Fetch all reservations
 export const getAllReservations = async ():Promise<Reservation[]> => {
     try {
-        const response = await axios.get<Reservation[]>(`${API_CONFIG.API_BASE}/Reservations}`);
+        const response = await axiosInstance.get<Reservation[]>(`${API_CONFIG.API_REMOTE}/Reservations}`);
         return response.data; // Assuming the API returns an array of reservations
     } catch (error) {
         handleAxiosError(error);
@@ -251,7 +262,7 @@ export const getAllReservations = async ():Promise<Reservation[]> => {
 
 export const getMyReservations = async (user_id:number, paid:boolean):Promise<Reservation[]> => {
     try {
-        const response = await axios.get<Reservation[]>(`${API_CONFIG.API_BASE}/Reservations/my?user_id=${user_id}&paid=${paid}`);
+        const response = await axiosInstance.get<Reservation[]>(`${API_CONFIG.API_REMOTE}/Reservations/my?user_id=${user_id}&paid=${paid}`);
         return response.data; // Assuming the API returns an array of reservations
     } catch (error) {
         handleAxiosError(error);
@@ -261,7 +272,7 @@ export const getMyReservations = async (user_id:number, paid:boolean):Promise<Re
 
 export const getGuestReservations = async (user_id:number, paid:boolean):Promise<Reservation[]> => {
     try {
-        const response = await axios.get<Reservation[]>(`${API_CONFIG.API_BASE}/Reservations/guest?user_id=${user_id}&paid=${paid}`);
+        const response = await axiosInstance.get<Reservation[]>(`${API_CONFIG.API_REMOTE}/Reservations/guest?user_id=${user_id}&paid=${paid}`);
         return response.data; // Assuming the API returns an array of reservations
     } catch (error) {
         handleAxiosError(error);
@@ -273,7 +284,7 @@ export const getReservation = async (id:Number, user_id:number): Promise<Reserva
     try
     {
         console.log(`req to get reservation by id = ${id}`)
-        const response = await axios.get<Reservation>(`${API_CONFIG.API_BASE}/Reservations/${id}?user_id=${user_id}`);
+        const response = await axiosInstance.get<Reservation>(`${API_CONFIG.API_REMOTE}/Reservations/${id}?user_id=${user_id}`);
         return response.data;
     }
     catch (error)
@@ -288,7 +299,7 @@ export const putResirvationsToPay = async(reservationsIds:number[], user_id:numb
     try
     {
         console.log(`reservations ids to pay ${reservationsIds}`);
-        await axios.put<{message:string}>(`${API_CONFIG.API_BASE}/Reservations/to_pay?user_id=${user_id}`, reservationsIds);
+        await axiosInstance.put<{message:string}>(`${API_CONFIG.API_REMOTE}/Reservations/to_pay?user_id=${user_id}`, reservationsIds);
     }
     catch(error)
     {
@@ -300,7 +311,7 @@ export const putResirvationsToConfirm = async(reservationsIds:number[], user_id:
     try
     {
         console.log(`reservations ids to confirm ${reservationsIds}`);
-        await axios.put<{message:string}>(`${API_CONFIG.API_BASE}/Reservations/to_confirm?user_id=${user_id}&flag=${flag}`, reservationsIds);
+        await axiosInstance.put<{message:string}>(`${API_CONFIG.API_REMOTE}/Reservations/to_confirm?user_id=${user_id}&flag=${flag}`, reservationsIds);
     }
     catch(error)
     {
@@ -313,7 +324,7 @@ export const postReservations = async (reservation:Reservation, user_id:number) 
     {
         console.log(`user id ${user_id}`);
         console.log(`reservations ids to create reservation ${reservation}`);
-        await axios.post<{message:string}>(`${API_CONFIG.API_BASE}/Reservations/create?user_id=${user_id}`, reservation);
+        await axiosInstance.post<{message:string}>(`${API_CONFIG.API_REMOTE}/Reservations/create?user_id=${user_id}`, reservation);
     }
     catch(error)
     {
@@ -325,7 +336,7 @@ export const deleteReservations = async (reservationsIds:number[], user_id:numbe
     try
     {
         console.log(`reservations ids to delete ${reservationsIds}`);
-        await axios.delete<{ message: string }>(`${API_CONFIG.API_BASE}/Reservations/delete?user_id=${user_id}`, {
+        await axiosInstance.delete<{ message: string }>(`${API_CONFIG.API_REMOTE}/Reservations/delete?user_id=${user_id}`, {
             data: reservationsIds
         });
     }
@@ -338,7 +349,7 @@ export const deleteReservations = async (reservationsIds:number[], user_id:numbe
 
 export const deleteConference = async (conferenceId: number): Promise<void> => {
   try {
-    await axios.delete(`${API_CONFIG.API_BASE}/Conferences/${conferenceId}`); // Replace with your actual endpoint
+    await axiosInstance.delete(`${API_CONFIG.API_REMOTE}/Conferences/${conferenceId}`); // Replace with your actual endpoint
   } catch (error) {
     throw new Error('Failed to delete the conference');
   }
@@ -347,7 +358,7 @@ export const deleteConference = async (conferenceId: number): Promise<void> => {
 // Fetch all rooms
 export const getAllRooms = async () => {
     try {
-        const response = await axios.get<Room[]>(`${API_CONFIG.API_BASE}/Rooms`);
+        const response = await axiosInstance.get<Room[]>(`${API_CONFIG.API_REMOTE}/Rooms`);
         return response.data; // Assuming the API returns an array of rooms
     } catch (error) {
         handleAxiosError(error);

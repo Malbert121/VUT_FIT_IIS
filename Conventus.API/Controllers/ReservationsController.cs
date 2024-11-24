@@ -4,6 +4,7 @@ using Conventus.Models.Entities;
 using Conventus.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace Conventus.API.Controllers
@@ -31,6 +32,7 @@ namespace Conventus.API.Controllers
         [SwaggerResponse(400, "Invalid user ID or request parameters")]
         [SwaggerResponse(500, "Internal server error")]
         [HttpGet("my")]
+        [Authorize]
         public ActionResult<IEnumerable<Reservation>> GetMyReservations([FromQuery] int user_id, [FromQuery] bool paid) // TODO: add user context
         {
             try
@@ -68,6 +70,7 @@ namespace Conventus.API.Controllers
         [SwaggerResponse(400, "Invalid user ID or request parameters")]
         [SwaggerResponse(500, "Internal server error")]
         [HttpGet("guest")]
+        [Authorize]
         public ActionResult<IEnumerable<Reservation>> GetGuestReservations([FromQuery] int user_id, [FromQuery] bool paid) // TODO: add user context
         {
             try
@@ -109,6 +112,7 @@ namespace Conventus.API.Controllers
         [SwaggerResponse(404, "No reservations found to update")]
         [SwaggerResponse(500, "Internal error.")]
         [HttpPut("to_pay")]
+        [Authorize]
         public ActionResult<string> PutReservationsToPaid([FromBody]List<int> reservationsIds, [FromQuery] int user_id) // TODO: add user context
         {
             try
@@ -171,6 +175,7 @@ namespace Conventus.API.Controllers
         [SwaggerResponse(404, "No reservations found to update")]
         [SwaggerResponse(500, "Internal error.")]
         [HttpPut("to_confirm")]
+        [Authorize]
         public ActionResult<string> PutReservationsToConfirm([FromQuery] int user_id, [FromQuery] bool flag,[FromBody] List<int> reservationsIds) // TODO: add user context
         {
             try
@@ -228,6 +233,7 @@ namespace Conventus.API.Controllers
         [SwaggerResponse(400, "Invalid request: missing or invalid reservation data.")]
         [SwaggerResponse(500, "Internal error.")]
         [HttpPost("create")]
+        [Authorize]
         public ActionResult<string> CreateReservation([FromBody] Reservation reservation, [FromQuery] int user_id)
         {
             try
@@ -306,6 +312,7 @@ namespace Conventus.API.Controllers
         [SwaggerResponse(404, "No reservations found with the specified IDs or user is not authorized to delete them.")]
         [SwaggerResponse(500, "Internal error.")]
         [HttpDelete("delete")]
+        [Authorize]
         public ActionResult<string> DeleteReservations([FromBody] List<int> reservationsIds, [FromQuery] int user_id)
         {
             try

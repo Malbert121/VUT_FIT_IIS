@@ -4,6 +4,7 @@ using Conventus.Models.Entities;
 using Conventus.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Conventus.API.Controllers
 {
@@ -32,6 +33,7 @@ namespace Conventus.API.Controllers
         [SwaggerResponse(400, "Invalid request: missing or invalid presentation data.")]
         [SwaggerResponse(500, "Internal error.")]
         [HttpPost("create")]
+        [Authorize]
         public ActionResult<string> CreatePresentation([FromQuery] int user_id, [FromBody] Presentation presentation)
         {
             try
@@ -163,6 +165,7 @@ namespace Conventus.API.Controllers
         [SwaggerResponse(404, "One or more presentations not found or user lacks permission to delete them.")]
         [SwaggerResponse(500, "Internal server error.")]
         [HttpDelete("delete")]
+        [Authorize]
         public ActionResult<string> DeletePresentations([FromQuery] int user_id, [FromBody] List<int> presentationsIds)
         {
             try
@@ -222,6 +225,7 @@ namespace Conventus.API.Controllers
         [SwaggerResponse(404, "Presentation or related entities (conference, room) not found, or user is not authorized to update.")]
         [SwaggerResponse(500, "Internal server error.")]
         [HttpPut("update")]
+        [Authorize]
         public ActionResult<string> UpdatePresentation([FromQuery] int user_id, [FromBody] Presentation presentation)
         {
             try

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Conventus.API.Controllers
 {
@@ -107,6 +108,7 @@ namespace Conventus.API.Controllers
         [SwaggerResponse(400, "The request was invalid")]
         [SwaggerResponse(409, "User already exists")]
         [HttpPost("post")]
+        [Authorize]
         public ActionResult<User> AddUser([FromBody] User entity)
         {
             try
@@ -158,6 +160,7 @@ namespace Conventus.API.Controllers
         [SwaggerResponse(400, "The request was invalid")]
         [SwaggerResponse(409, "User already exists")]
         [HttpPut("update/{id}")]
+        [Authorize]
         public IActionResult UpdateUser(int id, [FromBody] User entity)
         {
             if (id != entity.Id)
@@ -206,6 +209,7 @@ namespace Conventus.API.Controllers
         [SwaggerResponse(200, "The execution was successful")]
         [SwaggerResponse(400, "The request was invalid")]
         [HttpDelete("delete/{id}")]
+        [Authorize]
         public ActionResult DeleteUser(int id)
         {
             var entity = ((IUserRepo)MainRepo).Find(id);
