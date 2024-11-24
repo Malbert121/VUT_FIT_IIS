@@ -1,5 +1,6 @@
 ﻿using Conventus.DAL.Repositories.Base;
 using Conventus.Models.Entities.Base;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -83,6 +84,7 @@ namespace Conventus.API.Controllers.Base
         [SwaggerResponse(200, "The execution was successful")]
         [SwaggerResponse(400, "The request was invalid")]
         [HttpPut("{id}")]
+        [Authorize]
         public IActionResult UpdateOne(int id, T entity)
         {
             if (id != entity.Id)
@@ -129,6 +131,7 @@ namespace Conventus.API.Controllers.Base
         [SwaggerResponse(201, "The execution was successful")]
         [SwaggerResponse(400, "The request was invalid")]
         [HttpPost]
+        [Authorize]
         public ActionResult<T> AddOne(T entity)
         {
             try
@@ -164,6 +167,7 @@ namespace Conventus.API.Controllers.Base
         [SwaggerResponse(200, "The execution was successful")]
         [SwaggerResponse(400, "The request was invalid")]
         [HttpDelete("{id}")]
+        [Authorize]
         public ActionResult DeleteOne(int id)
         {
             try
