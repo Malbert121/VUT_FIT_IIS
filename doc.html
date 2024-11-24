@@ -15,51 +15,53 @@
 <!-- Zkontrolujte prosím nastavení kódování v hlavièce dokumentu 
      podle pou¾itého editoru -->
 
-<h1>Konference</h1> <!-- Nahradte názvem svého zadání -->
+<h1>Conference</h1> <!-- Nahradte názvem svého zadání -->
 
 <dl>
-	<dt>Autoøi</dt>
-	<dd>První jméno <!-- Nahraïte skuteèným jménem a e-mailem autora a popisem èinnosti -->
+	<dt>Autors</dt>
+	<dd>Malashcuk Vladyslav <!-- Nahraïte skuteèným jménem a e-mailem autora a popisem èinnosti -->
 	    <a href="mailto:xmalas04@stud.fit.vutbr.cz">xmalas04@stud.fit.vutbr.cz</a> -
 		Conference frontend/backend, Authorization frontend/backend, Project architecture/foundation , Database, React/.NET 8.0 consultant ...
 	</dd>
-	<dd>Druhé jméno <!-- Nahraïte skuteèným jménem a e-mailem autora a popisem èinnosti -->
+	<dd>Myron Kukhta <!-- Nahraïte skuteèným jménem a e-mailem autora a popisem èinnosti -->
 	    <a href="mailto:xkukht01@stud.fit.vutbr.cz">xkukht01@stud.fit.vutbr.cz</a> - 
 		Project architecture, Lectures/Reservations frontend/backend, Docker
 	</dd>
-  <dd>Tøetí jméno <!-- Nahraïte skuteèným jménem a e-mailem autora a popisem èinnosti -->
+  <dd>Popov Albert <!-- Nahraïte skuteèným jménem a e-mailem autora a popisem èinnosti -->
 	    <a href="mailto:xpopov10@stud.fit.vutbr.cz">xpopov10@stud.fit.vutbr.cz</a> - 
 		User frontend/backend. Debugging application, Project architecture, Project deploy
 	</dd>
 	<dt>URL aplikace</dt>
 	<dd><a href="https://zealous-coast-0cd263f03.5.azurestaticapps.net/">https://zealous-coast-0cd263f03.5.azurestaticapps.net/</a></dd>
-	<dd>(pokud má aplikace více vstupních stránek, napi¹te obdobnì dal¹í URL)</dd>
 </dl>
 
-<h2>U¾ivatelé systému pro testování</h2>
-<p>Uveïte prosím existující zástupce <strong>v¹ech rolí u¾ivatelù</strong>.</p>
+<h2>Users for testing</h2>
 <table>
-<tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
-<tr><td>xmalas04</td><td>xmalas04@password</td><td>Administrátor</td></tr>
+<tr><th>Login</th><th>Password</th><th>Role</th></tr>
+<tr><td>xmalas04</td><td>xmalas04@password</td><td>Admin, user with conferences and lectures</td></tr>
+<tr><td>science1</td><td>science1@password</td><td>User with lectures</td></tr>
+<tr><td>education1</td><td>education1@password</td><td>User with conferences and lectures</td></tr>
+<tr><td>education2</td><td>education2@password</td><td>User with lectures</td></tr>
 <tr><td>myron</td><td>myron@password</td><td>User</td></tr>
 </table>
 
-<p>(Diagram pøípadù u¾ití není nutné vkládat, pokud IS implementuje role a pøípady u¾ití definované zadáním.)</p> 
-
 <h3>Video</h3>
-
-<p>Pøilo¾te odkaz na komentované video demostrující pou¾ití informaèního systému. Zamìøte se na pøípady u¾ití definované zadáním (napø. registrace u¾ivatele, správa u¾ivatelù a èinnosti jednotlivých rolí). Video nahrajte napøíklad na VUT Google Drive, kde ho bude mo¾né pøímo spustit z odkazu.</p> 
+<p>GoogleDrive</p> 
+<dd><a href="https://drive.google.com/file/d/147NCJpyLUzfRDcTr539k_8Z7T0TTJvmy/view?usp=sharing">https://drive.google.com/file/d/147NCJpyLUzfRDcTr539k_8Z7T0TTJvmy/view?usp=sharing</a></dd>
+<p>YouTube</p> 
+<dd><a href="https://youtu.be/PYMaU_WxeGc">https://youtu.be/PYMaU_WxeGc</a></dd>
 
 <h2>Implementace</h2>
-<p>Struèná dokumentace k implementaci, která popisuje, které èásti projektu (napø. PHP skripty) implementují jednotlivé pøípady pou¾ití.</p>
-
-    <h2>1. Frontend: <code>conventus-client</code></h2>
+<p>Frameworks:  .NET8(ASP.NET, EntityFrameworkCore), Node.js(React+TypeScript)</p>
+    <h2>1. Frontend:</h2>
     <p>
-        <strong>Location:</strong> <code>src</code><br>
+        <strong>Location:</strong> <code>/conventus-client</code><br>
         <strong>Description:</strong> This part of the project implements the application's user interface using React.
     </p>
     <h3>Main Folders and Files:</h3>
     <ul>
+        <li><code>Dockerfile</code>: Docker file for client side.</li>
+        <li><code>ngnix.conf</code>: Configurations for HTTP server NGNIX for client side.</li>
         <li><code>src/Components</code>: Contains user interface components that make up the various parts of the application.</li>
         <li><code>src/context</code>: Includes the implementation of state management (e.g., using React Context API).</li>
         <li><code>src/Pages</code>: Contains pages representing different sections of the application.</li>
@@ -75,6 +77,7 @@
     </p>
     <h3>Main Folders and Files:</h3>
     <ul>
+        <li><code>Dockerfile</code>: Docker file for server side.</li>
         <li><code>Controllers</code>: Contains API controllers that implement various endpoints (e.g., CRUD operations).</li>
         <li><code>appsettings.json</code> and <code>appsettings.Development.json</code>: Configurations for different environments (e.g., database connection, API settings).</li>
         <li><code>Program.cs</code>: The main file for configuring and starting the backend server.</li>
@@ -107,60 +110,53 @@
 
     <h2>5. Other Important Files</h2>
     <ul>
+        <li><code>init.sql</code>: Autogenerated file by EntityFramework Core from migrations for initialization database, schemes and testing data</li>
+        <li><code>doc.html</code>: Documintation</li>
+        <li><code>docker-compose.yml</code>: Configuration file for docker-compose of project.</li>
+        <li><code>Dockerfile.sqlserver</code>: Docker file for MSSQL server.</li>
+        <li><code>Dockerfile.sqlserver_init</code>: Docker file for sqlcmd for MSSQL server (Need for first initialization DB and test data).</li>
         <li><code>Conventus.sln</code>: Main solution file for opening the project in Visual Studio.</li>
         <li><code>db_diagram.png</code>: Database schema for a visual overview of the structure.</li>
     </ul>
 
-<h3>Databáze</h3>
+<h3>Database</h3>
 
 <img src="db_diagram.png" alt="not loading...">
 
-<h2>Instalace</h2>
+<h2>Installation</h2>
 
-Struènì popi¹te: 
-<ul>
-<li>postup instalace na server,</li>
-<li>softwarové po¾adavky (verze PHP apod.),</li>
-<li>jak rozbalit, konfigurovat, inicializovat databázi, ...</li>
-</ul>
-<h3>Step 1: Download the Project</h3>
+<h3>Installation from Docker</h3>
 <ol>
-	<li>Download and open project folder.</li>
+	<li>Need installed docker and docker-compose.</li>
+	<li>If you need stop(and removes) containers: 
+        <pre><code>docker-compose down</code></pre> </li>
+	<li>If you need stop(and removes) containers and clean volumes of db: 
+        <pre><code>docker-compose down -v</code></pre> </li>
+	<li>Build docker: 
+        <pre><code>docker-compose build</code></pre> </li>
+	<li>Start MSSQL, application server, client (<b><i>WARNING</i></b> it need time for full running, wait please): 
+        <pre><code>docker-compose up sqlserver server client</code></pre> </li>
+    <li>If you need create/recreate db and test data (<b><i>WARNING</i></b> Up after when you have sqlserver full bilded and runned, <b><i>HAVE 2 MINUTS sleeping</i></b> for connection): 
+        <pre><code>docker-compose up sqlserver-init</code><pre> </li>
+    <li>Your application is availeble from: <code>localhost:3000/</code></li>
 </ol>
-
-<h3>Step 2: Set the Database Connection String</h3>
+<h3>Installation from source code</h3>
 <ol>
 	<li>Navigate to the file located at: <code>Conventus.DAL\EfStructures\ConventusDbContextFactory.cs</code>.</li>
 	<li>Locate the line <code>var connectionString</code> and set it to the correct connection string for your database.</li>
-</ol>
-
-<h3>Step 3: Configure <code>appsettings.json</code></h3>
-<ol>
-	<li>Open the <code>Conventus.API</code> folder.</li>
-	<li>Ensure the following sections in <code>appsettings.json</code> are correctly configured:
-		<ul>
-			<li><strong>Database Connection:</strong> Update the <code>ConnectionStrings</code> section with the database connection string.</li>
-		</ul>
-	</li>
-</ol>
-
-<h3>Step 4: Open the Solution File</h3>
-<ol>
+    <li>Open the <code>Conventus.API</code> folder.</li>
+    <li>Ensure the following sections in <code>appsettings.json</code> are correctly configured:
+        <ul>
+            <li><strong>Database Connection:</strong> Update the <code>ConnectionStrings</code> section with the database connection string.</li>
+        </ul>
+        </li>
 	<li>Open the project in your IDE by double-clicking on the <code>Conventus.sln</code> file.</li>
-</ol>
-
-<h3>Step 5: Prepare the Database</h3>
-<ol>
 	<li>Apply any necessary database migrations to set up the database(console must be opened in Conventus.DAL):
 		<pre><code>
 dotnet ef migrations add InitialCreate
 dotnet ef database update</code></pre>
 	</li>
 	<li>Ensure the database is running and accessible with the configured connection string.</li>
-</ol>
-
-<h3>Step 6: Start the API Server</h3>
-<ol>
 	<li>Build and run the project(Conventus.API):
 		<ul>
 			<li>In Visual Studio, press <strong>F5</strong> to start the API server.</li>
@@ -169,9 +165,6 @@ dotnet ef database update</code></pre>
 			</li>
 		</ul>
 	</li>
-</ol>
-<h2>Známé problémy</h2>
-<p>Zde popi¹te, které body zadání nejsou implementovány a z jakého dùvodu. Napø. &bdquo;Z èasových dùvodù nebyla implementována správa u¾ivatelù.&rdquo; Pomù¾ete tím zrychlit hodnocení, kdy¾ neimplementované funkce nebudeme muset dlouze hledat.</p>
-
+    <li>Your application is availeble from: <code>localhost:3000/</code></li>
 </body>
 </html>
