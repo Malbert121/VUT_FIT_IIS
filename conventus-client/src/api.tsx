@@ -150,17 +150,17 @@ export const getMyConferences = async (userId: number): Promise<Conference[]> =>
     }
 };
 export const updateConference = async (id: number, conferenceData: Conference) => {
-    const token = localStorage.getItem('token'); // Получить токен из localStorage
+    const token = localStorage.getItem('token');
 
     if (!token) {
         throw new Error('Authorization token is missing');
     }
 
     const response = await fetch(`${API_CONFIG.API_REMOTE}/Conferences/${id}`, {
-        method: 'PUT', // или 'PATCH'
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` // Добавление токена в заголовки
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(conferenceData),
     });
