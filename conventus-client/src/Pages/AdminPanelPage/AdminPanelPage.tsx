@@ -42,15 +42,15 @@ const AdminPanelPage: React.FC = () => {
                 setToastMessage('You can\'t delete yourself!!!');
                 return;
             }
-        }
-        else {
-            try {
-                await deleteUser(id, model);
-                window.location.reload();
-            }
-            catch (error) {
-                setToastType('error');
-                setToastMessage('Error occured while deleting user (error 500).');
+            else {
+                try {
+                    await deleteUser(id, model);
+                    window.location.reload();
+                }
+                catch (error) {
+                    setToastType('error');
+                    setToastMessage('Error occured while deleting user (error 500).');
+                }
             }
         }
     }
