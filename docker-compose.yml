@@ -18,7 +18,7 @@ services:
       dockerfile: Conventus.API/Dockerfile
     container_name: conventus-server
     ports:
-      - "5082:8080"
+      - "5082:5082"
     environment:
       ASPNETCORE_ENVIRONMENT: Development
     depends_on:

@@ -15,6 +15,6 @@ WORKDIR /app
 COPY --from=build /app .
 COPY Conventus.API/appsettings.json .
 
-EXPOSE 8080
+EXPOSE 5082
 
 ENTRYPOINT ["dotnet", "Conventus.API.dll"]
