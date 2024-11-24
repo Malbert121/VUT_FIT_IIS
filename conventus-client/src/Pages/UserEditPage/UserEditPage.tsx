@@ -52,6 +52,12 @@ const UserEditPage = () => {
         }
     }, [id, userActual]);
 
+    useEffect(() => {
+        if (userActual && userActual.role === "Admin") {
+            setIsAuthorized(true);
+        }
+    }, [userActual]); 
+
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
 
