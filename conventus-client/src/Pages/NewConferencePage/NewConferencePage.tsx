@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useUser } from "../../context/UserContext"; // Import useUser hook
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { API_CONFIG } from '../../config';

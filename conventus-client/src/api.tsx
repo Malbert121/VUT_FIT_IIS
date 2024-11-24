@@ -150,20 +150,30 @@ export const getMyConferences = async (userId: number): Promise<Conference[]> =>
     }
 };
 export const updateConference = async (id: number, conferenceData: Conference) => {
-    const response = await fetch(`${API_CONFIG.API_REMOTE}/Conferences/${id}`, {
-      method: 'PUT', // or 'PATCH'
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(conferenceData),
-    });
-  
-    if (!response.ok) {
-      throw new Error('Failed to update conference');
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        throw new Error('Authorization token is missing');
     }
-  
+
+    const response = await fetch(`${API_CONFIG.API_REMOTE}/Conferences/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(conferenceData),
+    });
+
+    if (!response.ok) {
+        if (response.status === 401) {
+            throw new Error('Unauthorized. Please check your token or login again.');
+        }
+        throw new Error('Failed to update conference');
+    }
+
     return await response.json();
-  };
+};
   
 // Function to fetch a specific conference by ID
 export const getConference = async (id: number): Promise<Conference | null> => {

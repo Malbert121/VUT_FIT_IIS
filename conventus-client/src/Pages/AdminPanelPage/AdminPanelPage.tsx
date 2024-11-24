@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { getAllUsers, getAllRooms, deleteUser } from '../../api';
-import { Presentation, Conference, User, Room, Reservation } from '../../data'; // Adjust based on your structure
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { getAllUsers, deleteUser } from '../../api';
+import {  User  } from '../../data'; // Adjust based on your structure
+import { useParams, useNavigate } from "react-router-dom";
 import Toast from '../../Components/Toast/Toast';
 import "../AdminPanelPage/AdminPanelPage.css";
 import { useUser } from '../../context/UserContext';
@@ -9,26 +9,15 @@ import { useUser } from '../../context/UserContext';
 const AdminPanelPage: React.FC = () => {
     const { showShow } = useParams<{ showShow: string }>();
     const user = useUser(); // Get the user data
-    const [conferences, setConferences] = useState<Conference[]>([]);
-    const [lectures, setLectures] = useState<Presentation[]>([]);
+
     const [users, setUsers] = useState<User[] | undefined>([]);
-    const [rooms, setRooms] = useState<Room[] | undefined>([]);
-    const [reservations, setReservations] = useState<Reservation[]>([]);
-    const [filteredConferences, setFilteredConferences] = useState<Conference[]>([]);
+
+
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
     const navigate = useNavigate();
 
-
-    // filtering
-    const [conferenceNameFilter, setConferenceNameFiler] = useState<string>('');
-    const [statusFilter, setStatusFilter] = useState<string>('');
-    const [dateFilter, setDateFilter] = useState<{ from: string; to: string }>({ from: '', to: '' });
-    const [groupFilter, setGroupFilter] = useState<string>('');
-
-    const reservationStatusList: string[] = ['Confirmed', 'Unconfirmed', 'Unpaid']
-    const groupList: string[] = ['Single', 'Group']
     const [toastMessage, setToastMessage] = useState<string | null>(null);
     const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('info');
 
@@ -63,9 +52,6 @@ const AdminPanelPage: React.FC = () => {
         navigate(`./create`);
     }
 
-    const handleNavigate = () => {
-        navigate(`../admin/Users`);
-    }
 
     useEffect(() => {
         try {
