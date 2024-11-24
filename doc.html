@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-2"/>
+    <title>Projekt IIS</title>
+    <style type="text/css">
+    	table { border-collapse: collapse; }
+    	td, th { border: 1px solid black; padding: 0.3em 0.5em; text-align: left; }
+    	dt { font-weight: bold; margin-top: 0.5em; }
+    </style>
+</head>
+<body>
+
+<!-- Zkontrolujte prosím nastavení kódování v hlavičce dokumentu 
+     podle použitého editoru -->
+
+<h1>Konference</h1> <!-- Nahradte názvem svého zadání -->
+
+<dl>
+	<dt>Autoři</dt>
+	<dd>První jméno <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+	    <a href="mailto:xmalas04@stud.fit.vutbr.cz">xmalas04@stud.fit.vutbr.cz</a> -
+		Conference frontend/backend, Authorization frontend/backend, Project architecture , Database
+	</dd>
+	<dd>Druhé jméno <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+	    <a href="mailto:xkukht01@stud.fit.vutbr.cz">xkukht01@stud.fit.vutbr.cz</a> - 
+		popis činnosti v týmu
+	</dd>
+  <dd>Třetí jméno <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+	    <a href="mailto:xpopov10@stud.fit.vutbr.cz">xpopov10@stud.fit.vutbr.cz</a> - 
+		popis činnosti v týmu
+	</dd>
+	<dt>URL aplikace</dt>
+	<dd><a href="https://zealous-coast-0cd263f03.5.azurestaticapps.net/">https://zealous-coast-0cd263f03.5.azurestaticapps.net/</a></dd>
+	<dd>(pokud má aplikace více vstupních stránek, napište obdobně další URL)</dd>
+</dl>
+
+<h2>Uživatelé systému pro testování</h2>
+<p>Uveďte prosím existující zástupce <strong>všech rolí uživatelů</strong>.</p>
+<table>
+<tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
+<tr><td>xmalas04</td><td>xmalas04@password</td><td>Administrátor</td></tr>
+<tr><td>myron</td><td>myron@password</td><td>User</td></tr>
+</table>
+
+<p>(Diagram případů užití není nutné vkládat, pokud IS implementuje role a případy užití definované zadáním.)</p> 
+
+<h3>Video</h3>
+
+<p>Přiložte odkaz na komentované video demostrující použití informačního systému. Zaměřte se na případy užití definované zadáním (např. registrace uživatele, správa uživatelů a činnosti jednotlivých rolí). Video nahrajte například na VUT Google Drive, kde ho bude možné přímo spustit z odkazu.</p> 
+
+<h2>Implementace</h2>
+<p>Stručná dokumentace k implementaci, která popisuje, které části projektu (např. PHP skripty) implementují jednotlivé případy použití.</p>
+
+    <h2>1. Frontend: <code>conventus-client</code></h2>
+    <p>
+        <strong>Location:</strong> <code>src</code><br>
+        <strong>Description:</strong> This part of the project implements the application's user interface using React.
+    </p>
+    <h3>Main Folders and Files:</h3>
+    <ul>
+        <li><code>src/Components</code>: Contains user interface components that make up the various parts of the application.</li>
+        <li><code>src/context</code>: Includes the implementation of state management (e.g., using React Context API).</li>
+        <li><code>src/Pages</code>: Contains pages representing different sections of the application.</li>
+        <li><code>src/Routes</code>: Implements routing between the application's pages.</li>
+        <li><code>api.tsx</code>: Contains the API client for communication with the backend.</li>
+        <li><code>App.tsx</code>: The main file for initializing the frontend application.</li>
+    </ul>
+
+    <h2>2. Backend API: <code>Conventus.API</code></h2>
+    <p>
+        <strong>Location:</strong> <code>Conventus.API</code><br>
+        <strong>Description:</strong> This part of the project provides a RESTful API for data processing and handling client requests.
+    </p>
+    <h3>Main Folders and Files:</h3>
+    <ul>
+        <li><code>Controllers</code>: Contains API controllers that implement various endpoints (e.g., CRUD operations).</li>
+        <li><code>appsettings.json</code> and <code>appsettings.Development.json</code>: Configurations for different environments (e.g., database connection, API settings).</li>
+        <li><code>Program.cs</code>: The main file for configuring and starting the backend server.</li>
+        <li><code>launchSettings.json</code>: Settings for launching the application (e.g., port, environment).</li>
+    </ul>
+
+    <h2>3. Data Layer: <code>Conventus.DAL</code></h2>
+    <p>
+        <strong>Location:</strong> <code>Conventus.DAL</code><br>
+        <strong>Description:</strong> Contains the application's data logic, including database access implementation.
+    </p>
+    <h3>Main Folders and Files:</h3>
+    <ul>
+        <li><code>EfStructures</code>: Implements <code>DbContext</code> and database connection initialization.
+            <ul>
+                <li><strong>Key File:</strong> <code>ConventusDbContext.cs</code> (FluentApi).</li>
+                <li><strong>Key File:</strong> <code>ConventusDbContextFactory.cs</code> (used for setting up the connection string).</li>
+            </ul>
+        </li>
+        <li><code>Initialization</code>: Contains initialization logic or database seeding.</li>
+        <li><code>Migrations</code>: Folder for managing database migrations.</li>
+        <li><code>Repositories</code>: Implements repositories for working with entities.</li>
+    </ul>
+
+    <h2>4. Models: <code>Conventus.Models</code></h2>
+    <p>
+        <strong>Location:</strong> <code>Conventus.Models</code><br>
+        <strong>Description:</strong> Contains entity models that correspond to the structure of database tables or objects used in the API.
+    </p>
+
+    <h2>5. Other Important Files</h2>
+    <ul>
+        <li><code>Conventus.sln</code>: Main solution file for opening the project in Visual Studio.</li>
+        <li><code>db_diagram.png</code>: Database schema for a visual overview of the structure.</li>
+    </ul>
+
+<h3>Databáze</h3>
+
+<img src="db_diagram.png" alt="not loading...">
+
+<h2>Instalace</h2>
+
+Stručně popište: 
+<ul>
+<li>postup instalace na server,</li>
+<li>softwarové požadavky (verze PHP apod.),</li>
+<li>jak rozbalit, konfigurovat, inicializovat databázi, ...</li>
+</ul>
+<h3>Step 1: Download the Project</h3>
+<ol>
+	<li>Download and open project folder.</li>
+</ol>
+
+<h3>Step 2: Set the Database Connection String</h3>
+<ol>
+	<li>Navigate to the file located at: <code>Conventus.DAL\EfStructures\ConventusDbContextFactory.cs</code>.</li>
+	<li>Locate the line <code>var connectionString</code> and set it to the correct connection string for your database.</li>
+</ol>
+
+<h3>Step 3: Configure <code>appsettings.json</code></h3>
+<ol>
+	<li>Open the <code>Conventus.API</code> folder.</li>
+	<li>Ensure the following sections in <code>appsettings.json</code> are correctly configured:
+		<ul>
+			<li><strong>Database Connection:</strong> Update the <code>ConnectionStrings</code> section with the database connection string.</li>
+		</ul>
+	</li>
+</ol>
+
+<h3>Step 4: Open the Solution File</h3>
+<ol>
+	<li>Open the project in your IDE by double-clicking on the <code>Conventus.sln</code> file.</li>
+</ol>
+
+<h3>Step 5: Prepare the Database</h3>
+<ol>
+	<li>Apply any necessary database migrations to set up the database(console must be opened in Conventus.DAL):
+		<pre><code>
+dotnet ef migrations add InitialCreate
+dotnet ef database update</code></pre>
+	</li>
+	<li>Ensure the database is running and accessible with the configured connection string.</li>
+</ol>
+
+<h3>Step 6: Start the API Server</h3>
+<ol>
+	<li>Build and run the project(Conventus.API):
+		<ul>
+			<li>In Visual Studio, press <strong>F5</strong> to start the API server.</li>
+			<li>If using a different IDE or terminal, navigate to the <code>Conventus.API</code> folder and run:
+				<pre><code>dotnet run</code></pre>
+			</li>
+		</ul>
+	</li>
+</ol>
+<h2>Známé problémy</h2>
+<p>Zde popište, které body zadání nejsou implementovány a z jakého důvodu. Např. &bdquo;Z časových důvodů nebyla implementována správa uživatelů.&rdquo; Pomůžete tím zrychlit hodnocení, když neimplementované funkce nebudeme muset dlouze hledat.</p>
+
+</body>
+</html>

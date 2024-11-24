@@ -35,6 +35,7 @@ const ReservationCard: React.FC<Props> = ({reservation, onSelect, isSelected}) =
         <p className='mt-2'><strong>End Date: </strong> {reservation.Conference?.EndDate}</p>
         <p className='mb-5 mt-5'><strong>Ammount: </strong>{reservation.Ammount} $</p>
         <p className='mb-5 mt-5'><strong>Tickets: </strong>{reservation.NumberOfTickets}</p>
+        <p className='mb-5 mt-5'><strong>User: </strong>{reservation.User?.UserName}({reservation.User?.Email})</p>
     </div>
     );
 };
