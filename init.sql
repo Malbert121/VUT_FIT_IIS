@@ -7,6 +7,11 @@ GO
 USE [Conventus];
 GO
 
+IF EXISTS (SELECT * FROM sys.tables WHERE name = '__EFMigrationsHistory')
+BEGIN
+    DROP TABLE __EFMigrationsHistory;
+END
+
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Users')
 BEGIN
     DROP TABLE Users;
@@ -228,7 +233,6 @@ GO
 
 COMMIT;
 GO
-
 
 -- TEST DATA --
 
