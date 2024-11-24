@@ -181,7 +181,7 @@ const NewLecturePage: React.FC = () => {
             required
           />
         </div>
-        {user?.id === state?.OrganizerId || user?.role === 'Admin' ? (
+        {(Number(user?.id) === state?.OrganizerId || user?.role === 'Admin') ? (
   <div className="input-container">
     <label>Speaker:</label>
     <div className="relative">
@@ -299,7 +299,7 @@ const NewLecturePage: React.FC = () => {
                 }`}
             disabled={isSubmitDisabled}
         >
-            {isSubmitDisabled ? "Thanks For Using Our Service" : "Create Conference"}
+            {isSubmitDisabled ? "Thanks For Using Our Service" : "Create Presentation"}
         </button>
       </form>
       
