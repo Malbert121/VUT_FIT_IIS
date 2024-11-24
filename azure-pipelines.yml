@@ -1,9 +1,6 @@
 # ASP.NET Core (.NET Framework)
 # Build, test, and deploy ASP.NET Core projects targeting the full .NET Framework.
 
-trigger:
-- main  # Replace with your branch name
-
 pool:
   vmImage: 'windows-latest'
 
