@@ -32,7 +32,9 @@ namespace Conventus.API
             }
             builder.Services.AddDbContextPool<ConventusDbContext>(
                 options => options.UseSqlServer(connectionString,
-                sqlOptions => sqlOptions.EnableRetryOnFailure(maxRetryCount: 5)));
+                sqlOptions => sqlOptions.EnableRetryOnFailure(maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(5),
+            errorNumbersToAdd: null)));
 
             builder.Services.AddScoped<IUserRepo, UserRepo>();
             builder.Services.AddScoped<IConferenceRepo, ConferenceRepo>();
