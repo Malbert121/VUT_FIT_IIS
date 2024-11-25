@@ -62,7 +62,10 @@ namespace Conventus.API
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            if (builder.Environment.IsDevelopment())
+            {
+                builder.Services.AddSwaggerGen();
+            }
             builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -90,8 +93,6 @@ namespace Conventus.API
                                                new DbContextOptionsBuilder<ConventusDbContext>()
                                                                           .UseSqlServer(connectionString).Options));
                 }
-                app.UseSwagger();
-                app.UseSwaggerUI();
             }
 
 
