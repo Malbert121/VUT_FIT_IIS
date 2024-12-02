@@ -3,7 +3,7 @@ import { API_CONFIG } from './config';
 
 
 const axiosInstance = axios.create({
-    baseURL: API_CONFIG.API_REMOTE,
+    baseURL: API_CONFIG.API_BASE,
 });
 
 

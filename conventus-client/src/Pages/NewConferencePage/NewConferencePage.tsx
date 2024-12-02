@@ -63,7 +63,7 @@ const NewConferencePage: React.FC = () => {
             // Include rooms in the conferenceData
             const dataToPost = { ...conferenceData, rooms };
 
-            const response = await axiosInstance.post(`${API_CONFIG.API_REMOTE}/conferences`, dataToPost);
+            const response = await axiosInstance.post(`${API_CONFIG.API_BASE}/conferences`, dataToPost);
             setSuccessMessage("Conference created successfully!");
             setErrorMessage(null);
             console.log("Conference Created:", response.data);
