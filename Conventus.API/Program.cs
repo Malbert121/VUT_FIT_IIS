@@ -31,7 +31,7 @@ namespace Conventus.API
                 connectionString = configuration.GetConnectionString("ConventusProd");
             }
             builder.Services.AddDbContextPool<ConventusDbContext>(
-                options => options.UseSqlServer(connectionString,
+                options => options.UseLazyLoadingProxies().UseSqlServer(connectionString,
                 sqlOptions => sqlOptions.EnableRetryOnFailure(maxRetryCount: 5,
             maxRetryDelay: TimeSpan.FromSeconds(5),
             errorNumbersToAdd: null)));
